@@ -1,0 +1,45 @@
+version: '3'
+services:
+  user_db:
+    container_name: user_db
+    image: postgres
+    restart: always
+    ports:
+      - 5000:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=user_db
+    
+  content_db:
+    container_name: content_db
+    image: postgres
+    restart: always
+    ports:
+      - 5001:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=content_db
+
+  subscription_db:
+    container_name: subscription_db
+    image: postgres
+    restart: always
+    ports:
+      - 5002:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=subscription_db
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:8.3
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: a@a.com
+      PGADMIN_DEFAULT_PASSWORD: asdf
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - 15431:80
