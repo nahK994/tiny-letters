@@ -111,7 +111,7 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 
 2. Start DB using Docker Compose:
    ```bash
-   docker compose db.yml up -d
+   docker compose -f db.yml up -d
    ```
 
 3. Run services locally:
