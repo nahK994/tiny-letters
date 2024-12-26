@@ -1,5 +1,7 @@
 package db
 
+import grpc_client "tiny-letter-user/cmd/grpc/client"
+
 func (r *Repository) CreateUser(userInfo *CreateUserRequest) error {
 	tx, err := r.DB.Begin()
 	if err != nil {
@@ -20,11 +22,14 @@ func (r *Repository) CreateUser(userInfo *CreateUserRequest) error {
 		return err
 	}
 
-	for _, role := range userInfo.Roles {
-		_, err = tx.Exec("INSERT INTO user_roles (user_id, role_id) VALUES ($1, $2)", userId, role)
-		if err != nil {
-			return err
-		}
+	_, err = tx.Exec("INSERT INTO user_roles (user_id, role_id) VALUES ($1, $2)", userId, userInfo.Role)
+	if err != nil {
+		return err
+	}
+
+	err = grpc_client.NotifySubscription(userId, userInfo.SubscriptionType, userInfo.Role)
+	if err != nil {
+		return err
 	}
 
 	return nil

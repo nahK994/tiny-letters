@@ -22,8 +22,7 @@ func Serve(wg *sync.WaitGroup) {
 
 	r := gin.Default()
 	r.POST("/login", h.Login)
-	r.POST("/register-publisher", h.HandleRegisterPublisher)
-	r.POST("/register-subscriber", h.HandleRegisterSubscriber)
+	r.POST("/register", h.HandleRegister)
 
 	addr := fmt.Sprintf("%s:%s", config.App.REST.Domain, config.App.REST.Port)
 	r.Run(addr)
