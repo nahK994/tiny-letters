@@ -22,7 +22,8 @@ func createTables(db *sql.DB) error {
 		id SERIAL PRIMARY KEY,
 		name VARCHAR(20) NOT NULL,
 		email VARCHAR(50) NOT NULL UNIQUE,
-		password VARCHAR(255) NOT NULL
+		password VARCHAR(255) NOT NULL,
+		subscription_id INT NOT NULL
 	);
 	`
 
