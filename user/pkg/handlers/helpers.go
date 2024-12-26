@@ -25,12 +25,11 @@ func generateJWT(r *db.GenerateTokenRequest) (string, error) {
 	expTime := now.Add(time.Duration(appConfig.JWT_exp_minutes) * time.Minute)
 
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":            r.Id,
-		"iss":            "TinyLetter",
-		"exp":            expTime.Unix(),
-		"iat":            now.Unix(),
-		"roles":          r.Roles,
-		"subscriptionId": r.SubscriptionId,
+		"sub":   r.Id,
+		"iss":   "TinyLetter",
+		"exp":   expTime.Unix(),
+		"iat":   now.Unix(),
+		"roles": r.Role,
 	})
 
 	tokenString, err := claims.SignedString([]byte(appConfig.JWT_secret))

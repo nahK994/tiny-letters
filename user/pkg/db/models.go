@@ -1,7 +1,5 @@
 package db
 
-import "github.com/lib/pq"
-
 type LoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -16,14 +14,12 @@ type CreateUserRequest struct {
 }
 
 type GenerateTokenRequest struct {
-	Id             int
-	Roles          []string
-	SubscriptionId int
+	Id   int
+	Role string
 }
 
 type JWT_claim struct {
-	Id             int
-	SubscriptionId int
-	Password       string
-	Roles          pq.StringArray
+	Id       int
+	Password string
+	Role     string
 }

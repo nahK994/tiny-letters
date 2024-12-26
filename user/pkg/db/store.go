@@ -2,8 +2,6 @@ package db
 
 import (
 	grpc_client "tiny-letter-user/cmd/grpc/client"
-
-	"github.com/lib/pq"
 )
 
 func (r *Repository) CreateUser(userInfo *CreateUserRequest) error {
@@ -43,21 +41,14 @@ func (d *Repository) GetUserInfoByEmail(email string) (*JWT_claim, error) {
 	var claim JWT_claim
 	err := d.DB.QueryRow(`
 		SELECT 
-			u.id, 
-			u.subscription_id, 
-			u.password, 
-			array_agg(r.name) AS roles
+			id, 
+			password, 
+			role,
 		FROM 
-			users AS u
-		INNER JOIN 
-			user_roles AS ur ON u.id = ur.user_id
-		INNER JOIN 
-			roles AS r ON ur.role_id = r.id
+			users
 		WHERE 
-			u.email = $1
-		GROUP BY 
-			u.id, u.subscription_id, u.password
-	`, email).Scan(&claim.Id, &claim.SubscriptionId, &claim.Password, pq.Array(&claim.Roles))
+			email = $1
+	`, email).Scan(&claim.Id, &claim.Password, &claim.Role)
 
 	if err != nil {
 		return nil, err

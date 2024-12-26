@@ -42,9 +42,8 @@ func (h *Handler) Login(c *gin.Context) {
 	}
 
 	accessToken, err1 := generateJWT(&db.GenerateTokenRequest{
-		Id:             userInfo.Id,
-		Roles:          userInfo.Roles,
-		SubscriptionId: userInfo.SubscriptionId,
+		Id:   userInfo.Id,
+		Role: userInfo.Role,
 	})
 	if err1 != nil {
 		log.Fatal(err1.Error())
