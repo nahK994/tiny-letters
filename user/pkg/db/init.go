@@ -22,14 +22,14 @@ func createTables(db *sql.DB) error {
 		id SERIAL PRIMARY KEY,
 		name VARCHAR(20) NOT NULL,
 		email VARCHAR(50) NOT NULL UNIQUE,
-		password VARCHAR(255) NOT NULL,
+		password VARCHAR(255) NOT NULL
 	);
 	`
 
 	roleTable := `
 	CREATE TABLE IF NOT EXISTS roles (
 		id SERIAL PRIMARY KEY,
-		name VARCHAR(20) NOT NULL,
+		name VARCHAR(20) NOT NULL
 	);
 	`
 
@@ -38,22 +38,24 @@ func createTables(db *sql.DB) error {
 		user_id INT NOT NULL,
 		role_id INT NOT NULL,
 		CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-		CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
-		INDEX idx_user_id (user_id),
-		INDEX idx_role_id (role_id)
+		CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 	);
+
+	-- Indexes for faster lookups
+	CREATE INDEX IF NOT EXISTS idx_user_id ON user_roles(user_id);
+	CREATE INDEX IF NOT EXISTS idx_role_id ON user_roles(role_id);
 	`
 
 	if _, err := db.Exec(createUserTable); err != nil {
-		return fmt.Errorf("could not create vendors table: %w", err)
+		return fmt.Errorf("could not create users table: %w", err)
 	}
 
 	if _, err := db.Exec(roleTable); err != nil {
-		return fmt.Errorf("could not create vendors table: %w", err)
+		return fmt.Errorf("could not create roles table: %w", err)
 	}
 
 	if _, err := db.Exec(userRoleTable); err != nil {
-		return fmt.Errorf("could not create vendors table: %w", err)
+		return fmt.Errorf("could not create user_roles table: %w", err)
 	}
 
 	return nil

@@ -8,9 +8,22 @@ type DBConfig struct {
 	Port     int
 }
 
+type BaseCommConfig struct {
+	Port   string
+	Domain string
+}
+
+type GRPCConfig struct {
+	Subscription BaseCommConfig
+}
+
+type CommConfig struct {
+	REST BaseCommConfig
+	GRPC GRPCConfig
+}
+
 type AppConfig struct {
-	Port            string
-	Domain          string
+	CommConfig
 	JWT_secret      string
 	JWT_exp_minutes int
 }
@@ -22,15 +35,25 @@ type Config struct {
 
 var appConfig Config = Config{
 	App: AppConfig{
-		Port:            "8000",
-		Domain:          "localhost",
+		CommConfig: CommConfig{
+			REST: BaseCommConfig{
+				Port:   "8000",
+				Domain: "localhost",
+			},
+			GRPC: GRPCConfig{
+				Subscription: BaseCommConfig{
+					Domain: "localhost",
+					Port:   "50000",
+				},
+			},
+		},
 		JWT_secret:      "secret",
 		JWT_exp_minutes: 60,
 	},
 	DB: DBConfig{
 		User:     "user",
 		Password: "password",
-		Name:     "publisher_db",
+		Name:     "user_db",
 		Port:     5000,
 		Host:     "localhost",
 	},
