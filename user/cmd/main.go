@@ -7,7 +7,7 @@ import (
 
 func main() {
 	var wg sync.WaitGroup
-	wg.Add(2)
+	wg.Add(1)
 	go rest_server.Serve(&wg)
 	wg.Wait()
 }
