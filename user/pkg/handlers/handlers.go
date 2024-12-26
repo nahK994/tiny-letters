@@ -30,11 +30,16 @@ func (h *Handler) HandleRegister(c *gin.Context) {
 		return
 	}
 
+	hashedPassword, err := hashPassword(userRequest.password)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "Internal server error")
+		return
+	}
 	if err := h.repo.CreateUser(
 		&db.CreateUserRequest{
 			Name:             userRequest.name,
 			Email:            userRequest.email,
-			Password:         userRequest.password,
+			Password:         hashedPassword,
 			Role:             userRequest.role,
 			SubscriptionType: userRequest.subscriptionType,
 		},
