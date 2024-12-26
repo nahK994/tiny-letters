@@ -6,11 +6,11 @@ type LoginRequest struct {
 }
 
 type CreateUserRequest struct {
-	Email            string `json:"email"`
-	Password         string `json:"password"`
-	Name             string `json:"name"`
-	Role             string `json:"role"`
-	SubscriptionType int    `json:"subscriptionType"`
+	Email    string
+	Password string
+	Name     string
+	Role     string
+	PlanId   int
 }
 
 type GenerateTokenRequest struct {

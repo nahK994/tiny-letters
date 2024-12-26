@@ -29,7 +29,7 @@ func (r *Repository) CreateUser(userInfo *CreateUserRequest) error {
 		return err
 	}
 
-	err = grpc_client.NotifySubscription(userId, userInfo.SubscriptionType, userInfo.Role)
+	err = grpc_client.NotifySubscription(userId, userInfo.PlanId, userInfo.Role)
 	if err != nil {
 		return err
 	}

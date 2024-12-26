@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func NotifySubscription(id, subscriptionType int, role string) error {
+func NotifySubscription(id, planId int, role string) error {
 	config := app.GetConfig()
 	addr := fmt.Sprintf("%s:%s", config.App.GRPC.User_Subscriber.Domain, config.App.GRPC.User_Subscriber.Port)
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -26,7 +26,7 @@ func NotifySubscription(id, subscriptionType int, role string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	resp, err := client.Create(ctx, &pb.Request{Id: int32(id), Role: role, SubscriptionType: int32(subscriptionType)})
+	resp, err := client.Create(ctx, &pb.Request{Id: int32(id), Role: role, PlanId: int32(planId)})
 	if err != nil {
 		log.Fatalf("Error while calling SayHello: %v", err)
 	}
