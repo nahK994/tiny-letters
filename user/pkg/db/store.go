@@ -7,14 +7,10 @@ func (r *Repository) CreateUser(userInfo *CreateUserRequest) error {
 	}
 
 	defer func() {
-		// Rollback if the transaction is not committed
-		if p := recover(); p != nil {
+		if err != nil {
 			tx.Rollback()
-			panic(p) // re-throw panic after rollback
-		} else if err != nil {
-			tx.Rollback() // rollback if error occurred
 		} else {
-			err = tx.Commit() // commit if no error occurred
+			err = tx.Commit()
 		}
 	}()
 
