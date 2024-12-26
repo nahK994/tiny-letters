@@ -15,14 +15,6 @@ type CreateUserRequest struct {
 	SubscriptionType int    `json:"subscriptionType"`
 }
 
-type PublisherRegistrationRequest struct {
-	Email          string   `json:"email"`
-	Password       string   `json:"password"`
-	Name           string   `json:"name"`
-	Roles          []string `json:"roles"`
-	SubscriptionId int      `json:"subscriptionId"`
-}
-
 type GenerateTokenRequest struct {
 	Id             int
 	Roles          []string
