@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"time"
-	pb "tiny-letter-user/cmd/grpc/pb/subsciption"
+	pb "tiny-letter-user/cmd/grpc/pb/user-subscriber"
 	"tiny-letter-user/pkg/app"
 
 	"google.golang.org/grpc"
@@ -14,7 +14,7 @@ import (
 
 func NotifySubscription() error {
 	config := app.GetConfig()
-	addr := fmt.Sprintf("%s:%s", config.App.GRPC.Subscription.Domain, config.App.GRPC.Subscription.Port)
+	addr := fmt.Sprintf("%s:%s", config.App.GRPC.User_Subscriber.Domain, config.App.GRPC.User_Subscriber.Port)
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Failed to connect: %v", err)

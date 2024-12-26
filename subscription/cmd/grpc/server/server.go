@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 	"sync"
-	pb "tiny-letter-subscription/cmd/grpc/pb/user"
+	pb "tiny-letter-subscription/cmd/grpc/pb/user-subscriber"
 	"tiny-letter-subscription/pkg/app"
 
 	"google.golang.org/grpc"
@@ -26,7 +26,7 @@ func (s *grpc_server) Create(c context.Context, request *pb.Request) (*pb.Respon
 func Serve(wg *sync.WaitGroup) {
 	defer wg.Done()
 	config := app.GetConfig()
-	addr := fmt.Sprintf("%s:%s", config.App.GRPC.User.Domain, config.App.GRPC.User.Port)
+	addr := fmt.Sprintf("%s:%s", config.App.GRPC.User_Subscriber.Domain, config.App.GRPC.User_Subscriber.Port)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)

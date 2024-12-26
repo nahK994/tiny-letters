@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "/user;pb";
+option go_package = "/user-subscriber;pb";
 
 
 service User {
