@@ -14,6 +14,8 @@ func NewHandler(repo *db.Repository) *Handler {
 	return &Handler{repo: repo}
 }
 
-func (h *Handler) HandlerSubscribePublisherPlan(c *gin.Context) {}
+func (h *Handler) HandlerSubscribePublisher(c *gin.Context) {}
 
-func (h *Handler) HandlerSubscribeSubscriberPlan(c *gin.Context) {}
+func (h *Handler) HandlerSubscribePublication(c *gin.Context) {}
+
+func (h *Handler) HandlerChangeSubscriptionPlan(c *gin.Context) {}

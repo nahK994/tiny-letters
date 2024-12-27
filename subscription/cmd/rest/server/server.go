@@ -21,8 +21,9 @@ func Serve(wg *sync.WaitGroup) {
 	h := handlers.NewHandler(db)
 
 	r := gin.Default()
-	r.POST("/subscribe-publisher", h.HandlerSubscribePublisherPlan)
-	r.POST("/subscribe-subscriber", h.HandlerSubscribeSubscriberPlan)
+	r.POST("/subscribe-publisher", h.HandlerSubscribePublisher)
+	r.POST("/subscribe-publication", h.HandlerSubscribePublication)
+	r.POST("/change-subscription-plan", h.HandlerChangeSubscriptionPlan)
 
 	addr := fmt.Sprintf("%s:%s", config.App.REST.Domain, config.App.REST.Port)
 	r.Run(addr)

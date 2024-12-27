@@ -16,7 +16,7 @@ type grpc_server struct {
 	pb.UnimplementedUserServer
 }
 
-func (s *grpc_server) Create(c context.Context, request *pb.Request) (*pb.Response, error) {
+func (s *grpc_server) CreatePublisher(c context.Context, request *pb.Request) (*pb.Response, error) {
 	fmt.Println(request.GetId(), request.GetRole(), request.GetSubscriptionType())
 	return &pb.Response{
 		IsSuccess: true,
