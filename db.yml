@@ -11,7 +11,7 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=user_db
     
-  content_db:
+  publisher_db:
     container_name: content_db
     image: postgres
     restart: always
@@ -20,7 +20,7 @@ services:
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=content_db
+      - POSTGRES_DB=publisher_db
 
   subscription_db:
     container_name: subscription_db

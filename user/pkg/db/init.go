@@ -47,14 +47,48 @@ func createTables(db *sql.DB) error {
 	CREATE INDEX IF NOT EXISTS idx_role_id ON user_roles(role_id);
 	`
 
+	createSubscriptionPlanTable := `
+	CREATE TABLE IF NOT EXISTS subscription_plans (
+		id SERIAL PRIMARY KEY,
+		name VARCHAR(20) NOT NULL
+	);
+	`
+
+	createPermissionTable := `
+	CREATE TABLE IF NOT EXISTS permissions (
+		id SERIAL PRIMARY KEY,
+		name VARCHAR(20) NOT NULL,
+		subscription_id INT NOT NULL,
+		CONSTRAINT fk_permissions_subscription FOREIGN KEY (subscription_id) REFERENCES subscription_plans(id) ON DELETE CASCADE
+	);
+	CREATE INDEX IF NOT EXISTS idx_permissions_subscription_id ON permissions(subscription_id);
+	`
+
+	createAudienceTable := `
+	CREATE TABLE IF NOT EXISTS plan_audiences (
+		id SERIAL PRIMARY KEY,
+		subscription_id INT NOT NULL,
+		size INT NOT NULL,
+		CONSTRAINT fk_plan_audiences_subscription FOREIGN KEY (subscription_id) REFERENCES subscription_plans(id) ON DELETE CASCADE
+	);
+	CREATE INDEX IF NOT EXISTS idx_plan_audiences_subscription_id ON plan_audiences(subscription_id);
+	`
+
+	if _, err := db.Exec(createSubscriptionPlanTable); err != nil {
+		return fmt.Errorf("could not create subscription_plans table: %w", err)
+	}
+	if _, err := db.Exec(createPermissionTable); err != nil {
+		return fmt.Errorf("could not create permissions table: %w", err)
+	}
+	if _, err := db.Exec(createAudienceTable); err != nil {
+		return fmt.Errorf("could not create plan_audiences table: %w", err)
+	}
 	if _, err := db.Exec(createUserTable); err != nil {
 		return fmt.Errorf("could not create users table: %w", err)
 	}
-
 	if _, err := db.Exec(roleTable); err != nil {
 		return fmt.Errorf("could not create roles table: %w", err)
 	}
-
 	if _, err := db.Exec(userRoleTable); err != nil {
 		return fmt.Errorf("could not create user_roles table: %w", err)
 	}
