@@ -2,8 +2,8 @@ package db
 
 import (
 	"database/sql"
-	grpc_client "tiny-letter-user/cmd/grpc/client"
-	"tiny-letter-user/pkg/utils"
+	grpc_client "tiny-letter/auth/cmd/grpc/client"
+	"tiny-letter/auth/pkg/utils"
 )
 
 func (r *Repository) createUser(userInfo *CreateBaseUserRequest) (int, *sql.Tx, error) {

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 	"time"
-	pb "tiny-letter-user/cmd/grpc/pb/user-subscriber"
-	"tiny-letter-user/pkg/app"
+	pb "tiny-letter/auth/cmd/grpc/pb/user-subscriber"
+	"tiny-letter/auth/pkg/app"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -14,7 +14,7 @@ import (
 
 func NotifyPublisherSubscription(id, planId int, role string) error {
 	config := app.GetConfig()
-	addr := fmt.Sprintf("%s:%s", config.App.GRPC.User_Subscriber.Domain, config.App.GRPC.User_Subscriber.Port)
+	addr := fmt.Sprintf("%s:%s", config.App.GRPC.Auth_Subscriber.Domain, config.App.GRPC.Auth_Subscriber.Port)
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Failed to connect: %v", err)

@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"time"
-	"tiny-letter-user/pkg/app"
-	"tiny-letter-user/pkg/db"
+	"tiny-letter/auth/pkg/app"
+	"tiny-letter/auth/pkg/db"
 
 	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"

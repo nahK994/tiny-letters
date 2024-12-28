@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
-	"tiny-letter-user/pkg/db"
+	"tiny-letter/auth/pkg/db"
 
 	"github.com/gin-gonic/gin"
 )
