@@ -1,4 +1,4 @@
-module tiny-letter-user
+module tiny-letter/auth
 
 go 1.23.0
 

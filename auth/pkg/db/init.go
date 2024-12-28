@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"tiny-letter-user/pkg/app"
+	"tiny-letter/auth/pkg/app"
 
 	_ "github.com/lib/pq"
 )

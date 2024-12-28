@@ -2,7 +2,7 @@ package main
 
 import (
 	"sync"
-	rest_server "tiny-letter-user/cmd/rest/server"
+	rest_server "tiny-letter/auth/cmd/rest/server"
 )
 
 func main() {
