@@ -18,4 +18,6 @@ func (h *Handler) HandlerSubscribePublisher(c *gin.Context) {}
 
 func (h *Handler) HandlerSubscribePublication(c *gin.Context) {}
 
-func (h *Handler) HandlerChangeSubscriptionPlan(c *gin.Context) {}
+func (h *Handler) HandlerChangeSubscriberSubscriptionPlan(c *gin.Context) {}
+
+func (h *Handler) HandlerChangePublisherSubscriptionPlan(c *gin.Context) {}

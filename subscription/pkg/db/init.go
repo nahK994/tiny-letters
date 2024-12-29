@@ -20,7 +20,8 @@ func createTables(db *sql.DB) error {
 	createSubscriptionPlanTable := `
 	CREATE TABLE IF NOT EXISTS subscription_plans (
 		id SERIAL PRIMARY KEY,
-		name VARCHAR(20) NOT NULL
+		name VARCHAR(20) NOT NULL,
+		order INT NOT NULL
 	);
 	`
 
