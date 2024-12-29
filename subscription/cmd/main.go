@@ -2,8 +2,8 @@ package main
 
 import (
 	"sync"
-	grpc_server "tiny-letter-subscription/cmd/grpc/server"
-	rest_server "tiny-letter-subscription/cmd/rest/server"
+	grpc_server "tiny-letter/subscription/cmd/grpc/server"
+	rest_server "tiny-letter/subscription/cmd/rest/server"
 )
 
 func main() {

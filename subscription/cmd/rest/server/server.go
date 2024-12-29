@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"sync"
-	"tiny-letter-subscription/pkg/app"
-	"tiny-letter-subscription/pkg/db"
-	"tiny-letter-subscription/pkg/handlers"
+	"tiny-letter/subscription/pkg/app"
+	"tiny-letter/subscription/pkg/db"
+	"tiny-letter/subscription/pkg/handlers"
 
 	"github.com/gin-gonic/gin"
 )

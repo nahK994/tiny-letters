@@ -6,8 +6,8 @@ import (
 	"log"
 	"net"
 	"sync"
-	pb "tiny-letter-subscription/cmd/grpc/pb/auth-subscriber"
-	"tiny-letter-subscription/pkg/app"
+	pb "tiny-letter/subscription/cmd/grpc/pb/auth-subscriber"
+	"tiny-letter/subscription/pkg/app"
 
 	"google.golang.org/grpc"
 )

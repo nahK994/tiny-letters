@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"net/http"
-	"tiny-letter-subscription/pkg/db"
+	"tiny-letter/subscription/pkg/db"
 
 	"github.com/gin-gonic/gin"
 )
