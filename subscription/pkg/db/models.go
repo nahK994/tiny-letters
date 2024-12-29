@@ -20,6 +20,7 @@ type PublisherChangePlanRequest struct {
 
 type SubscriberChangePlanRequest struct {
 	UserId        int `json:"userId"`
+	PublicationId int `json:"publicationId"`
 	ChangedPlanId int `json:"changedPlanId"`
 }
 

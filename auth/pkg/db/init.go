@@ -75,23 +75,51 @@ func createTables(db *sql.DB) error {
 	CREATE INDEX IF NOT EXISTS idx_plan_audiences_subscription_id ON plan_audiences(subscription_id);
 	`
 
+	createPublisherSubscriptionManagementTable := `
+	CREATE TABLE IF NOT EXISTS publisher_subscription_managements (
+		id SERIAL PRIMARY KEY,
+		user_id INT NOT NULL,
+		subscription_id INT NOT NULL,
+		CONSTRAINT fk_publisher_subscription_managements_subscription FOREIGN KEY (subscription_id) REFERENCES subscription_plans(id) ON DELETE CASCADE
+	);
+	CREATE INDEX IF NOT EXISTS idx_publisher_subscription_management_subscription_id ON publisher_subscription_managements(subscription_id);
+	`
+
+	createSubscriberSubscriptionManagementTable := `
+	CREATE TABLE IF NOT EXISTS subscriber_subscription_managements (
+		id SERIAL PRIMARY KEY,
+		user_id INT NOT NULL,
+		subscription_id INT NOT NULL,
+		publication_id INT NOT NULL,
+		CONSTRAINT fk_subscriber_subscription_managements_subscription FOREIGN KEY (subscription_id) REFERENCES subscription_plans(id) ON DELETE CASCADE
+	);
+	CREATE INDEX IF NOT EXISTS idx_subscriber_subscription_management_subscription_id ON subscriber_subscription_managements(subscription_id);
+	CREATE INDEX IF NOT EXISTS idx_subscriber_subscription_management_publication_id ON subscriber_subscription_managements(publication_id);
+	`
+
 	if _, err := db.Exec(createSubscriptionPlanTable); err != nil {
-		return fmt.Errorf("could not create subscription_plans table: %w", err)
+		return fmt.Errorf("failed to create 'subscription_plans' table: %w", err)
 	}
 	if _, err := db.Exec(createPermissionTable); err != nil {
-		return fmt.Errorf("could not create permissions table: %w", err)
+		return fmt.Errorf("failed to create 'permissions' table: %w", err)
 	}
 	if _, err := db.Exec(createAudienceTable); err != nil {
-		return fmt.Errorf("could not create plan_audiences table: %w", err)
+		return fmt.Errorf("failed to create 'plan_audiences' table: %w", err)
 	}
 	if _, err := db.Exec(createUserTable); err != nil {
-		return fmt.Errorf("could not create users table: %w", err)
+		return fmt.Errorf("failed to create 'users' table: %w", err)
 	}
 	if _, err := db.Exec(roleTable); err != nil {
-		return fmt.Errorf("could not create roles table: %w", err)
+		return fmt.Errorf("failed to create 'roles' table: %w", err)
 	}
 	if _, err := db.Exec(userRoleTable); err != nil {
-		return fmt.Errorf("could not create user_roles table: %w", err)
+		return fmt.Errorf("failed to create 'user_roles' table: %w", err)
+	}
+	if _, err := db.Exec(createPublisherSubscriptionManagementTable); err != nil {
+		return fmt.Errorf("failed to create 'publisher_subscription_managements' table: %w", err)
+	}
+	if _, err := db.Exec(createSubscriberSubscriptionManagementTable); err != nil {
+		return fmt.Errorf("failed to create 'subscriber_subscription_managements' table: %w", err)
 	}
 
 	return nil
