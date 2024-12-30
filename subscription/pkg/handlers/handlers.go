@@ -35,8 +35,8 @@ func (h *Handler) HandlerSubscribePublisher(c *gin.Context) {
 	c.JSON(http.StatusOK, "Publisher subscribed successfully")
 }
 
-func (h *Handler) HandlerSubscribePublication(c *gin.Context) {
-	var req db.SubscriberSubscriptionRequest
+func (h *Handler) HandlerJoinPublication(c *gin.Context) {
+	var req db.JoinPublicationRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, "Bad request")
@@ -47,7 +47,7 @@ func (h *Handler) HandlerSubscribePublication(c *gin.Context) {
 		return
 	}
 
-	if err := h.repo.SubscribeSubscriberPlan(req); err != nil {
+	if err := h.repo.JoinPublication(req); err != nil {
 		c.JSON(http.StatusInternalServerError, "Internal server error")
 		return
 	}
@@ -55,8 +55,8 @@ func (h *Handler) HandlerSubscribePublication(c *gin.Context) {
 	c.JSON(http.StatusOK, "Subscriber subscribed successfully")
 }
 
-func (h *Handler) HandlerChangeSubscriberSubscriptionPlan(c *gin.Context) {
-	var req db.SubscriberChangePlanRequest
+func (h *Handler) HandlerChangePublicationSubscriptionPlan(c *gin.Context) {
+	var req db.ChangePublisherPlanRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, "Bad request")
@@ -67,7 +67,7 @@ func (h *Handler) HandlerChangeSubscriberSubscriptionPlan(c *gin.Context) {
 		return
 	}
 
-	if err := h.repo.ChangeSubscriberSubscriptionPlan(req); err != nil {
+	if err := h.repo.ChangePublisherSubscriptionPlan(req); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -76,7 +76,7 @@ func (h *Handler) HandlerChangeSubscriberSubscriptionPlan(c *gin.Context) {
 }
 
 func (h *Handler) HandlerChangePublisherSubscriptionPlan(c *gin.Context) {
-	var req db.PublisherChangePlanRequest
+	var req db.ChangePublisherPlanRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, "Bad request")
@@ -95,8 +95,8 @@ func (h *Handler) HandlerChangePublisherSubscriptionPlan(c *gin.Context) {
 	c.JSON(http.StatusOK, "Publisher subscription plan changed successfully")
 }
 
-func (h *Handler) HandleUnsubscribePublication(c *gin.Context) {
-	var req db.UnsubscribeSubscriberRequest
+func (h *Handler) HandleLeavePublication(c *gin.Context) {
+	var req db.LeavePublicationRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, "Bad request")
@@ -107,7 +107,7 @@ func (h *Handler) HandleUnsubscribePublication(c *gin.Context) {
 		return
 	}
 
-	if err := h.repo.UnsubscriptionSubscriberPlan(req); err != nil {
+	if err := h.repo.LeavePublication(req); err != nil {
 		c.JSON(http.StatusInternalServerError, "Internal server error")
 		return
 	}
@@ -115,7 +115,7 @@ func (h *Handler) HandleUnsubscribePublication(c *gin.Context) {
 	c.JSON(http.StatusOK, "Subscriber unsubscribed successfully")
 }
 
-func (h *Handler) HandleUnsubscribeSubscriber(c *gin.Context) {
+func (h *Handler) HandleUnsubscribePublisher(c *gin.Context) {
 	var req db.UnsubscribePublisherRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {

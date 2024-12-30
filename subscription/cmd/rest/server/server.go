@@ -22,9 +22,11 @@ func Serve(wg *sync.WaitGroup) {
 
 	r := gin.Default()
 	r.POST("/subscribe-publisher", h.HandlerSubscribePublisher)
-	r.POST("/subscribe-publication", h.HandlerSubscribePublication)
-	r.POST("/change-subscriber-subscription-plan", h.HandlerChangeSubscriberSubscriptionPlan)
-	r.POST("/change-publication-subscription-plan", h.HandlerChangePublisherSubscriptionPlan)
+	r.POST("/subscribe-publication", h.HandlerJoinPublication)
+	r.POST("/change-subscriber-subscription-plan", h.HandlerChangePublicationSubscriptionPlan)
+	r.POST("/change-publisher-subscription-plan", h.HandlerChangePublisherSubscriptionPlan)
+	r.POST("/unsubscription-publication", h.HandleLeavePublication)
+	r.POST("/unsubscribe-publisher-plan", h.HandleUnsubscribePublisher)
 
 	addr := fmt.Sprintf("%s:%s", config.App.REST.Domain, config.App.REST.Port)
 	r.Run(addr)

@@ -15,7 +15,7 @@ func (r *Repository) SubscribePublisherPlan(data PublisherSubscriptionRequest) e
 	return nil
 }
 
-func (r *Repository) SubscribeSubscriberPlan(data SubscriberSubscriptionRequest) error {
+func (r *Repository) JoinPublication(data JoinPublicationRequest) error {
 	query := `
 	INSERT INTO subscriber_subscription_managements (user_id, subscription_id, publication_id)
 	VALUES ($1, $2, $3)
@@ -27,7 +27,7 @@ func (r *Repository) SubscribeSubscriberPlan(data SubscriberSubscriptionRequest)
 	return nil
 }
 
-func (r *Repository) ChangeSubscriberSubscriptionPlan(data SubscriberChangePlanRequest) error {
+func (r *Repository) ChangePublicationSubscription(data ChangePublicationSubscriptionRequest) error {
 	query := `
 	UPDATE subscriber_subscription_managements
 	SET subscription_id = $1
@@ -39,7 +39,7 @@ func (r *Repository) ChangeSubscriberSubscriptionPlan(data SubscriberChangePlanR
 	return nil
 }
 
-func (r *Repository) ChangePublisherSubscriptionPlan(data PublisherChangePlanRequest) error {
+func (r *Repository) ChangePublisherSubscriptionPlan(data ChangePublisherPlanRequest) error {
 	query := `
 	UPDATE subscriber_subscription_managements
 	SET subscription_id = $1
@@ -61,7 +61,7 @@ func (r *Repository) UnsubscriptionPublisherPlan(data UnsubscribePublisherReques
 	return nil
 }
 
-func (r *Repository) UnsubscriptionSubscriberPlan(data UnsubscribeSubscriberRequest) error {
+func (r *Repository) LeavePublication(data LeavePublicationRequest) error {
 	query := `
 	DELETE FROM subscriber_subscription_managements WHERE user_id = $1 AND publication_id = $2
 	`
