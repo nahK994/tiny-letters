@@ -36,7 +36,7 @@ func (h *Handler) HandlerSubscribePublisher(c *gin.Context) {
 }
 
 func (h *Handler) HandlerJoinPublication(c *gin.Context) {
-	var req db.JoinPublicationRequest
+	var req db.ManagePublicationSubscriptionRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, "Bad request")
@@ -96,7 +96,7 @@ func (h *Handler) HandlerChangePublisherSubscriptionPlan(c *gin.Context) {
 }
 
 func (h *Handler) HandleLeavePublication(c *gin.Context) {
-	var req db.LeavePublicationRequest
+	var req db.ManagePublicationSubscriptionRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, "Bad request")

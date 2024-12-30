@@ -7,7 +7,7 @@ type PublisherSubscriptionRequest struct {
 	PlanId int `json:"planId"`
 }
 
-type JoinPublicationRequest struct {
+type ManagePublicationSubscriptionRequest struct {
 	UserId        int `json:"userId"`
 	PlanId        int `json:"planId"`
 	PublicationId int `json:"publicationId"`
@@ -28,12 +28,6 @@ type UnsubscribePublisherRequest struct {
 	UserId int `json:"userId"`
 }
 
-type LeavePublicationRequest struct {
-	UserId        int `json:"userId"`
-	PlanId        int `json:"planId"`
-	PublicationId int `json:"publicationId"`
-}
-
 func (r *PublisherSubscriptionRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
@@ -44,7 +38,7 @@ func (r *PublisherSubscriptionRequest) Validate() error {
 	return nil
 }
 
-func (r *JoinPublicationRequest) Validate() error {
+func (r *ManagePublicationSubscriptionRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
 	}
@@ -83,19 +77,6 @@ func (r *ChangePublicationSubscriptionRequest) Validate() error {
 func (r *UnsubscribePublisherRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
-	}
-	return nil
-}
-
-func (r *LeavePublicationRequest) Validate() error {
-	if r.UserId <= 0 {
-		return errors.New("userId must be greater than 0")
-	}
-	if r.PlanId <= 0 {
-		return errors.New("planId must be greater than 0")
-	}
-	if r.PublicationId <= 0 {
-		return errors.New("publicationId must be greater than 0")
 	}
 	return nil
 }
