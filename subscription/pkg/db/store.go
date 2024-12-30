@@ -50,3 +50,23 @@ func (r *Repository) ChangePublisherSubscriptionPlan(data PublisherChangePlanReq
 	}
 	return nil
 }
+
+func (r *Repository) UnsubscriptionPublisherPlan(data UnsubscribePublisherRequest) error {
+	query := `
+	DELETE FROM publisher_subscription_managements WHERE user_id = $1
+	`
+	if _, err := r.DB.Exec(query, data.UserId); err != nil {
+		return fmt.Errorf("failed to change publication subscription plan: %w", err)
+	}
+	return nil
+}
+
+func (r *Repository) UnsubscriptionSubscriberPlan(data UnsubscribeSubscriberRequest) error {
+	query := `
+	DELETE FROM subscriber_subscription_managements WHERE user_id = $1 AND publication_id = $2
+	`
+	if _, err := r.DB.Exec(query, data.UserId, data.PublicationId); err != nil {
+		return fmt.Errorf("failed to change publication subscription plan: %w", err)
+	}
+	return nil
+}
