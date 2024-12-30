@@ -1,0 +1,44 @@
+syntax = "proto3";
+option go_package = "/subscriber-auth;pb";
+
+
+service SubscriptionAuth {
+  rpc JoinPublication (ManagePublicationSubscriptionRequest) returns (Response);
+  rpc LeavePublication (ManagePublicationSubscriptionRequest) returns (Response);
+
+  rpc SubscribePublisherPlan (PublisherSubscriptionRequest) returns (Response);
+  rpc UnsubscribePublisherPlan (PublisherUnsubscriptionRequest) returns (Response);
+
+  rpc ChangePublicationSubscription (ChangePublicationSubscriptionRequest) returns (Response);
+  rpc ChangePublisherSubscriptionPlan (ChangePublisherPlanRequest) returns (Response);
+}
+
+message ManagePublicationSubscriptionRequest {
+  int32 user_id = 1;
+  int32 publication_id = 2;
+  int32 planId = 3;
+}
+
+message PublisherSubscriptionRequest {
+  int32 user_id = 1;
+  int32 plan_id = 2;
+}
+
+message PublisherUnsubscriptionRequest {
+  int32 user_id = 1;
+}
+
+message ChangePublisherPlanRequest {
+  int32 user_id = 1;
+  int32 changed_plan_id = 2;
+}
+
+message ChangePublicationSubscriptionRequest {
+  int32 user_id = 1;
+  int32 changed_plan_id = 2;
+  int32 publication_id = 3;
+}
+
+message Response {
+  bool IsSuccess = 1;
+}

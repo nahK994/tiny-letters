@@ -56,8 +56,8 @@ func (h *Handler) Login(c *gin.Context) {
 	})
 }
 
-func (h *Handler) HandleSubscriberRegistration(c *gin.Context) {
-	var userRequest db.CreateBaseUserRequest
+func (h *Handler) HandleUserRegistration(c *gin.Context) {
+	var userRequest db.CreateUserRequest
 	if err := c.ShouldBindJSON(userRequest); err != nil {
 		c.JSON(http.StatusBadRequest, "wrong user info format")
 		return
@@ -68,43 +68,18 @@ func (h *Handler) HandleSubscriberRegistration(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "Internal server error")
 		return
 	}
-	if err := h.repo.CreateSubscriber(
-		&db.CreateBaseUserRequest{
+	user_id, err := h.repo.CreateUser(
+		&db.CreateUserRequest{
 			Name:     userRequest.Name,
 			Email:    userRequest.Email,
 			Password: hashedPassword,
 			Role:     userRequest.Role,
 		},
-	); err != nil {
-		c.JSON(http.StatusInternalServerError, "Internal server error")
-		return
-	}
-}
-
-func (h *Handler) HandlePublisherRegistration(c *gin.Context) {
-	var userRequest db.CreatePublisherRequest
-	if err := c.ShouldBindJSON(userRequest); err != nil {
-		c.JSON(http.StatusBadRequest, "wrong user info format")
-		return
-	}
-
-	hashedPassword, err := hashPassword(userRequest.Password)
+	)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Internal server error")
 		return
 	}
-	if err := h.repo.CreatePublisher(
-		&db.CreatePublisherRequest{
-			PlanId: userRequest.PlanId,
-			CreateBaseUserRequest: db.CreateBaseUserRequest{
-				Name:     userRequest.Name,
-				Email:    userRequest.Email,
-				Password: hashedPassword,
-				Role:     userRequest.Role,
-			},
-		},
-	); err != nil {
-		c.JSON(http.StatusInternalServerError, "Internal server error")
-		return
-	}
+
+	c.JSON(http.StatusOK, user_id)
 }

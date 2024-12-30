@@ -5,16 +5,11 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-type CreateBaseUserRequest struct {
+type CreateUserRequest struct {
 	Email    string
 	Password string
 	Name     string
 	Role     string
-}
-
-type CreatePublisherRequest struct {
-	CreateBaseUserRequest
-	PlanId int
 }
 
 type GenerateTokenRequest struct {
