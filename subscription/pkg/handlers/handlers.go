@@ -23,12 +23,12 @@ func (h *Handler) HandlerSubscribePublisher(c *gin.Context) {
 		return
 	}
 	if err := req.Validate(); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, "Bad request")
 		return
 	}
 
 	if err := h.repo.SubscribePublisherPlan(req); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, "Internal server error")
 		return
 	}
 
