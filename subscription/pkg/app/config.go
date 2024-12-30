@@ -14,7 +14,7 @@ type BaseCommConfig struct {
 }
 
 type GRPCConfig struct {
-	Auth_Subscriber BaseCommConfig
+	Subscriber_Auth BaseCommConfig
 }
 
 type CommConfig struct {
@@ -41,7 +41,7 @@ var appConfig Config = Config{
 				Domain: "localhost",
 			},
 			GRPC: GRPCConfig{
-				Auth_Subscriber: BaseCommConfig{
+				Subscriber_Auth: BaseCommConfig{
 					Port:   "50000",
 					Domain: "localhost",
 				},

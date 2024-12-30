@@ -26,7 +26,7 @@ func (s *grpc_server) CreatePublisher(c context.Context, request *pb.Request) (*
 func Serve(wg *sync.WaitGroup) {
 	defer wg.Done()
 	config := app.GetConfig()
-	addr := fmt.Sprintf("%s:%s", config.App.GRPC.Auth_Subscriber.Domain, config.App.GRPC.Auth_Subscriber.Port)
+	addr := fmt.Sprintf("%s:%s", config.App.GRPC.Subscriber_Auth.Domain, config.App.GRPC.Subscriber_Auth.Port)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
