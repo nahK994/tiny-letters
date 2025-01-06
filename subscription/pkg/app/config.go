@@ -1,5 +1,7 @@
 package app
 
+const domain = "localhost"
+
 type DBConfig struct {
 	User     string
 	Password string
@@ -9,7 +11,7 @@ type DBConfig struct {
 }
 
 type BaseCommConfig struct {
-	Port   string
+	Port   int
 	Domain string
 }
 
@@ -37,13 +39,13 @@ var appConfig Config = Config{
 	App: AppConfig{
 		CommConfig: CommConfig{
 			REST: BaseCommConfig{
-				Port:   "8002",
-				Domain: "localhost",
+				Port:   8002,
+				Domain: domain,
 			},
 			GRPC: GRPCConfig{
 				Subscriber_Auth: BaseCommConfig{
-					Port:   "50000",
-					Domain: "localhost",
+					Port:   50002,
+					Domain: domain,
 				},
 			},
 		},
@@ -55,7 +57,7 @@ var appConfig Config = Config{
 		Password: "password",
 		Name:     "subscription_db",
 		Port:     5002,
-		Host:     "localhost",
+		Host:     domain,
 	},
 }
 

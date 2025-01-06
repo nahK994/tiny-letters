@@ -28,6 +28,6 @@ func Serve(wg *sync.WaitGroup) {
 	r.POST("/unsubscription-publication", h.HandleLeavePublication)
 	r.POST("/unsubscribe-publisher-plan", h.HandleUnsubscribePublisher)
 
-	addr := fmt.Sprintf("%s:%s", config.App.REST.Domain, config.App.REST.Port)
+	addr := fmt.Sprintf("%s:%d", config.App.REST.Domain, config.App.REST.Port)
 	r.Run(addr)
 }
