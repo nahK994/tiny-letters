@@ -19,7 +19,7 @@ var appConfig Config = Config{
 		Domain: localhost,
 	},
 	Auth: Service{
-		Port:   8000,
+		Port:   50000,
 		Domain: localhost,
 	},
 	Service: Service{

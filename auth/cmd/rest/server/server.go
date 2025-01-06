@@ -24,6 +24,6 @@ func Serve(wg *sync.WaitGroup) {
 	r.POST("/login", h.Login)
 	r.POST("/register", h.HandleUserRegistration)
 
-	addr := fmt.Sprintf("%s:%s", config.App.REST.Domain, config.App.REST.Port)
+	addr := fmt.Sprintf("%s:%d", config.App.REST.Domain, config.App.REST.Port)
 	r.Run(addr)
 }

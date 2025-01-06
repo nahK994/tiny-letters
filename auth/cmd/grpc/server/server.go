@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 	"sync"
-	pb "tiny-letter/auth/cmd/grpc/pb/subscriber-auth"
+	pb_auth "tiny-letter/auth/cmd/grpc/pb"
 	"tiny-letter/auth/pkg/app"
 
 	"google.golang.org/grpc"
@@ -15,39 +15,27 @@ import (
 )
 
 type grpc_server struct {
-	pb.UnimplementedSubscriptionAuthServer
+	pb_auth.UnimplementedSubscriptionServiceServer
 }
 
-func (server *grpc_server) JoinPublication(context.Context, *pb.ManagePublicationSubscriptionRequest) (*pb.Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method JoinPublication not implemented")
+func (server *grpc_server) PublisherAction(context.Context, *pb_auth.PublisherActionRequest) (*pb_auth.Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PublisherAction not implemented")
 }
-func (server *grpc_server) LeavePublication(context.Context, *pb.ManagePublicationSubscriptionRequest) (*pb.Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method LeavePublication not implemented")
-}
-func (server *grpc_server) SubscribePublisherPlan(context.Context, *pb.PublisherSubscriptionRequest) (*pb.Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SubscribePublisherPlan not implemented")
-}
-func (server *grpc_server) UnsubscribePublisherPlan(context.Context, *pb.PublisherUnsubscriptionRequest) (*pb.Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UnsubscribePublisherPlan not implemented")
-}
-func (server *grpc_server) ChangePublicationSubscription(context.Context, *pb.ChangePublicationSubscriptionRequest) (*pb.Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ChangePublicationSubscription not implemented")
-}
-func (server *grpc_server) ChangePublisherSubscriptionPlan(context.Context, *pb.ChangePublisherPlanRequest) (*pb.Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ChangePublisherSubscriptionPlan not implemented")
+func (server *grpc_server) SubscriberAction(context.Context, *pb_auth.SubscriberActionRequest) (*pb_auth.Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubscriberAction not implemented")
 }
 
 func Serve(wg *sync.WaitGroup) {
 	defer wg.Done()
 	config := app.GetConfig()
-	addr := fmt.Sprintf("%s:%s", config.App.GRPC.Subscriber_Auth.Domain, config.App.GRPC.Subscriber_Auth.Port)
+	addr := fmt.Sprintf("%s:%d", config.App.GRPC.Subscriber_Auth.Domain, config.App.GRPC.Subscriber_Auth.Port)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
 
 	s := grpc.NewServer()
-	pb.RegisterSubscriptionAuthServer(s, &grpc_server{})
+	pb_auth.RegisterSubscriptionServiceServer(s, &grpc_server{})
 
 	fmt.Println("Starting server...")
 	fmt.Printf("Hosting server on: %s\n", lis.Addr().String())

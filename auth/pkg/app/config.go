@@ -9,7 +9,7 @@ type DBConfig struct {
 }
 
 type BaseCommConfig struct {
-	Port   string
+	Port   int
 	Domain string
 }
 
@@ -37,13 +37,13 @@ var appConfig Config = Config{
 	App: AppConfig{
 		CommConfig: CommConfig{
 			REST: BaseCommConfig{
-				Port:   "8000",
+				Port:   8000,
 				Domain: "localhost",
 			},
 			GRPC: GRPCConfig{
 				Subscriber_Auth: BaseCommConfig{
 					Domain: "localhost",
-					Port:   "50000",
+					Port:   50000,
 				},
 			},
 		},
