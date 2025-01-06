@@ -1,7 +1,7 @@
 syntax = "proto3";
 option go_package = ".;pb_auth";
 
-service SubscriptionService {
+service NotificationListener {
   rpc PublisherAction(PublisherActionRequest) returns (Response);
   rpc SubscriberAction(SubscriberActionRequest) returns (Response);
 }
@@ -21,14 +21,14 @@ enum SubscriberActionType {
 message PublisherActionRequest {
   PublisherActionType action = 1;
   int32 user_id = 2;
-  int32 plan_id = 3; // Defaults to 0 if not set
+  int32 plan_id = 3;
 }
 
 message SubscriberActionRequest {
   SubscriberActionType action = 1;
   int32 user_id = 2;
   int32 publication_id = 3;
-  int32 plan_id = 4; // Defaults to 0 if not set
+  int32 plan_id = 4;
 }
 
 message Response {

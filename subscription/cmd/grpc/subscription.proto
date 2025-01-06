@@ -2,7 +2,7 @@ syntax = "proto3";
 option go_package = ".;pb_subscription";
 
 
-service SubscriptionService {
+service NotificationListener {
   rpc JoinPublication (JoinPublicationRequest) returns (Response);
   rpc LeavePublication (LeavePublicationRequest) returns (Response);
   rpc ChangePublicationPlan (ChangePublicationPlanRequest) returns (Response);
@@ -31,7 +31,7 @@ message ChangePublicationPlanRequest {
 
 message SubscribePublisherRequest {
   int32 user_id = 1;
-  int32 subscription_plan_id = 2;
+  int32 plan_id = 2;
 }
 
 message UnsubscribePublisherRequest {

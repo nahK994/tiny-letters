@@ -15,7 +15,7 @@ import (
 )
 
 type grpc_server struct {
-	pb_auth.UnimplementedSubscriptionServiceServer
+	pb_auth.UnimplementedNotificationListenerServer
 }
 
 func (server *grpc_server) PublisherAction(context.Context, *pb_auth.PublisherActionRequest) (*pb_auth.Response, error) {
@@ -35,7 +35,7 @@ func Serve(wg *sync.WaitGroup) {
 	}
 
 	s := grpc.NewServer()
-	pb_auth.RegisterSubscriptionServiceServer(s, &grpc_server{})
+	pb_auth.RegisterNotificationListenerServer(s, &grpc_server{})
 
 	fmt.Println("Starting server...")
 	fmt.Printf("Hosting server on: %s\n", lis.Addr().String())

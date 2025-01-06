@@ -15,7 +15,7 @@ import (
 )
 
 type grpc_server struct {
-	pb_subscription.UnimplementedSubscriptionServiceServer
+	pb_subscription.UnimplementedNotificationListenerServer
 }
 
 func (server *grpc_server) JoinPublication(context.Context, *pb_subscription.JoinPublicationRequest) (*pb_subscription.Response, error) {
@@ -47,7 +47,7 @@ func Serve(wg *sync.WaitGroup) {
 	}
 
 	s := grpc.NewServer()
-	pb_subscription.RegisterSubscriptionServiceServer(s, &grpc_server{})
+	pb_subscription.RegisterNotificationListenerServer(s, &grpc_server{})
 
 	fmt.Println("Starting server...")
 	fmt.Printf("Hosting server on: %s\n", lis.Addr().String())
