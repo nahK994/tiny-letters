@@ -2,7 +2,7 @@ syntax = "proto3";
 option go_package = "/subscription;pb_subscription";
 
 
-service SubscriptionService {
+service NotifySubscription {
   rpc JoinPublication (JoinPublicationRequest) returns (Response);
   rpc LeavePublication (LeavePublicationRequest) returns (Response);
   rpc ChangePublicationPlan (ChangePublicationPlanRequest) returns (Response);

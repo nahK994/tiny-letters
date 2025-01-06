@@ -1,7 +1,7 @@
 syntax = "proto3";
 option go_package = "/auth;pb_auth";
 
-service SubscriptionService {
+service NotifyAuth {
   rpc PublisherAction(PublisherActionRequest) returns (Response);
   rpc SubscriberAction(SubscriberActionRequest) returns (Response);
 }
