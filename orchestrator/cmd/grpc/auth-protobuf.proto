@@ -1,0 +1,36 @@
+syntax = "proto3";
+option go_package = "/auth;pb_auth";
+
+service SubscriptionService {
+  rpc PublisherAction(PublisherActionRequest) returns (Response);
+  rpc SubscriberAction(SubscriberActionRequest) returns (Response);
+}
+
+enum PublisherActionType {
+  PUBLISHER_SUBSCRIBE = 0;
+  PUBLISHER_UNSUBSCRIBE = 1;
+  PUBLISHER_CHANGE_PLAN = 2;
+}
+
+enum SubscriberActionType {
+  SUBSCRIBER_JOIN = 0;
+  SUBSCRIBER_LEAVE = 1;
+  SUBSCRIBER_CHANGE_PLAN = 2;
+}
+
+message PublisherActionRequest {
+  PublisherActionType action = 1;
+  int32 user_id = 2;
+  int32 plan_id = 3; // Defaults to 0 if not set
+}
+
+message SubscriberActionRequest {
+  SubscriberActionType action = 1;
+  int32 user_id = 2;
+  int32 publication_id = 3;
+  int32 plan_id = 4; // Defaults to 0 if not set
+}
+
+message Response {
+  bool is_success = 1;
+}
