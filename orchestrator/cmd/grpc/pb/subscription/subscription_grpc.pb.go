@@ -19,12 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NotifySubscription_JoinPublication_FullMethodName          = "/NotifySubscription/JoinPublication"
-	NotifySubscription_LeavePublication_FullMethodName         = "/NotifySubscription/LeavePublication"
-	NotifySubscription_ChangePublicationPlan_FullMethodName    = "/NotifySubscription/ChangePublicationPlan"
-	NotifySubscription_SubscribePublisherPlan_FullMethodName   = "/NotifySubscription/SubscribePublisherPlan"
-	NotifySubscription_UnsubscribePublisherPlan_FullMethodName = "/NotifySubscription/UnsubscribePublisherPlan"
-	NotifySubscription_ChangePublisherPlan_FullMethodName      = "/NotifySubscription/ChangePublisherPlan"
+	NotifySubscription_JoinPublication_FullMethodName            = "/NotifySubscription/JoinPublication"
+	NotifySubscription_LeavePublication_FullMethodName           = "/NotifySubscription/LeavePublication"
+	NotifySubscription_ChangePublicationPlan_FullMethodName      = "/NotifySubscription/ChangePublicationPlan"
+	NotifySubscription_SubscribePublisherPlan_FullMethodName     = "/NotifySubscription/SubscribePublisherPlan"
+	NotifySubscription_UnsubscribePublisherPlan_FullMethodName   = "/NotifySubscription/UnsubscribePublisherPlan"
+	NotifySubscription_ChangePublisherPlan_FullMethodName        = "/NotifySubscription/ChangePublisherPlan"
+	NotifySubscription_BookPublisherSubscription_FullMethodName  = "/NotifySubscription/BookPublisherSubscription"
+	NotifySubscription_BookSubscriberSubscription_FullMethodName = "/NotifySubscription/BookSubscriberSubscription"
 )
 
 // NotifySubscriptionClient is the client API for NotifySubscription service.
@@ -37,6 +39,8 @@ type NotifySubscriptionClient interface {
 	SubscribePublisherPlan(ctx context.Context, in *SubscribePublisherRequest, opts ...grpc.CallOption) (*Response, error)
 	UnsubscribePublisherPlan(ctx context.Context, in *UnsubscribePublisherRequest, opts ...grpc.CallOption) (*Response, error)
 	ChangePublisherPlan(ctx context.Context, in *ChangePublisherPlanRequest, opts ...grpc.CallOption) (*Response, error)
+	BookPublisherSubscription(ctx context.Context, in *BookPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
+	BookSubscriberSubscription(ctx context.Context, in *BookSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type notifySubscriptionClient struct {
@@ -107,6 +111,26 @@ func (c *notifySubscriptionClient) ChangePublisherPlan(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *notifySubscriptionClient) BookPublisherSubscription(ctx context.Context, in *BookPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Response)
+	err := c.cc.Invoke(ctx, NotifySubscription_BookPublisherSubscription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifySubscriptionClient) BookSubscriberSubscription(ctx context.Context, in *BookSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Response)
+	err := c.cc.Invoke(ctx, NotifySubscription_BookSubscriberSubscription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NotifySubscriptionServer is the server API for NotifySubscription service.
 // All implementations must embed UnimplementedNotifySubscriptionServer
 // for forward compatibility.
@@ -117,6 +141,8 @@ type NotifySubscriptionServer interface {
 	SubscribePublisherPlan(context.Context, *SubscribePublisherRequest) (*Response, error)
 	UnsubscribePublisherPlan(context.Context, *UnsubscribePublisherRequest) (*Response, error)
 	ChangePublisherPlan(context.Context, *ChangePublisherPlanRequest) (*Response, error)
+	BookPublisherSubscription(context.Context, *BookPublisherSubscriptionRequest) (*Response, error)
+	BookSubscriberSubscription(context.Context, *BookSubscriberSubscriptionRequest) (*Response, error)
 	mustEmbedUnimplementedNotifySubscriptionServer()
 }
 
@@ -144,6 +170,12 @@ func (UnimplementedNotifySubscriptionServer) UnsubscribePublisherPlan(context.Co
 }
 func (UnimplementedNotifySubscriptionServer) ChangePublisherPlan(context.Context, *ChangePublisherPlanRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangePublisherPlan not implemented")
+}
+func (UnimplementedNotifySubscriptionServer) BookPublisherSubscription(context.Context, *BookPublisherSubscriptionRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BookPublisherSubscription not implemented")
+}
+func (UnimplementedNotifySubscriptionServer) BookSubscriberSubscription(context.Context, *BookSubscriberSubscriptionRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BookSubscriberSubscription not implemented")
 }
 func (UnimplementedNotifySubscriptionServer) mustEmbedUnimplementedNotifySubscriptionServer() {}
 func (UnimplementedNotifySubscriptionServer) testEmbeddedByValue()                            {}
@@ -274,6 +306,42 @@ func _NotifySubscription_ChangePublisherPlan_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NotifySubscription_BookPublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BookPublisherSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifySubscriptionServer).BookPublisherSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifySubscription_BookPublisherSubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifySubscriptionServer).BookPublisherSubscription(ctx, req.(*BookPublisherSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifySubscription_BookSubscriberSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BookSubscriberSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifySubscriptionServer).BookSubscriberSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifySubscription_BookSubscriberSubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifySubscriptionServer).BookSubscriberSubscription(ctx, req.(*BookSubscriberSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NotifySubscription_ServiceDesc is the grpc.ServiceDesc for NotifySubscription service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -304,6 +372,14 @@ var NotifySubscription_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangePublisherPlan",
 			Handler:    _NotifySubscription_ChangePublisherPlan_Handler,
+		},
+		{
+			MethodName: "BookPublisherSubscription",
+			Handler:    _NotifySubscription_BookPublisherSubscription_Handler,
+		},
+		{
+			MethodName: "BookSubscriberSubscription",
+			Handler:    _NotifySubscription_BookSubscriberSubscription_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

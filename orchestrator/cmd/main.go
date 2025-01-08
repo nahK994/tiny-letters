@@ -11,5 +11,11 @@ func main() {
 		grpc_client.ShutdownAuthClient()
 		log.Fatal(err.Error())
 	}
+
+	if err := grpc_client.InitSubscriptionClient(); err != nil {
+		grpc_client.ShutdownSubscriptionClient()
+		log.Fatal(err.Error())
+	}
+
 	rest_server.Serve()
 }

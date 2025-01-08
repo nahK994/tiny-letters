@@ -4,7 +4,7 @@ option go_package = "/auth;pb_auth";
 service NotifyAuth {
   rpc PublisherAction(PublisherActionRequest) returns (Response);
   rpc SubscriberAction(SubscriberActionRequest) returns (Response);
-  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+  rpc HealthCheck(HealthCheckRequest) returns (Response);
 }
 
 enum PublisherActionType {
@@ -37,5 +37,3 @@ message Response {
 }
 
 message HealthCheckRequest {}
-
-message HealthCheckResponse {}

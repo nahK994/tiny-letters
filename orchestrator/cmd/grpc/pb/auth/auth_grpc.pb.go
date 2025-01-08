@@ -30,7 +30,7 @@ const (
 type NotifyAuthClient interface {
 	PublisherAction(ctx context.Context, in *PublisherActionRequest, opts ...grpc.CallOption) (*Response, error)
 	SubscriberAction(ctx context.Context, in *SubscriberActionRequest, opts ...grpc.CallOption) (*Response, error)
-	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
+	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type notifyAuthClient struct {
@@ -61,9 +61,9 @@ func (c *notifyAuthClient) SubscriberAction(ctx context.Context, in *SubscriberA
 	return out, nil
 }
 
-func (c *notifyAuthClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error) {
+func (c *notifyAuthClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HealthCheckResponse)
+	out := new(Response)
 	err := c.cc.Invoke(ctx, NotifyAuth_HealthCheck_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (c *notifyAuthClient) HealthCheck(ctx context.Context, in *HealthCheckReque
 type NotifyAuthServer interface {
 	PublisherAction(context.Context, *PublisherActionRequest) (*Response, error)
 	SubscriberAction(context.Context, *SubscriberActionRequest) (*Response, error)
-	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
+	HealthCheck(context.Context, *HealthCheckRequest) (*Response, error)
 	mustEmbedUnimplementedNotifyAuthServer()
 }
 
@@ -94,7 +94,7 @@ func (UnimplementedNotifyAuthServer) PublisherAction(context.Context, *Publisher
 func (UnimplementedNotifyAuthServer) SubscriberAction(context.Context, *SubscriberActionRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubscriberAction not implemented")
 }
-func (UnimplementedNotifyAuthServer) HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error) {
+func (UnimplementedNotifyAuthServer) HealthCheck(context.Context, *HealthCheckRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
 }
 func (UnimplementedNotifyAuthServer) mustEmbedUnimplementedNotifyAuthServer() {}

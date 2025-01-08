@@ -10,12 +10,15 @@ service NotifySubscription {
   rpc SubscribePublisherPlan (SubscribePublisherRequest) returns (Response);
   rpc UnsubscribePublisherPlan (UnsubscribePublisherRequest) returns (Response);
   rpc ChangePublisherPlan (ChangePublisherPlanRequest) returns (Response);
+
+  rpc BookPublisherSubscription(BookPublisherSubscriptionRequest) returns (Response);
+  rpc BookSubscriberSubscription(BookSubscriberSubscriptionRequest) returns (Response);
 }
 
 message JoinPublicationRequest {
   int32 user_id = 1;
   int32 publication_id = 2;
-  int32 subscription_plan_id = 3;
+  int32 plan_id = 3;
 }
 
 message LeavePublicationRequest {
@@ -31,7 +34,7 @@ message ChangePublicationPlanRequest {
 
 message SubscribePublisherRequest {
   int32 user_id = 1;
-  int32 subscription_plan_id = 2;
+  int32 plan_id = 2;
 }
 
 message UnsubscribePublisherRequest {
@@ -45,4 +48,15 @@ message ChangePublisherPlanRequest {
 
 message Response {
   bool is_success = 1;
+}
+
+message  BookPublisherSubscriptionRequest {
+  int32 user_id = 1;
+  int32 plan_id = 2;
+}
+
+message BookSubscriberSubscriptionRequest {
+  int32 user_id = 1;
+  int32 publication_id = 2;
+  int32 plan_id = 3;
 }
