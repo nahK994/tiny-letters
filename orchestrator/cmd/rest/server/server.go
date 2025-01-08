@@ -2,16 +2,13 @@ package rest_server
 
 import (
 	"fmt"
-	"sync"
 	"tiny-letter/orchestrator/pkg/app"
 	"tiny-letter/orchestrator/pkg/handlers"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Serve(wg *sync.WaitGroup) {
-	defer wg.Done()
-
+func Serve() {
 	config := app.GetConfig()
 	h := handlers.NewHandler()
 

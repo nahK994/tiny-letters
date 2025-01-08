@@ -1,13 +1,15 @@
 package main
 
 import (
-	"sync"
+	"log"
+	grpc_client "tiny-letter/orchestrator/cmd/grpc/client"
 	rest_server "tiny-letter/orchestrator/cmd/rest/server"
 )
 
 func main() {
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go rest_server.Serve(&wg)
-	wg.Wait()
+	if err := grpc_client.InitAuthClient(); err != nil {
+		grpc_client.ShutdownAuthClient()
+		log.Fatal(err.Error())
+	}
+	rest_server.Serve()
 }

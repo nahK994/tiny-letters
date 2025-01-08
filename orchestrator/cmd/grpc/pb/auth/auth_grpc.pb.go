@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	NotifyAuth_PublisherAction_FullMethodName  = "/NotifyAuth/PublisherAction"
 	NotifyAuth_SubscriberAction_FullMethodName = "/NotifyAuth/SubscriberAction"
+	NotifyAuth_HealthCheck_FullMethodName      = "/NotifyAuth/HealthCheck"
 )
 
 // NotifyAuthClient is the client API for NotifyAuth service.
@@ -29,6 +30,7 @@ const (
 type NotifyAuthClient interface {
 	PublisherAction(ctx context.Context, in *PublisherActionRequest, opts ...grpc.CallOption) (*Response, error)
 	SubscriberAction(ctx context.Context, in *SubscriberActionRequest, opts ...grpc.CallOption) (*Response, error)
+	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
 }
 
 type notifyAuthClient struct {
@@ -59,12 +61,23 @@ func (c *notifyAuthClient) SubscriberAction(ctx context.Context, in *SubscriberA
 	return out, nil
 }
 
+func (c *notifyAuthClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HealthCheckResponse)
+	err := c.cc.Invoke(ctx, NotifyAuth_HealthCheck_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NotifyAuthServer is the server API for NotifyAuth service.
 // All implementations must embed UnimplementedNotifyAuthServer
 // for forward compatibility.
 type NotifyAuthServer interface {
 	PublisherAction(context.Context, *PublisherActionRequest) (*Response, error)
 	SubscriberAction(context.Context, *SubscriberActionRequest) (*Response, error)
+	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
 	mustEmbedUnimplementedNotifyAuthServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedNotifyAuthServer) PublisherAction(context.Context, *Publisher
 }
 func (UnimplementedNotifyAuthServer) SubscriberAction(context.Context, *SubscriberActionRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubscriberAction not implemented")
+}
+func (UnimplementedNotifyAuthServer) HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
 }
 func (UnimplementedNotifyAuthServer) mustEmbedUnimplementedNotifyAuthServer() {}
 func (UnimplementedNotifyAuthServer) testEmbeddedByValue()                    {}
@@ -138,6 +154,24 @@ func _NotifyAuth_SubscriberAction_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NotifyAuth_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HealthCheckRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyAuthServer).HealthCheck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyAuth_HealthCheck_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyAuthServer).HealthCheck(ctx, req.(*HealthCheckRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NotifyAuth_ServiceDesc is the grpc.ServiceDesc for NotifyAuth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var NotifyAuth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubscriberAction",
 			Handler:    _NotifyAuth_SubscriberAction_Handler,
+		},
+		{
+			MethodName: "HealthCheck",
+			Handler:    _NotifyAuth_HealthCheck_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
