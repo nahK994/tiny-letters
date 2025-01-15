@@ -14,7 +14,7 @@ service NotifySubscription {
   rpc BookPublisherSubscription(BookPublisherSubscriptionRequest) returns (Response);
   rpc BookSubscriberSubscription(BookSubscriberSubscriptionRequest) returns (Response);
 
-  rpc HealthCheckSubscription(HealthCheckRequest) returns (Response);
+  rpc HealthCheck(HealthCheckRequest) returns (Response);
 }
 
 message HealthCheckRequest{}

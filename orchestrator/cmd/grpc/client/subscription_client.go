@@ -136,9 +136,6 @@ func BookSubscriberSubscription(userID, publicationID, planID int) error {
 }
 
 func HealthCheckSubscription() error {
-	if _, err := subscriptionClient.HealthCheckSubscription(context.Background(), &pb_subscription.HealthCheckRequest{}); err != nil {
-		return err
-	}
-
-	return nil
+	_, err := subscriptionClient.HealthCheck(context.Background(), &pb_subscription.HealthCheckRequest{})
+	return err
 }

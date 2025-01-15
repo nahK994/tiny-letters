@@ -67,7 +67,7 @@ func AuthSubscriberAction(actionType pb_auth.SubscriberActionType, userId, planI
 	return nil
 }
 
-func CheckAuthHealth() error {
+func HealthCheckAuth() error {
 	_, err := authClient.HealthCheck(context.Background(), &pb_auth.HealthCheckRequest{})
 	return err
 }

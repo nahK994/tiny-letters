@@ -27,7 +27,7 @@ const (
 	NotifySubscription_ChangePublisherPlan_FullMethodName        = "/NotifySubscription/ChangePublisherPlan"
 	NotifySubscription_BookPublisherSubscription_FullMethodName  = "/NotifySubscription/BookPublisherSubscription"
 	NotifySubscription_BookSubscriberSubscription_FullMethodName = "/NotifySubscription/BookSubscriberSubscription"
-	NotifySubscription_HealthCheckSubscription_FullMethodName    = "/NotifySubscription/HealthCheckSubscription"
+	NotifySubscription_HealthCheck_FullMethodName                = "/NotifySubscription/HealthCheck"
 )
 
 // NotifySubscriptionClient is the client API for NotifySubscription service.
@@ -42,7 +42,7 @@ type NotifySubscriptionClient interface {
 	ChangePublisherPlan(ctx context.Context, in *ChangePublisherPlanRequest, opts ...grpc.CallOption) (*Response, error)
 	BookPublisherSubscription(ctx context.Context, in *BookPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
 	BookSubscriberSubscription(ctx context.Context, in *BookSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
-	HealthCheckSubscription(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*Response, error)
+	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type notifySubscriptionClient struct {
@@ -133,10 +133,10 @@ func (c *notifySubscriptionClient) BookSubscriberSubscription(ctx context.Contex
 	return out, nil
 }
 
-func (c *notifySubscriptionClient) HealthCheckSubscription(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifySubscriptionClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, NotifySubscription_HealthCheckSubscription_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NotifySubscription_HealthCheck_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +155,7 @@ type NotifySubscriptionServer interface {
 	ChangePublisherPlan(context.Context, *ChangePublisherPlanRequest) (*Response, error)
 	BookPublisherSubscription(context.Context, *BookPublisherSubscriptionRequest) (*Response, error)
 	BookSubscriberSubscription(context.Context, *BookSubscriberSubscriptionRequest) (*Response, error)
-	HealthCheckSubscription(context.Context, *HealthCheckRequest) (*Response, error)
+	HealthCheck(context.Context, *HealthCheckRequest) (*Response, error)
 	mustEmbedUnimplementedNotifySubscriptionServer()
 }
 
@@ -190,8 +190,8 @@ func (UnimplementedNotifySubscriptionServer) BookPublisherSubscription(context.C
 func (UnimplementedNotifySubscriptionServer) BookSubscriberSubscription(context.Context, *BookSubscriberSubscriptionRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BookSubscriberSubscription not implemented")
 }
-func (UnimplementedNotifySubscriptionServer) HealthCheckSubscription(context.Context, *HealthCheckRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method HealthCheckSubscription not implemented")
+func (UnimplementedNotifySubscriptionServer) HealthCheck(context.Context, *HealthCheckRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
 }
 func (UnimplementedNotifySubscriptionServer) mustEmbedUnimplementedNotifySubscriptionServer() {}
 func (UnimplementedNotifySubscriptionServer) testEmbeddedByValue()                            {}
@@ -358,20 +358,20 @@ func _NotifySubscription_BookSubscriberSubscription_Handler(srv interface{}, ctx
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifySubscription_HealthCheckSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifySubscription_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HealthCheckRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifySubscriptionServer).HealthCheckSubscription(ctx, in)
+		return srv.(NotifySubscriptionServer).HealthCheck(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifySubscription_HealthCheckSubscription_FullMethodName,
+		FullMethod: NotifySubscription_HealthCheck_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifySubscriptionServer).HealthCheckSubscription(ctx, req.(*HealthCheckRequest))
+		return srv.(NotifySubscriptionServer).HealthCheck(ctx, req.(*HealthCheckRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -416,8 +416,8 @@ var NotifySubscription_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _NotifySubscription_BookSubscriberSubscription_Handler,
 		},
 		{
-			MethodName: "HealthCheckSubscription",
-			Handler:    _NotifySubscription_HealthCheckSubscription_Handler,
+			MethodName: "HealthCheck",
+			Handler:    _NotifySubscription_HealthCheck_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
