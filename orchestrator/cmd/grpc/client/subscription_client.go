@@ -134,3 +134,11 @@ func BookSubscriberSubscription(userID, publicationID, planID int) error {
 	}
 	return nil
 }
+
+func HealthCheckSubscription() error {
+	if _, err := subscriptionClient.HealthCheckSubscription(context.Background(), &pb_subscription.HealthCheckRequest{}); err != nil {
+		return err
+	}
+
+	return nil
+}

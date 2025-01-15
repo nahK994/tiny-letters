@@ -13,7 +13,11 @@ service NotifySubscription {
 
   rpc BookPublisherSubscription(BookPublisherSubscriptionRequest) returns (Response);
   rpc BookSubscriberSubscription(BookSubscriberSubscriptionRequest) returns (Response);
+
+  rpc HealthCheckSubscription(HealthCheckRequest) returns (Response);
 }
+
+message HealthCheckRequest{}
 
 message JoinPublicationRequest {
   int32 user_id = 1;
