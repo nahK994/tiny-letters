@@ -1,16 +1,13 @@
 package rest_server
 
 import (
-	"fmt"
-	"tiny-letter/orchestrator/pkg/app"
-	"tiny-letter/orchestrator/pkg/handlers"
+	handler "tiny-letter/orchestrator/pkg/handlers"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Serve() {
-	config := app.GetConfig()
-	h := handlers.NewHandler()
+func Serve(addr string) {
+	h := handler.NewHandler()
 
 	r := gin.Default()
 	r.Group("/publisher")
@@ -27,6 +24,5 @@ func Serve() {
 		r.POST("/change-plan", h.HandleChangeSubscriberPlan)
 	}
 
-	addr := fmt.Sprintf("%s:%d", config.Domain, config.Port)
 	r.Run(addr)
 }

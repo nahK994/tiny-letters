@@ -19,30 +19,47 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NotifySubscription_JoinPublication_FullMethodName            = "/NotifySubscription/JoinPublication"
-	NotifySubscription_LeavePublication_FullMethodName           = "/NotifySubscription/LeavePublication"
-	NotifySubscription_ChangePublicationPlan_FullMethodName      = "/NotifySubscription/ChangePublicationPlan"
-	NotifySubscription_SubscribePublisherPlan_FullMethodName     = "/NotifySubscription/SubscribePublisherPlan"
-	NotifySubscription_UnsubscribePublisherPlan_FullMethodName   = "/NotifySubscription/UnsubscribePublisherPlan"
-	NotifySubscription_ChangePublisherPlan_FullMethodName        = "/NotifySubscription/ChangePublisherPlan"
-	NotifySubscription_BookPublisherSubscription_FullMethodName  = "/NotifySubscription/BookPublisherSubscription"
-	NotifySubscription_BookSubscriberSubscription_FullMethodName = "/NotifySubscription/BookSubscriberSubscription"
-	NotifySubscription_HealthCheck_FullMethodName                = "/NotifySubscription/HealthCheck"
+	NotifySubscription_CheckAvailability_FullMethodName                    = "/NotifySubscription/CheckAvailability"
+	NotifySubscription_JoinPublication_FullMethodName                      = "/NotifySubscription/JoinPublication"
+	NotifySubscription_RollbackJoinPublication_FullMethodName              = "/NotifySubscription/RollbackJoinPublication"
+	NotifySubscription_LeavePublication_FullMethodName                     = "/NotifySubscription/LeavePublication"
+	NotifySubscription_RollbackLeavePublication_FullMethodName             = "/NotifySubscription/RollbackLeavePublication"
+	NotifySubscription_ChangePublicationPlan_FullMethodName                = "/NotifySubscription/ChangePublicationPlan"
+	NotifySubscription_RollbackChangePublicationPlan_FullMethodName        = "/NotifySubscription/RollbackChangePublicationPlan"
+	NotifySubscription_ConfirmPublisherSubscription_FullMethodName         = "/NotifySubscription/ConfirmPublisherSubscription"
+	NotifySubscription_RollbackConfirmPublisherSubscription_FullMethodName = "/NotifySubscription/RollbackConfirmPublisherSubscription"
+	NotifySubscription_RevokePublisherSubscription_FullMethodName          = "/NotifySubscription/RevokePublisherSubscription"
+	NotifySubscription_RollbackRevokePublisherSubscription_FullMethodName  = "/NotifySubscription/RollbackRevokePublisherSubscription"
+	NotifySubscription_ChangePublisherSubscription_FullMethodName          = "/NotifySubscription/ChangePublisherSubscription"
+	NotifySubscription_RollbackChangePublisherSubscription_FullMethodName  = "/NotifySubscription/RollbackChangePublisherSubscription"
 )
 
 // NotifySubscriptionClient is the client API for NotifySubscription service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// NotifySubscription service definition
 type NotifySubscriptionClient interface {
-	JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*Response, error)
-	LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*Response, error)
-	ChangePublicationPlan(ctx context.Context, in *ChangePublicationPlanRequest, opts ...grpc.CallOption) (*Response, error)
-	SubscribePublisherPlan(ctx context.Context, in *SubscribePublisherRequest, opts ...grpc.CallOption) (*Response, error)
-	UnsubscribePublisherPlan(ctx context.Context, in *UnsubscribePublisherRequest, opts ...grpc.CallOption) (*Response, error)
-	ChangePublisherPlan(ctx context.Context, in *ChangePublisherPlanRequest, opts ...grpc.CallOption) (*Response, error)
-	BookPublisherSubscription(ctx context.Context, in *BookPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
-	BookSubscriberSubscription(ctx context.Context, in *BookSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
-	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*Response, error)
+	// Check availability of a subscription
+	CheckAvailability(ctx context.Context, in *CheckAvailabilityRequest, opts ...grpc.CallOption) (*Response, error)
+	// Join a publication
+	JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error)
+	RollbackJoinPublication(ctx context.Context, in *RollbackJoinPublicationRequest, opts ...grpc.CallOption) (*Response, error)
+	// Leave a publication
+	LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*LeavePublicationResponse, error)
+	RollbackLeavePublication(ctx context.Context, in *RollbackLeavePublicationRequest, opts ...grpc.CallOption) (*Response, error)
+	// Change the plan of a publication
+	ChangePublicationPlan(ctx context.Context, in *ChangePublicationPlanRequest, opts ...grpc.CallOption) (*ChangePublicationPlanResponse, error)
+	RollbackChangePublicationPlan(ctx context.Context, in *RollbackChangePublicationPlanRequest, opts ...grpc.CallOption) (*Response, error)
+	// Confirm publisher subscription
+	ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*ConfirmPublisherSubscriptionResponse, error)
+	RollbackConfirmPublisherSubscription(ctx context.Context, in *RollbackConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
+	// Revoke publisher subscription
+	RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*RevokePublisherSubscriptionResponse, error)
+	RollbackRevokePublisherSubscription(ctx context.Context, in *RollbackRevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
+	// Change publisher subscription
+	ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*ChangePublisherSubscriptionResponse, error)
+	RollbackChangePublisherSubscription(ctx context.Context, in *RollbackChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type notifySubscriptionClient struct {
@@ -53,9 +70,19 @@ func NewNotifySubscriptionClient(cc grpc.ClientConnInterface) NotifySubscription
 	return &notifySubscriptionClient{cc}
 }
 
-func (c *notifySubscriptionClient) JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifySubscriptionClient) CheckAvailability(ctx context.Context, in *CheckAvailabilityRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
+	err := c.cc.Invoke(ctx, NotifySubscription_CheckAvailability_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifySubscriptionClient) JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(JoinPublicationResponse)
 	err := c.cc.Invoke(ctx, NotifySubscription_JoinPublication_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -63,9 +90,19 @@ func (c *notifySubscriptionClient) JoinPublication(ctx context.Context, in *Join
 	return out, nil
 }
 
-func (c *notifySubscriptionClient) LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifySubscriptionClient) RollbackJoinPublication(ctx context.Context, in *RollbackJoinPublicationRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
+	err := c.cc.Invoke(ctx, NotifySubscription_RollbackJoinPublication_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifySubscriptionClient) LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*LeavePublicationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LeavePublicationResponse)
 	err := c.cc.Invoke(ctx, NotifySubscription_LeavePublication_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -73,9 +110,19 @@ func (c *notifySubscriptionClient) LeavePublication(ctx context.Context, in *Lea
 	return out, nil
 }
 
-func (c *notifySubscriptionClient) ChangePublicationPlan(ctx context.Context, in *ChangePublicationPlanRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifySubscriptionClient) RollbackLeavePublication(ctx context.Context, in *RollbackLeavePublicationRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
+	err := c.cc.Invoke(ctx, NotifySubscription_RollbackLeavePublication_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifySubscriptionClient) ChangePublicationPlan(ctx context.Context, in *ChangePublicationPlanRequest, opts ...grpc.CallOption) (*ChangePublicationPlanResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ChangePublicationPlanResponse)
 	err := c.cc.Invoke(ctx, NotifySubscription_ChangePublicationPlan_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -83,60 +130,70 @@ func (c *notifySubscriptionClient) ChangePublicationPlan(ctx context.Context, in
 	return out, nil
 }
 
-func (c *notifySubscriptionClient) SubscribePublisherPlan(ctx context.Context, in *SubscribePublisherRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifySubscriptionClient) RollbackChangePublicationPlan(ctx context.Context, in *RollbackChangePublicationPlanRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, NotifySubscription_SubscribePublisherPlan_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NotifySubscription_RollbackChangePublicationPlan_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notifySubscriptionClient) UnsubscribePublisherPlan(ctx context.Context, in *UnsubscribePublisherRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifySubscriptionClient) ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*ConfirmPublisherSubscriptionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
-	err := c.cc.Invoke(ctx, NotifySubscription_UnsubscribePublisherPlan_FullMethodName, in, out, cOpts...)
+	out := new(ConfirmPublisherSubscriptionResponse)
+	err := c.cc.Invoke(ctx, NotifySubscription_ConfirmPublisherSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notifySubscriptionClient) ChangePublisherPlan(ctx context.Context, in *ChangePublisherPlanRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifySubscriptionClient) RollbackConfirmPublisherSubscription(ctx context.Context, in *RollbackConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, NotifySubscription_ChangePublisherPlan_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NotifySubscription_RollbackConfirmPublisherSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notifySubscriptionClient) BookPublisherSubscription(ctx context.Context, in *BookPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifySubscriptionClient) RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*RevokePublisherSubscriptionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
-	err := c.cc.Invoke(ctx, NotifySubscription_BookPublisherSubscription_FullMethodName, in, out, cOpts...)
+	out := new(RevokePublisherSubscriptionResponse)
+	err := c.cc.Invoke(ctx, NotifySubscription_RevokePublisherSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notifySubscriptionClient) BookSubscriberSubscription(ctx context.Context, in *BookSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifySubscriptionClient) RollbackRevokePublisherSubscription(ctx context.Context, in *RollbackRevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, NotifySubscription_BookSubscriberSubscription_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NotifySubscription_RollbackRevokePublisherSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notifySubscriptionClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifySubscriptionClient) ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*ChangePublisherSubscriptionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ChangePublisherSubscriptionResponse)
+	err := c.cc.Invoke(ctx, NotifySubscription_ChangePublisherSubscription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifySubscriptionClient) RollbackChangePublisherSubscription(ctx context.Context, in *RollbackChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, NotifySubscription_HealthCheck_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NotifySubscription_RollbackChangePublisherSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -146,16 +203,29 @@ func (c *notifySubscriptionClient) HealthCheck(ctx context.Context, in *HealthCh
 // NotifySubscriptionServer is the server API for NotifySubscription service.
 // All implementations must embed UnimplementedNotifySubscriptionServer
 // for forward compatibility.
+//
+// NotifySubscription service definition
 type NotifySubscriptionServer interface {
-	JoinPublication(context.Context, *JoinPublicationRequest) (*Response, error)
-	LeavePublication(context.Context, *LeavePublicationRequest) (*Response, error)
-	ChangePublicationPlan(context.Context, *ChangePublicationPlanRequest) (*Response, error)
-	SubscribePublisherPlan(context.Context, *SubscribePublisherRequest) (*Response, error)
-	UnsubscribePublisherPlan(context.Context, *UnsubscribePublisherRequest) (*Response, error)
-	ChangePublisherPlan(context.Context, *ChangePublisherPlanRequest) (*Response, error)
-	BookPublisherSubscription(context.Context, *BookPublisherSubscriptionRequest) (*Response, error)
-	BookSubscriberSubscription(context.Context, *BookSubscriberSubscriptionRequest) (*Response, error)
-	HealthCheck(context.Context, *HealthCheckRequest) (*Response, error)
+	// Check availability of a subscription
+	CheckAvailability(context.Context, *CheckAvailabilityRequest) (*Response, error)
+	// Join a publication
+	JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error)
+	RollbackJoinPublication(context.Context, *RollbackJoinPublicationRequest) (*Response, error)
+	// Leave a publication
+	LeavePublication(context.Context, *LeavePublicationRequest) (*LeavePublicationResponse, error)
+	RollbackLeavePublication(context.Context, *RollbackLeavePublicationRequest) (*Response, error)
+	// Change the plan of a publication
+	ChangePublicationPlan(context.Context, *ChangePublicationPlanRequest) (*ChangePublicationPlanResponse, error)
+	RollbackChangePublicationPlan(context.Context, *RollbackChangePublicationPlanRequest) (*Response, error)
+	// Confirm publisher subscription
+	ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error)
+	RollbackConfirmPublisherSubscription(context.Context, *RollbackConfirmPublisherSubscriptionRequest) (*Response, error)
+	// Revoke publisher subscription
+	RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*RevokePublisherSubscriptionResponse, error)
+	RollbackRevokePublisherSubscription(context.Context, *RollbackRevokePublisherSubscriptionRequest) (*Response, error)
+	// Change publisher subscription
+	ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*ChangePublisherSubscriptionResponse, error)
+	RollbackChangePublisherSubscription(context.Context, *RollbackChangePublisherSubscriptionRequest) (*Response, error)
 	mustEmbedUnimplementedNotifySubscriptionServer()
 }
 
@@ -166,32 +236,44 @@ type NotifySubscriptionServer interface {
 // pointer dereference when methods are called.
 type UnimplementedNotifySubscriptionServer struct{}
 
-func (UnimplementedNotifySubscriptionServer) JoinPublication(context.Context, *JoinPublicationRequest) (*Response, error) {
+func (UnimplementedNotifySubscriptionServer) CheckAvailability(context.Context, *CheckAvailabilityRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckAvailability not implemented")
+}
+func (UnimplementedNotifySubscriptionServer) JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JoinPublication not implemented")
 }
-func (UnimplementedNotifySubscriptionServer) LeavePublication(context.Context, *LeavePublicationRequest) (*Response, error) {
+func (UnimplementedNotifySubscriptionServer) RollbackJoinPublication(context.Context, *RollbackJoinPublicationRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackJoinPublication not implemented")
+}
+func (UnimplementedNotifySubscriptionServer) LeavePublication(context.Context, *LeavePublicationRequest) (*LeavePublicationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LeavePublication not implemented")
 }
-func (UnimplementedNotifySubscriptionServer) ChangePublicationPlan(context.Context, *ChangePublicationPlanRequest) (*Response, error) {
+func (UnimplementedNotifySubscriptionServer) RollbackLeavePublication(context.Context, *RollbackLeavePublicationRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackLeavePublication not implemented")
+}
+func (UnimplementedNotifySubscriptionServer) ChangePublicationPlan(context.Context, *ChangePublicationPlanRequest) (*ChangePublicationPlanResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangePublicationPlan not implemented")
 }
-func (UnimplementedNotifySubscriptionServer) SubscribePublisherPlan(context.Context, *SubscribePublisherRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SubscribePublisherPlan not implemented")
+func (UnimplementedNotifySubscriptionServer) RollbackChangePublicationPlan(context.Context, *RollbackChangePublicationPlanRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackChangePublicationPlan not implemented")
 }
-func (UnimplementedNotifySubscriptionServer) UnsubscribePublisherPlan(context.Context, *UnsubscribePublisherRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UnsubscribePublisherPlan not implemented")
+func (UnimplementedNotifySubscriptionServer) ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmPublisherSubscription not implemented")
 }
-func (UnimplementedNotifySubscriptionServer) ChangePublisherPlan(context.Context, *ChangePublisherPlanRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ChangePublisherPlan not implemented")
+func (UnimplementedNotifySubscriptionServer) RollbackConfirmPublisherSubscription(context.Context, *RollbackConfirmPublisherSubscriptionRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackConfirmPublisherSubscription not implemented")
 }
-func (UnimplementedNotifySubscriptionServer) BookPublisherSubscription(context.Context, *BookPublisherSubscriptionRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method BookPublisherSubscription not implemented")
+func (UnimplementedNotifySubscriptionServer) RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*RevokePublisherSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokePublisherSubscription not implemented")
 }
-func (UnimplementedNotifySubscriptionServer) BookSubscriberSubscription(context.Context, *BookSubscriberSubscriptionRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method BookSubscriberSubscription not implemented")
+func (UnimplementedNotifySubscriptionServer) RollbackRevokePublisherSubscription(context.Context, *RollbackRevokePublisherSubscriptionRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackRevokePublisherSubscription not implemented")
 }
-func (UnimplementedNotifySubscriptionServer) HealthCheck(context.Context, *HealthCheckRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
+func (UnimplementedNotifySubscriptionServer) ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*ChangePublisherSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangePublisherSubscription not implemented")
+}
+func (UnimplementedNotifySubscriptionServer) RollbackChangePublisherSubscription(context.Context, *RollbackChangePublisherSubscriptionRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackChangePublisherSubscription not implemented")
 }
 func (UnimplementedNotifySubscriptionServer) mustEmbedUnimplementedNotifySubscriptionServer() {}
 func (UnimplementedNotifySubscriptionServer) testEmbeddedByValue()                            {}
@@ -214,6 +296,24 @@ func RegisterNotifySubscriptionServer(s grpc.ServiceRegistrar, srv NotifySubscri
 	s.RegisterService(&NotifySubscription_ServiceDesc, srv)
 }
 
+func _NotifySubscription_CheckAvailability_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckAvailabilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifySubscriptionServer).CheckAvailability(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifySubscription_CheckAvailability_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifySubscriptionServer).CheckAvailability(ctx, req.(*CheckAvailabilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NotifySubscription_JoinPublication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(JoinPublicationRequest)
 	if err := dec(in); err != nil {
@@ -228,6 +328,24 @@ func _NotifySubscription_JoinPublication_Handler(srv interface{}, ctx context.Co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NotifySubscriptionServer).JoinPublication(ctx, req.(*JoinPublicationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifySubscription_RollbackJoinPublication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackJoinPublicationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifySubscriptionServer).RollbackJoinPublication(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifySubscription_RollbackJoinPublication_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifySubscriptionServer).RollbackJoinPublication(ctx, req.(*RollbackJoinPublicationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -250,6 +368,24 @@ func _NotifySubscription_LeavePublication_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NotifySubscription_RollbackLeavePublication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackLeavePublicationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifySubscriptionServer).RollbackLeavePublication(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifySubscription_RollbackLeavePublication_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifySubscriptionServer).RollbackLeavePublication(ctx, req.(*RollbackLeavePublicationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NotifySubscription_ChangePublicationPlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ChangePublicationPlanRequest)
 	if err := dec(in); err != nil {
@@ -268,110 +404,128 @@ func _NotifySubscription_ChangePublicationPlan_Handler(srv interface{}, ctx cont
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifySubscription_SubscribePublisherPlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SubscribePublisherRequest)
+func _NotifySubscription_RollbackChangePublicationPlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackChangePublicationPlanRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifySubscriptionServer).SubscribePublisherPlan(ctx, in)
+		return srv.(NotifySubscriptionServer).RollbackChangePublicationPlan(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifySubscription_SubscribePublisherPlan_FullMethodName,
+		FullMethod: NotifySubscription_RollbackChangePublicationPlan_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifySubscriptionServer).SubscribePublisherPlan(ctx, req.(*SubscribePublisherRequest))
+		return srv.(NotifySubscriptionServer).RollbackChangePublicationPlan(ctx, req.(*RollbackChangePublicationPlanRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifySubscription_UnsubscribePublisherPlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UnsubscribePublisherRequest)
+func _NotifySubscription_ConfirmPublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfirmPublisherSubscriptionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifySubscriptionServer).UnsubscribePublisherPlan(ctx, in)
+		return srv.(NotifySubscriptionServer).ConfirmPublisherSubscription(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifySubscription_UnsubscribePublisherPlan_FullMethodName,
+		FullMethod: NotifySubscription_ConfirmPublisherSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifySubscriptionServer).UnsubscribePublisherPlan(ctx, req.(*UnsubscribePublisherRequest))
+		return srv.(NotifySubscriptionServer).ConfirmPublisherSubscription(ctx, req.(*ConfirmPublisherSubscriptionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifySubscription_ChangePublisherPlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChangePublisherPlanRequest)
+func _NotifySubscription_RollbackConfirmPublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackConfirmPublisherSubscriptionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifySubscriptionServer).ChangePublisherPlan(ctx, in)
+		return srv.(NotifySubscriptionServer).RollbackConfirmPublisherSubscription(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifySubscription_ChangePublisherPlan_FullMethodName,
+		FullMethod: NotifySubscription_RollbackConfirmPublisherSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifySubscriptionServer).ChangePublisherPlan(ctx, req.(*ChangePublisherPlanRequest))
+		return srv.(NotifySubscriptionServer).RollbackConfirmPublisherSubscription(ctx, req.(*RollbackConfirmPublisherSubscriptionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifySubscription_BookPublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BookPublisherSubscriptionRequest)
+func _NotifySubscription_RevokePublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokePublisherSubscriptionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifySubscriptionServer).BookPublisherSubscription(ctx, in)
+		return srv.(NotifySubscriptionServer).RevokePublisherSubscription(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifySubscription_BookPublisherSubscription_FullMethodName,
+		FullMethod: NotifySubscription_RevokePublisherSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifySubscriptionServer).BookPublisherSubscription(ctx, req.(*BookPublisherSubscriptionRequest))
+		return srv.(NotifySubscriptionServer).RevokePublisherSubscription(ctx, req.(*RevokePublisherSubscriptionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifySubscription_BookSubscriberSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BookSubscriberSubscriptionRequest)
+func _NotifySubscription_RollbackRevokePublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackRevokePublisherSubscriptionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifySubscriptionServer).BookSubscriberSubscription(ctx, in)
+		return srv.(NotifySubscriptionServer).RollbackRevokePublisherSubscription(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifySubscription_BookSubscriberSubscription_FullMethodName,
+		FullMethod: NotifySubscription_RollbackRevokePublisherSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifySubscriptionServer).BookSubscriberSubscription(ctx, req.(*BookSubscriberSubscriptionRequest))
+		return srv.(NotifySubscriptionServer).RollbackRevokePublisherSubscription(ctx, req.(*RollbackRevokePublisherSubscriptionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifySubscription_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HealthCheckRequest)
+func _NotifySubscription_ChangePublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangePublisherSubscriptionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifySubscriptionServer).HealthCheck(ctx, in)
+		return srv.(NotifySubscriptionServer).ChangePublisherSubscription(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifySubscription_HealthCheck_FullMethodName,
+		FullMethod: NotifySubscription_ChangePublisherSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifySubscriptionServer).HealthCheck(ctx, req.(*HealthCheckRequest))
+		return srv.(NotifySubscriptionServer).ChangePublisherSubscription(ctx, req.(*ChangePublisherSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifySubscription_RollbackChangePublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackChangePublisherSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifySubscriptionServer).RollbackChangePublisherSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifySubscription_RollbackChangePublisherSubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifySubscriptionServer).RollbackChangePublisherSubscription(ctx, req.(*RollbackChangePublisherSubscriptionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -384,40 +538,56 @@ var NotifySubscription_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*NotifySubscriptionServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "CheckAvailability",
+			Handler:    _NotifySubscription_CheckAvailability_Handler,
+		},
+		{
 			MethodName: "JoinPublication",
 			Handler:    _NotifySubscription_JoinPublication_Handler,
+		},
+		{
+			MethodName: "RollbackJoinPublication",
+			Handler:    _NotifySubscription_RollbackJoinPublication_Handler,
 		},
 		{
 			MethodName: "LeavePublication",
 			Handler:    _NotifySubscription_LeavePublication_Handler,
 		},
 		{
+			MethodName: "RollbackLeavePublication",
+			Handler:    _NotifySubscription_RollbackLeavePublication_Handler,
+		},
+		{
 			MethodName: "ChangePublicationPlan",
 			Handler:    _NotifySubscription_ChangePublicationPlan_Handler,
 		},
 		{
-			MethodName: "SubscribePublisherPlan",
-			Handler:    _NotifySubscription_SubscribePublisherPlan_Handler,
+			MethodName: "RollbackChangePublicationPlan",
+			Handler:    _NotifySubscription_RollbackChangePublicationPlan_Handler,
 		},
 		{
-			MethodName: "UnsubscribePublisherPlan",
-			Handler:    _NotifySubscription_UnsubscribePublisherPlan_Handler,
+			MethodName: "ConfirmPublisherSubscription",
+			Handler:    _NotifySubscription_ConfirmPublisherSubscription_Handler,
 		},
 		{
-			MethodName: "ChangePublisherPlan",
-			Handler:    _NotifySubscription_ChangePublisherPlan_Handler,
+			MethodName: "RollbackConfirmPublisherSubscription",
+			Handler:    _NotifySubscription_RollbackConfirmPublisherSubscription_Handler,
 		},
 		{
-			MethodName: "BookPublisherSubscription",
-			Handler:    _NotifySubscription_BookPublisherSubscription_Handler,
+			MethodName: "RevokePublisherSubscription",
+			Handler:    _NotifySubscription_RevokePublisherSubscription_Handler,
 		},
 		{
-			MethodName: "BookSubscriberSubscription",
-			Handler:    _NotifySubscription_BookSubscriberSubscription_Handler,
+			MethodName: "RollbackRevokePublisherSubscription",
+			Handler:    _NotifySubscription_RollbackRevokePublisherSubscription_Handler,
 		},
 		{
-			MethodName: "HealthCheck",
-			Handler:    _NotifySubscription_HealthCheck_Handler,
+			MethodName: "ChangePublisherSubscription",
+			Handler:    _NotifySubscription_ChangePublisherSubscription_Handler,
+		},
+		{
+			MethodName: "RollbackChangePublisherSubscription",
+			Handler:    _NotifySubscription_RollbackChangePublisherSubscription_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
