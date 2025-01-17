@@ -47,17 +47,8 @@ func ConfirmPublisherSubscription(userID, planID, subscriptionId int) error {
 	return nil
 }
 
-func RollbackConfirmPublisherSubscription(SubscriptionId int) error {
-	_, err := authClient.RollbackConfirmPublisherSubscription(context.Background(), &pb_auth.RollbackConfirmPublisherSubscriptionRequest{
-		SubscriptionId: int32(SubscriptionId),
-	})
-
-	return err
-}
-
 func RevokePublisherSubscription(userId, subscriptionId int) error {
 	_, err := authClient.RevokePublisherSubscription(context.Background(), &pb_auth.RevokePublisherSubscriptionRequest{
-		UserId:         int32(userId),
 		SubscriptionId: int32(subscriptionId),
 	})
 	if err != nil {
@@ -67,17 +58,8 @@ func RevokePublisherSubscription(userId, subscriptionId int) error {
 	return nil
 }
 
-func RollbackRevokePublisherSubscription(subscriptionId int) error {
-	_, err := authClient.RollbackRevokePublisherSubscription(context.Background(), &pb_auth.RollbackRevokePublisherSubscriptionRequest{
-		SubscriptionId: int32(subscriptionId),
-	})
-
-	return err
-}
-
 func ChangePublisherSubscription(userId, planID, subscriptionId int) error {
 	_, err := authClient.ChangePublisherSubscription(context.Background(), &pb_auth.ChangePublisherSubscriptionRequest{
-		UserId:         int32(userId),
 		PlanId:         int32(planID),
 		SubscriptionId: int32(subscriptionId),
 	})
@@ -86,15 +68,6 @@ func ChangePublisherSubscription(userId, planID, subscriptionId int) error {
 	}
 
 	return nil
-}
-
-func RollbackChangePublisherSubscription(subscriptionId, oldPlanId int) error {
-	_, err := authClient.RollbackChangePublisherSubscription(context.Background(), &pb_auth.RollbackChangePublisherSubscriptionRequest{
-		SubscriptionId: int32(subscriptionId),
-		OldPlanId:      int32(oldPlanId),
-	})
-
-	return err
 }
 
 func JoinPublication(userID, publicationID, subscriptionId int, isPremium bool) error {
@@ -111,14 +84,6 @@ func JoinPublication(userID, publicationID, subscriptionId int, isPremium bool) 
 	return nil
 }
 
-func RollbackJoinPublication(subscriptionID int) error {
-	_, err := authClient.RollbackJoinPublication(context.Background(), &pb_auth.RollbackJoinPublicationRequest{
-		SubscriptionId: int32(subscriptionID),
-	})
-
-	return err
-}
-
 func LeavePublication(userID, publicationID, subscriptionId int) error {
 	_, err := authClient.LeavePublication(context.Background(), &pb_auth.LeavePublicationRequest{
 		UserId:         int32(userID),
@@ -132,18 +97,8 @@ func LeavePublication(userID, publicationID, subscriptionId int) error {
 	return nil
 }
 
-func RollbackLeavePublication(subscriptionID int) error {
-	_, err := authClient.RollbackLeavePublication(context.Background(), &pb_auth.RollbackLeavePublicationRequest{
-		SubscriptionId: int32(subscriptionID),
-	})
-
-	return err
-}
-
 func ChangePublicationPlan(userID, publicationID, subscriptionId int) error {
 	_, err := authClient.ChangePublicationPlan(context.Background(), &pb_auth.ChangePublicationPlanRequest{
-		UserId:         int32(userID),
-		PublicationId:  int32(publicationID),
 		SubscriptionId: int32(subscriptionId),
 	})
 	if err != nil {
@@ -151,12 +106,4 @@ func ChangePublicationPlan(userID, publicationID, subscriptionId int) error {
 	}
 
 	return nil
-}
-
-func RollbackChangePublicationPlan(subscriptionID int) error {
-	_, err := authClient.RollbackChangePublicationPlan(context.Background(), &pb_auth.RollbackChangePublicationPlanRequest{
-		SubscriptionId: int32(subscriptionID),
-	})
-
-	return err
 }

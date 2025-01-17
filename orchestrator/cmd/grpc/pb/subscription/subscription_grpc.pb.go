@@ -36,25 +36,17 @@ const (
 // NotifySubscriptionClient is the client API for NotifySubscription service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-//
-// NotifySubscription service definition
 type NotifySubscriptionClient interface {
-	// Join a publication
 	JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error)
 	RollbackJoinPublication(ctx context.Context, in *RollbackJoinPublicationRequest, opts ...grpc.CallOption) (*Response, error)
-	// Leave a publication
 	LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*LeavePublicationResponse, error)
 	RollbackLeavePublication(ctx context.Context, in *RollbackLeavePublicationRequest, opts ...grpc.CallOption) (*Response, error)
-	// Change the plan of a publication
 	ChangePublicationPlan(ctx context.Context, in *ChangePublicationPlanRequest, opts ...grpc.CallOption) (*ChangePublicationPlanResponse, error)
 	RollbackChangePublicationPlan(ctx context.Context, in *RollbackChangePublicationPlanRequest, opts ...grpc.CallOption) (*Response, error)
-	// Confirm publisher subscription
 	ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*ConfirmPublisherSubscriptionResponse, error)
 	RollbackConfirmPublisherSubscription(ctx context.Context, in *RollbackConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
-	// Revoke publisher subscription
 	RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*RevokePublisherSubscriptionResponse, error)
 	RollbackRevokePublisherSubscription(ctx context.Context, in *RollbackRevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
-	// Change publisher subscription
 	ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*ChangePublisherSubscriptionResponse, error)
 	RollbackChangePublisherSubscription(ctx context.Context, in *RollbackChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
 }
@@ -190,25 +182,17 @@ func (c *notifySubscriptionClient) RollbackChangePublisherSubscription(ctx conte
 // NotifySubscriptionServer is the server API for NotifySubscription service.
 // All implementations must embed UnimplementedNotifySubscriptionServer
 // for forward compatibility.
-//
-// NotifySubscription service definition
 type NotifySubscriptionServer interface {
-	// Join a publication
 	JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error)
 	RollbackJoinPublication(context.Context, *RollbackJoinPublicationRequest) (*Response, error)
-	// Leave a publication
 	LeavePublication(context.Context, *LeavePublicationRequest) (*LeavePublicationResponse, error)
 	RollbackLeavePublication(context.Context, *RollbackLeavePublicationRequest) (*Response, error)
-	// Change the plan of a publication
 	ChangePublicationPlan(context.Context, *ChangePublicationPlanRequest) (*ChangePublicationPlanResponse, error)
 	RollbackChangePublicationPlan(context.Context, *RollbackChangePublicationPlanRequest) (*Response, error)
-	// Confirm publisher subscription
 	ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error)
 	RollbackConfirmPublisherSubscription(context.Context, *RollbackConfirmPublisherSubscriptionRequest) (*Response, error)
-	// Revoke publisher subscription
 	RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*RevokePublisherSubscriptionResponse, error)
 	RollbackRevokePublisherSubscription(context.Context, *RollbackRevokePublisherSubscriptionRequest) (*Response, error)
-	// Change publisher subscription
 	ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*ChangePublisherSubscriptionResponse, error)
 	RollbackChangePublisherSubscription(context.Context, *RollbackChangePublisherSubscriptionRequest) (*Response, error)
 	mustEmbedUnimplementedNotifySubscriptionServer()

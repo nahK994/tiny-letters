@@ -1,108 +1,95 @@
 syntax = "proto3";
 option go_package = "/subscription;pb_subscription";
 
-// NotifySubscription service definition
 service NotifySubscription {
-  // Join a publication
   rpc JoinPublication (JoinPublicationRequest) returns (JoinPublicationResponse);
   rpc RollbackJoinPublication (RollbackJoinPublicationRequest) returns (Response);
 
-  // Leave a publication
   rpc LeavePublication (LeavePublicationRequest) returns (LeavePublicationResponse);
   rpc RollbackLeavePublication (RollbackLeavePublicationRequest) returns (Response);
 
-  // Change the plan of a publication
   rpc ChangePublicationPlan (ChangePublicationPlanRequest) returns (ChangePublicationPlanResponse);
   rpc RollbackChangePublicationPlan (RollbackChangePublicationPlanRequest) returns (Response);
 
-  // Confirm publisher subscription
   rpc ConfirmPublisherSubscription (ConfirmPublisherSubscriptionRequest) returns (ConfirmPublisherSubscriptionResponse);
   rpc RollbackConfirmPublisherSubscription (RollbackConfirmPublisherSubscriptionRequest) returns (Response);
 
-  // Revoke publisher subscription
   rpc RevokePublisherSubscription (RevokePublisherSubscriptionRequest) returns (RevokePublisherSubscriptionResponse);
   rpc RollbackRevokePublisherSubscription (RollbackRevokePublisherSubscriptionRequest) returns (Response);
 
-  // Change publisher subscription
   rpc ChangePublisherSubscription (ChangePublisherSubscriptionRequest) returns (ChangePublisherSubscriptionResponse);
   rpc RollbackChangePublisherSubscription (RollbackChangePublisherSubscriptionRequest) returns (Response);
 }
 
-// General response message
 message Response {
-  bool is_success = 1; // Indicates if the operation was successful
+  bool is_success = 1;
 }
 
-// Join publication
 message JoinPublicationRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 publication_id = 2;  // ID of the publication
-  bool is_premium = 3;       // Whether the subscription is premium
+  int32 user_id = 1;
+  int32 publication_id = 2;
+  bool is_premium = 3;
 }
 message JoinPublicationResponse {
-  int32 subscription_id = 1; // ID of the created subscription
+  int32 subscription_id = 1;
 }
 message RollbackJoinPublicationRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
+  int32 subscription_id = 1;
 }
 
-// Leave publication
 message LeavePublicationRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 publication_id = 2;  // ID of the publication
+  int32 user_id = 1;
+  int32 publication_id = 2;
 }
 message LeavePublicationResponse {
-  int32 subscription_id = 1; // ID of the canceled subscription
+  int32 subscription_id = 1;
 }
 message RollbackLeavePublicationRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
+  int32 subscription_id = 1;
 }
 
-// Change publication plan
 message ChangePublicationPlanRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 publication_id = 2;  // ID of the publication
+  int32 user_id = 1;
+  int32 publication_id = 2;
 }
 message ChangePublicationPlanResponse {
-  int32 subscription_id = 1; // ID of the updated subscription
+  int32 subscription_id = 1;
 }
 message RollbackChangePublicationPlanRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
+  int32 subscription_id = 1;
 }
 
-// Confirm publisher subscription
 message ConfirmPublisherSubscriptionRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 plan_id = 2;         // ID of the plan
+  int32 user_id = 1;
+  int32 plan_id = 2;
 }
 message ConfirmPublisherSubscriptionResponse {
-  int32 subscription_id = 1; // ID of the confirmed subscription
+  int32 subscription_id = 1;
 }
 message RollbackConfirmPublisherSubscriptionRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
+  int32 subscription_id = 1;
 }
 
-// Revoke publisher subscription
 message RevokePublisherSubscriptionRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 plan_id = 2;         // ID of the plan
+  int32 user_id = 1;
+  int32 plan_id = 2;
 }
 message RevokePublisherSubscriptionResponse {
-  int32 subscription_id = 1; // ID of the revoked subscription
+  int32 subscription_id = 1;
 }
 message RollbackRevokePublisherSubscriptionRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
+  int32 subscription_id = 1;
 }
 
-// Change publisher subscription
 message ChangePublisherSubscriptionRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 plan_id = 2;         // ID of the new plan
+  int32 user_id = 1;
+  int32 plan_id = 2;
 }
 message ChangePublisherSubscriptionResponse {
-  int32 subscription_id = 1; // ID of the updated subscription
+  int32 subscription_id = 1;
+  int32 old_plan_id = 2;
 }
 message RollbackChangePublisherSubscriptionRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
-  int32 old_plan_id = 2;     // ID of the previous plan
+  int32 subscription_id = 1;
+  int32 old_plan_id = 2;
 }

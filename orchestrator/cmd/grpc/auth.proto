@@ -2,96 +2,48 @@ syntax = "proto3";
 
 option go_package = "/auth;pb_auth";
 
-// NotifyAuth service definition
 service NotifyAuth {
-  // Join a publication
   rpc JoinPublication (JoinPublicationRequest) returns (Response);
-  rpc RollbackJoinPublication (RollbackJoinPublicationRequest) returns (Response);
-
-  // Leave a publication
   rpc LeavePublication (LeavePublicationRequest) returns (Response);
-  rpc RollbackLeavePublication (RollbackLeavePublicationRequest) returns (Response);
-
-  // Change the plan of a publication
   rpc ChangePublicationPlan (ChangePublicationPlanRequest) returns (Response);
-  rpc RollbackChangePublicationPlan (RollbackChangePublicationPlanRequest) returns (Response);
 
-  // Confirm publisher subscription
   rpc ConfirmPublisherSubscription (ConfirmPublisherSubscriptionRequest) returns (Response);
-  rpc RollbackConfirmPublisherSubscription (RollbackConfirmPublisherSubscriptionRequest) returns (Response);
-
-  // Revoke publisher subscription
   rpc RevokePublisherSubscription (RevokePublisherSubscriptionRequest) returns (Response);
-  rpc RollbackRevokePublisherSubscription (RollbackRevokePublisherSubscriptionRequest) returns (Response);
-
-  // Change publisher subscription
   rpc ChangePublisherSubscription (ChangePublisherSubscriptionRequest) returns (Response);
-  rpc RollbackChangePublisherSubscription (RollbackChangePublisherSubscriptionRequest) returns (Response);
 }
 
-// General response message
 message Response {
-  bool is_success = 1; // Indicates if the operation was successful
+  bool is_success = 1;
 }
 
-// Join publication
 message JoinPublicationRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 publication_id = 2;  // ID of the publication
-  bool is_premium = 3;       // Whether the subscription is premium
-  int32 subscription_id = 4; // ID of the created subscription
-}
-message RollbackJoinPublicationRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
+  int32 user_id = 1;
+  int32 publication_id = 2;
+  bool is_premium = 3;
+  int32 subscription_id = 4;
 }
 
-// Leave publication
 message LeavePublicationRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 publication_id = 2;  // ID of the publication
-  int32 subscription_id = 3; // ID of the canceled subscription
-}
-message RollbackLeavePublicationRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
+  int32 user_id = 1;
+  int32 publication_id = 2;
+  int32 subscription_id = 3;
 }
 
-// Change publication plan
 message ChangePublicationPlanRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 publication_id = 2;  // ID of the publication
-  int32 subscription_id = 3; // ID of the updated subscription
-}
-message RollbackChangePublicationPlanRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
+  int32 subscription_id = 1;
 }
 
-// Confirm publisher subscription
 message ConfirmPublisherSubscriptionRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 plan_id = 2;         // ID of the plan
-  int32 subscription_id = 3; // ID of the confirmed subscription
-}
-message RollbackConfirmPublisherSubscriptionRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
+  int32 user_id = 1;
+  int32 plan_id = 2;
+  int32 subscription_id = 3;
 }
 
-// Revoke publisher subscription
 message RevokePublisherSubscriptionRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 plan_id = 2;         // ID of the plan
-  int32 subscription_id = 3; // ID of the revoked subscription
-}
-message RollbackRevokePublisherSubscriptionRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
+  int32 subscription_id = 1;
 }
 
-// Change publisher subscription
 message ChangePublisherSubscriptionRequest {
-  int32 user_id = 1;         // ID of the user
-  int32 plan_id = 2;         // ID of the new plan
-  int32 subscription_id = 3; // ID of the updated subscription
-}
-message RollbackChangePublisherSubscriptionRequest {
-  int32 subscription_id = 1; // ID of the subscription to rollback
-  int32 old_plan_id = 2;     // ID of the previous plan
+  int32 plan_id = 1;
+  int32 subscription_id = 2;
 }

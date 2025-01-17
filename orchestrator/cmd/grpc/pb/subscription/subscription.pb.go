@@ -20,10 +20,9 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// General response message
 type Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsSuccess     bool                   `protobuf:"varint,1,opt,name=is_success,json=isSuccess,proto3" json:"is_success,omitempty"` // Indicates if the operation was successful
+	IsSuccess     bool                   `protobuf:"varint,1,opt,name=is_success,json=isSuccess,proto3" json:"is_success,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,12 +64,11 @@ func (x *Response) GetIsSuccess() bool {
 	return false
 }
 
-// Join publication
 type JoinPublicationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                      // ID of the user
-	PublicationId int32                  `protobuf:"varint,2,opt,name=publication_id,json=publicationId,proto3" json:"publication_id,omitempty"` // ID of the publication
-	IsPremium     bool                   `protobuf:"varint,3,opt,name=is_premium,json=isPremium,proto3" json:"is_premium,omitempty"`             // Whether the subscription is premium
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	PublicationId int32                  `protobuf:"varint,2,opt,name=publication_id,json=publicationId,proto3" json:"publication_id,omitempty"`
+	IsPremium     bool                   `protobuf:"varint,3,opt,name=is_premium,json=isPremium,proto3" json:"is_premium,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -128,7 +126,7 @@ func (x *JoinPublicationRequest) GetIsPremium() bool {
 
 type JoinPublicationResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the created subscription
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -172,7 +170,7 @@ func (x *JoinPublicationResponse) GetSubscriptionId() int32 {
 
 type RollbackJoinPublicationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the subscription to rollback
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -214,11 +212,10 @@ func (x *RollbackJoinPublicationRequest) GetSubscriptionId() int32 {
 	return 0
 }
 
-// Leave publication
 type LeavePublicationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                      // ID of the user
-	PublicationId int32                  `protobuf:"varint,2,opt,name=publication_id,json=publicationId,proto3" json:"publication_id,omitempty"` // ID of the publication
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	PublicationId int32                  `protobuf:"varint,2,opt,name=publication_id,json=publicationId,proto3" json:"publication_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -269,7 +266,7 @@ func (x *LeavePublicationRequest) GetPublicationId() int32 {
 
 type LeavePublicationResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the canceled subscription
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -313,7 +310,7 @@ func (x *LeavePublicationResponse) GetSubscriptionId() int32 {
 
 type RollbackLeavePublicationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the subscription to rollback
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -355,11 +352,10 @@ func (x *RollbackLeavePublicationRequest) GetSubscriptionId() int32 {
 	return 0
 }
 
-// Change publication plan
 type ChangePublicationPlanRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                      // ID of the user
-	PublicationId int32                  `protobuf:"varint,2,opt,name=publication_id,json=publicationId,proto3" json:"publication_id,omitempty"` // ID of the publication
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	PublicationId int32                  `protobuf:"varint,2,opt,name=publication_id,json=publicationId,proto3" json:"publication_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -410,7 +406,7 @@ func (x *ChangePublicationPlanRequest) GetPublicationId() int32 {
 
 type ChangePublicationPlanResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the updated subscription
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -454,7 +450,7 @@ func (x *ChangePublicationPlanResponse) GetSubscriptionId() int32 {
 
 type RollbackChangePublicationPlanRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the subscription to rollback
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -496,11 +492,10 @@ func (x *RollbackChangePublicationPlanRequest) GetSubscriptionId() int32 {
 	return 0
 }
 
-// Confirm publisher subscription
 type ConfirmPublisherSubscriptionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // ID of the user
-	PlanId        int32                  `protobuf:"varint,2,opt,name=plan_id,json=planId,proto3" json:"plan_id,omitempty"` // ID of the plan
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	PlanId        int32                  `protobuf:"varint,2,opt,name=plan_id,json=planId,proto3" json:"plan_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -551,7 +546,7 @@ func (x *ConfirmPublisherSubscriptionRequest) GetPlanId() int32 {
 
 type ConfirmPublisherSubscriptionResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the confirmed subscription
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -595,7 +590,7 @@ func (x *ConfirmPublisherSubscriptionResponse) GetSubscriptionId() int32 {
 
 type RollbackConfirmPublisherSubscriptionRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the subscription to rollback
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -637,11 +632,10 @@ func (x *RollbackConfirmPublisherSubscriptionRequest) GetSubscriptionId() int32 
 	return 0
 }
 
-// Revoke publisher subscription
 type RevokePublisherSubscriptionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // ID of the user
-	PlanId        int32                  `protobuf:"varint,2,opt,name=plan_id,json=planId,proto3" json:"plan_id,omitempty"` // ID of the plan
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	PlanId        int32                  `protobuf:"varint,2,opt,name=plan_id,json=planId,proto3" json:"plan_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -692,7 +686,7 @@ func (x *RevokePublisherSubscriptionRequest) GetPlanId() int32 {
 
 type RevokePublisherSubscriptionResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the revoked subscription
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -736,7 +730,7 @@ func (x *RevokePublisherSubscriptionResponse) GetSubscriptionId() int32 {
 
 type RollbackRevokePublisherSubscriptionRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the subscription to rollback
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -778,11 +772,10 @@ func (x *RollbackRevokePublisherSubscriptionRequest) GetSubscriptionId() int32 {
 	return 0
 }
 
-// Change publisher subscription
 type ChangePublisherSubscriptionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // ID of the user
-	PlanId        int32                  `protobuf:"varint,2,opt,name=plan_id,json=planId,proto3" json:"plan_id,omitempty"` // ID of the new plan
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	PlanId        int32                  `protobuf:"varint,2,opt,name=plan_id,json=planId,proto3" json:"plan_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -833,7 +826,8 @@ func (x *ChangePublisherSubscriptionRequest) GetPlanId() int32 {
 
 type ChangePublisherSubscriptionResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the updated subscription
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
+	OldPlanId      int32                  `protobuf:"varint,2,opt,name=old_plan_id,json=oldPlanId,proto3" json:"old_plan_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -875,10 +869,17 @@ func (x *ChangePublisherSubscriptionResponse) GetSubscriptionId() int32 {
 	return 0
 }
 
+func (x *ChangePublisherSubscriptionResponse) GetOldPlanId() int32 {
+	if x != nil {
+		return x.OldPlanId
+	}
+	return 0
+}
+
 type RollbackChangePublisherSubscriptionRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"` // ID of the subscription to rollback
-	OldPlanId      int32                  `protobuf:"varint,2,opt,name=old_plan_id,json=oldPlanId,proto3" json:"old_plan_id,omitempty"`              // ID of the previous plan
+	SubscriptionId int32                  `protobuf:"varint,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
+	OldPlanId      int32                  `protobuf:"varint,2,opt,name=old_plan_id,json=oldPlanId,proto3" json:"old_plan_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1018,12 +1019,14 @@ var file_subscription_proto_rawDesc = []byte{
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64,
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x17,
 	0x0a, 0x07, 0x70, 0x6c, 0x61, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52,
-	0x06, 0x70, 0x6c, 0x61, 0x6e, 0x49, 0x64, 0x22, 0x4e, 0x0a, 0x23, 0x43, 0x68, 0x61, 0x6e, 0x67,
+	0x06, 0x70, 0x6c, 0x61, 0x6e, 0x49, 0x64, 0x22, 0x6e, 0x0a, 0x23, 0x43, 0x68, 0x61, 0x6e, 0x67,
 	0x65, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x73, 0x68, 0x65, 0x72, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72,
 	0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x27,
 	0x0a, 0x0f, 0x73, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69,
 	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0e, 0x73, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69,
-	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x22, 0x75, 0x0a, 0x2a, 0x52, 0x6f, 0x6c, 0x6c, 0x62,
+	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x1e, 0x0a, 0x0b, 0x6f, 0x6c, 0x64, 0x5f, 0x70,
+	0x6c, 0x61, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x6f, 0x6c,
+	0x64, 0x50, 0x6c, 0x61, 0x6e, 0x49, 0x64, 0x22, 0x75, 0x0a, 0x2a, 0x52, 0x6f, 0x6c, 0x6c, 0x62,
 	0x61, 0x63, 0x6b, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x73, 0x68,
 	0x65, 0x72, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65,
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x27, 0x0a, 0x0f, 0x73, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69,
