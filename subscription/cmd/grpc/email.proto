@@ -1,0 +1,4 @@
+syntax = "proto3";
+option go_package = "./email;pb_email";
+
+service EmailListener {}
