@@ -4,31 +4,28 @@ option go_package = "/auth;pb_auth";
 
 // NotifyAuth service definition
 service NotifyAuth {
-  // Check availability of a subscription
-  rpc CheckAvailability (CheckAvailabilityRequest) returns (Response);
-
   // Join a publication
-  rpc JoinPublication (JoinPublicationRequest) returns (JoinPublicationResponse);
+  rpc JoinPublication (JoinPublicationRequest) returns (Response);
   rpc RollbackJoinPublication (RollbackJoinPublicationRequest) returns (Response);
 
   // Leave a publication
-  rpc LeavePublication (LeavePublicationRequest) returns (LeavePublicationResponse);
+  rpc LeavePublication (LeavePublicationRequest) returns (Response);
   rpc RollbackLeavePublication (RollbackLeavePublicationRequest) returns (Response);
 
   // Change the plan of a publication
-  rpc ChangePublicationPlan (ChangePublicationPlanRequest) returns (ChangePublicationPlanResponse);
+  rpc ChangePublicationPlan (ChangePublicationPlanRequest) returns (Response);
   rpc RollbackChangePublicationPlan (RollbackChangePublicationPlanRequest) returns (Response);
 
   // Confirm publisher subscription
-  rpc ConfirmPublisherSubscription (ConfirmPublisherSubscriptionRequest) returns (ConfirmPublisherSubscriptionResponse);
+  rpc ConfirmPublisherSubscription (ConfirmPublisherSubscriptionRequest) returns (Response);
   rpc RollbackConfirmPublisherSubscription (RollbackConfirmPublisherSubscriptionRequest) returns (Response);
 
   // Revoke publisher subscription
-  rpc RevokePublisherSubscription (RevokePublisherSubscriptionRequest) returns (RevokePublisherSubscriptionResponse);
+  rpc RevokePublisherSubscription (RevokePublisherSubscriptionRequest) returns (Response);
   rpc RollbackRevokePublisherSubscription (RollbackRevokePublisherSubscriptionRequest) returns (Response);
 
   // Change publisher subscription
-  rpc ChangePublisherSubscription (ChangePublisherSubscriptionRequest) returns (ChangePublisherSubscriptionResponse);
+  rpc ChangePublisherSubscription (ChangePublisherSubscriptionRequest) returns (Response);
   rpc RollbackChangePublisherSubscription (RollbackChangePublisherSubscriptionRequest) returns (Response);
 }
 
@@ -37,17 +34,12 @@ message Response {
   bool is_success = 1; // Indicates if the operation was successful
 }
 
-// Check availability
-message CheckAvailabilityRequest {}
-
 // Join publication
 message JoinPublicationRequest {
   int32 user_id = 1;         // ID of the user
   int32 publication_id = 2;  // ID of the publication
   bool is_premium = 3;       // Whether the subscription is premium
-}
-message JoinPublicationResponse {
-  int32 subscription_id = 1; // ID of the created subscription
+  int32 subscription_id = 4; // ID of the created subscription
 }
 message RollbackJoinPublicationRequest {
   int32 subscription_id = 1; // ID of the subscription to rollback
@@ -57,9 +49,7 @@ message RollbackJoinPublicationRequest {
 message LeavePublicationRequest {
   int32 user_id = 1;         // ID of the user
   int32 publication_id = 2;  // ID of the publication
-}
-message LeavePublicationResponse {
-  int32 subscription_id = 1; // ID of the canceled subscription
+  int32 subscription_id = 3; // ID of the canceled subscription
 }
 message RollbackLeavePublicationRequest {
   int32 subscription_id = 1; // ID of the subscription to rollback
@@ -69,9 +59,7 @@ message RollbackLeavePublicationRequest {
 message ChangePublicationPlanRequest {
   int32 user_id = 1;         // ID of the user
   int32 publication_id = 2;  // ID of the publication
-}
-message ChangePublicationPlanResponse {
-  int32 subscription_id = 1; // ID of the updated subscription
+  int32 subscription_id = 3; // ID of the updated subscription
 }
 message RollbackChangePublicationPlanRequest {
   int32 subscription_id = 1; // ID of the subscription to rollback
@@ -81,9 +69,7 @@ message RollbackChangePublicationPlanRequest {
 message ConfirmPublisherSubscriptionRequest {
   int32 user_id = 1;         // ID of the user
   int32 plan_id = 2;         // ID of the plan
-}
-message ConfirmPublisherSubscriptionResponse {
-  int32 subscription_id = 1; // ID of the confirmed subscription
+  int32 subscription_id = 3; // ID of the confirmed subscription
 }
 message RollbackConfirmPublisherSubscriptionRequest {
   int32 subscription_id = 1; // ID of the subscription to rollback
@@ -93,9 +79,7 @@ message RollbackConfirmPublisherSubscriptionRequest {
 message RevokePublisherSubscriptionRequest {
   int32 user_id = 1;         // ID of the user
   int32 plan_id = 2;         // ID of the plan
-}
-message RevokePublisherSubscriptionResponse {
-  int32 subscription_id = 1; // ID of the revoked subscription
+  int32 subscription_id = 3; // ID of the revoked subscription
 }
 message RollbackRevokePublisherSubscriptionRequest {
   int32 subscription_id = 1; // ID of the subscription to rollback
@@ -105,9 +89,7 @@ message RollbackRevokePublisherSubscriptionRequest {
 message ChangePublisherSubscriptionRequest {
   int32 user_id = 1;         // ID of the user
   int32 plan_id = 2;         // ID of the new plan
-}
-message ChangePublisherSubscriptionResponse {
-  int32 subscription_id = 1; // ID of the updated subscription
+  int32 subscription_id = 3; // ID of the updated subscription
 }
 message RollbackChangePublisherSubscriptionRequest {
   int32 subscription_id = 1; // ID of the subscription to rollback

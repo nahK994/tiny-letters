@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
 	pb_auth "tiny-letter/orchestrator/cmd/grpc/pb/auth"
 
 	"google.golang.org/grpc"
@@ -35,31 +34,17 @@ func ShutdownAuthClient() {
 	}
 }
 
-func CheckAvailability(client pb_auth.NotifyAuthClient) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-
-	request := &pb_auth.CheckAvailabilityRequest{}
-
-	response, err := client.CheckAvailability(ctx, request)
+func ConfirmPublisherSubscription(userID, planID, subscriptionId int) error {
+	_, err := authClient.ConfirmPublisherSubscription(context.Background(), &pb_auth.ConfirmPublisherSubscriptionRequest{
+		UserId:         int32(userID),
+		PlanId:         int32(planID),
+		SubscriptionId: int32(subscriptionId),
+	})
 	if err != nil {
 		return err
 	}
 
-	log.Printf("CheckAvailability response: Success=%v", response.IsSuccess)
 	return nil
-}
-
-func ConfirmPublisherSubscription(userID, planID int) (int, error) {
-	response, err := authClient.ConfirmPublisherSubscription(context.Background(), &pb_auth.ConfirmPublisherSubscriptionRequest{
-		UserId: int32(userID),
-		PlanId: int32(planID),
-	})
-	if err != nil {
-		return -1, err
-	}
-
-	return int(response.SubscriptionId), nil
 }
 
 func RollbackConfirmPublisherSubscription(SubscriptionId int) error {
@@ -70,15 +55,16 @@ func RollbackConfirmPublisherSubscription(SubscriptionId int) error {
 	return err
 }
 
-func RevokePublisherSubscription(userId int) (int, error) {
-	response, err := authClient.RevokePublisherSubscription(context.Background(), &pb_auth.RevokePublisherSubscriptionRequest{
-		UserId: int32(userId),
+func RevokePublisherSubscription(userId, subscriptionId int) error {
+	_, err := authClient.RevokePublisherSubscription(context.Background(), &pb_auth.RevokePublisherSubscriptionRequest{
+		UserId:         int32(userId),
+		SubscriptionId: int32(subscriptionId),
 	})
 	if err != nil {
-		return -1, err
+		return err
 	}
 
-	return int(response.SubscriptionId), nil
+	return nil
 }
 
 func RollbackRevokePublisherSubscription(subscriptionId int) error {
@@ -89,16 +75,17 @@ func RollbackRevokePublisherSubscription(subscriptionId int) error {
 	return err
 }
 
-func ChangePublisherSubscription(userId, planID int) (int, error) {
-	response, err := authClient.ChangePublisherSubscription(context.Background(), &pb_auth.ChangePublisherSubscriptionRequest{
-		UserId: int32(userId),
-		PlanId: int32(planID),
+func ChangePublisherSubscription(userId, planID, subscriptionId int) error {
+	_, err := authClient.ChangePublisherSubscription(context.Background(), &pb_auth.ChangePublisherSubscriptionRequest{
+		UserId:         int32(userId),
+		PlanId:         int32(planID),
+		SubscriptionId: int32(subscriptionId),
 	})
 	if err != nil {
-		return -1, err
+		return err
 	}
 
-	return int(response.SubscriptionId), nil
+	return nil
 }
 
 func RollbackChangePublisherSubscription(subscriptionId, oldPlanId int) error {
@@ -110,17 +97,18 @@ func RollbackChangePublisherSubscription(subscriptionId, oldPlanId int) error {
 	return err
 }
 
-func JoinPublication(userID, publicationID int, isPremium bool) (int, error) {
-	response, err := authClient.JoinPublication(context.Background(), &pb_auth.JoinPublicationRequest{
-		UserId:        int32(userID),
-		PublicationId: int32(publicationID),
-		IsPremium:     isPremium,
+func JoinPublication(userID, publicationID, subscriptionId int, isPremium bool) error {
+	_, err := authClient.JoinPublication(context.Background(), &pb_auth.JoinPublicationRequest{
+		UserId:         int32(userID),
+		PublicationId:  int32(publicationID),
+		SubscriptionId: int32(subscriptionId),
+		IsPremium:      isPremium,
 	})
 	if err != nil {
-		return -1, err
+		return err
 	}
 
-	return int(response.SubscriptionId), nil
+	return nil
 }
 
 func RollbackJoinPublication(subscriptionID int) error {
@@ -131,16 +119,17 @@ func RollbackJoinPublication(subscriptionID int) error {
 	return err
 }
 
-func LeavePublication(userID, publicationID int) (int, error) {
-	response, err := authClient.LeavePublication(context.Background(), &pb_auth.LeavePublicationRequest{
-		UserId:        int32(userID),
-		PublicationId: int32(publicationID),
+func LeavePublication(userID, publicationID, subscriptionId int) error {
+	_, err := authClient.LeavePublication(context.Background(), &pb_auth.LeavePublicationRequest{
+		UserId:         int32(userID),
+		PublicationId:  int32(publicationID),
+		SubscriptionId: int32(subscriptionId),
 	})
 	if err != nil {
-		return -1, err
+		return err
 	}
 
-	return int(response.SubscriptionId), nil
+	return nil
 }
 
 func RollbackLeavePublication(subscriptionID int) error {
@@ -151,16 +140,17 @@ func RollbackLeavePublication(subscriptionID int) error {
 	return err
 }
 
-func ChangePublicationPlan(userID, publicationID int) (int, error) {
-	response, err := authClient.ChangePublicationPlan(context.Background(), &pb_auth.ChangePublicationPlanRequest{
-		UserId:        int32(userID),
-		PublicationId: int32(publicationID),
+func ChangePublicationPlan(userID, publicationID, subscriptionId int) error {
+	_, err := authClient.ChangePublicationPlan(context.Background(), &pb_auth.ChangePublicationPlanRequest{
+		UserId:         int32(userID),
+		PublicationId:  int32(publicationID),
+		SubscriptionId: int32(subscriptionId),
 	})
 	if err != nil {
-		return -1, err
+		return err
 	}
 
-	return int(response.SubscriptionId), nil
+	return nil
 }
 
 func RollbackChangePublicationPlan(subscriptionID int) error {

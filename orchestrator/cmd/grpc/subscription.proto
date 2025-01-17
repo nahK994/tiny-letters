@@ -3,9 +3,6 @@ option go_package = "/subscription;pb_subscription";
 
 // NotifySubscription service definition
 service NotifySubscription {
-  // Check availability of a subscription
-  rpc CheckAvailability (CheckAvailabilityRequest) returns (Response);
-
   // Join a publication
   rpc JoinPublication (JoinPublicationRequest) returns (JoinPublicationResponse);
   rpc RollbackJoinPublication (RollbackJoinPublicationRequest) returns (Response);
@@ -35,9 +32,6 @@ service NotifySubscription {
 message Response {
   bool is_success = 1; // Indicates if the operation was successful
 }
-
-// Check availability
-message CheckAvailabilityRequest {}
 
 // Join publication
 message JoinPublicationRequest {

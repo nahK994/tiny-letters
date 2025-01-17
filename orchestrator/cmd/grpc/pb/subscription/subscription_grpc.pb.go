@@ -19,7 +19,6 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NotifySubscription_CheckAvailability_FullMethodName                    = "/NotifySubscription/CheckAvailability"
 	NotifySubscription_JoinPublication_FullMethodName                      = "/NotifySubscription/JoinPublication"
 	NotifySubscription_RollbackJoinPublication_FullMethodName              = "/NotifySubscription/RollbackJoinPublication"
 	NotifySubscription_LeavePublication_FullMethodName                     = "/NotifySubscription/LeavePublication"
@@ -40,8 +39,6 @@ const (
 //
 // NotifySubscription service definition
 type NotifySubscriptionClient interface {
-	// Check availability of a subscription
-	CheckAvailability(ctx context.Context, in *CheckAvailabilityRequest, opts ...grpc.CallOption) (*Response, error)
 	// Join a publication
 	JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error)
 	RollbackJoinPublication(ctx context.Context, in *RollbackJoinPublicationRequest, opts ...grpc.CallOption) (*Response, error)
@@ -68,16 +65,6 @@ type notifySubscriptionClient struct {
 
 func NewNotifySubscriptionClient(cc grpc.ClientConnInterface) NotifySubscriptionClient {
 	return &notifySubscriptionClient{cc}
-}
-
-func (c *notifySubscriptionClient) CheckAvailability(ctx context.Context, in *CheckAvailabilityRequest, opts ...grpc.CallOption) (*Response, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
-	err := c.cc.Invoke(ctx, NotifySubscription_CheckAvailability_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *notifySubscriptionClient) JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error) {
@@ -206,8 +193,6 @@ func (c *notifySubscriptionClient) RollbackChangePublisherSubscription(ctx conte
 //
 // NotifySubscription service definition
 type NotifySubscriptionServer interface {
-	// Check availability of a subscription
-	CheckAvailability(context.Context, *CheckAvailabilityRequest) (*Response, error)
 	// Join a publication
 	JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error)
 	RollbackJoinPublication(context.Context, *RollbackJoinPublicationRequest) (*Response, error)
@@ -236,9 +221,6 @@ type NotifySubscriptionServer interface {
 // pointer dereference when methods are called.
 type UnimplementedNotifySubscriptionServer struct{}
 
-func (UnimplementedNotifySubscriptionServer) CheckAvailability(context.Context, *CheckAvailabilityRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CheckAvailability not implemented")
-}
 func (UnimplementedNotifySubscriptionServer) JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JoinPublication not implemented")
 }
@@ -294,24 +276,6 @@ func RegisterNotifySubscriptionServer(s grpc.ServiceRegistrar, srv NotifySubscri
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&NotifySubscription_ServiceDesc, srv)
-}
-
-func _NotifySubscription_CheckAvailability_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CheckAvailabilityRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NotifySubscriptionServer).CheckAvailability(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NotifySubscription_CheckAvailability_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifySubscriptionServer).CheckAvailability(ctx, req.(*CheckAvailabilityRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _NotifySubscription_JoinPublication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -537,10 +501,6 @@ var NotifySubscription_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "NotifySubscription",
 	HandlerType: (*NotifySubscriptionServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "CheckAvailability",
-			Handler:    _NotifySubscription_CheckAvailability_Handler,
-		},
 		{
 			MethodName: "JoinPublication",
 			Handler:    _NotifySubscription_JoinPublication_Handler,

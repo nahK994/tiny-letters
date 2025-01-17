@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
 	pb_subscription "tiny-letter/orchestrator/cmd/grpc/pb/subscription"
 
 	"google.golang.org/grpc"
@@ -33,21 +32,6 @@ func ShutdownSubscriptionClient() {
 		log.Println("Closing Subscription gRPC connection...")
 		subscriptionConn.Close()
 	}
-}
-
-func CheckAvailability(client pb_subscription.NotifySubscriptionClient) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-
-	request := &pb_subscription.CheckAvailabilityRequest{}
-
-	response, err := client.CheckAvailability(ctx, request)
-	if err != nil {
-		return err
-	}
-
-	log.Printf("CheckAvailability response: Success=%v", response.IsSuccess)
-	return nil
 }
 
 func ConfirmPublisherSubscription(userID, planID int) (int, error) {
