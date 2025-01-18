@@ -4,17 +4,6 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 
 ---
 
-## **Features**
-
-- **User Management**: Registration, login, and role-based access control for publishers, subscribers, and admins.
-- **Content Management**: Create and manage publications and posts with support for premium content.
-- **Subscription Management**: Manage subscriptions for both publishers and subscribers, with support for multiple subscription plans.
-- **Notification System**: Automatically notify subscribers about new posts via email.
-- **Broadcast Service**: Rate-limited email dispatch to ensure efficient and reliable delivery.
-- **Message Queue**: Decoupled communication between services using RabbitMQ for scalability.
-
----
-
 ## **Architecture Overview**
 
 ### **Microservices**
@@ -35,11 +24,23 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 4. **Notification Service**
    - Consumes messages from RabbitMQ.
    - Identifies the target audience by querying Subscription Service.
-   - Sends tasks to the Broadcast Service for email dispatch.
+   - Sends tasks to the Email Service for email dispatch.
+    - **Why is it needed?**  
+     If a user wants to receive notifications via WhatsApp or other channels, the Notification Service will handle it.  
 
-5. **Broadcast Service**
+5. **Email Service**
    - Handles rate-limiting.
    - Sends emails to subscribers.
+
+6. **Coordinator Service**
+   - Coordinates between User Service, Subscription Service, and Email Service to ensure consistency via 2PC.
+   - Handles subscription, unsubscription, and plan change requests.
+
+---
+
+### **Diagram**
+
+![Architecture Diagram](./architecture-diagram.jpg "Architecture Diagram")
 
 ---
 
@@ -75,13 +76,13 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 5. **Post**
    - `id`, `publication_id`, `content`, `is_premium`, `created_at`, `updated_at`
 
-6. **Publisher Subscription Plan**
-   - `id`, `name`, `applicable_for`
+6. **Publisher Subscription Plans**
+   - `id`, `name`, `order`
 
-7. **Publisher Subscription**
+7. **Publisher Subscriptions**
    - `user_id`, `plan_id`, `is_deleted`
 
-8. **Subscriber Subscription**
+8. **Subscriber Subscriptions**
    - `user_id`, `is_premium`, `publication_id`, `is_deleted`
 
 9. **Audience**
@@ -105,8 +106,8 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/nahK994/TinyLetter.git
-   cd TinyLetter
+   git clone https://github.com/nahK994/tiny-letter.git
+   cd tiny-letter
    ```
 
 2. Start DB using Docker Compose:
@@ -116,38 +117,8 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 
 3. Run services locally:
    ```bash
-   go run ./cmd/user
-   go run ./cmd/content
-   go run ./cmd/subscription
-   go run ./cmd/notification
-   go run ./cmd/broadcast
+   // Will be updated soon
    ```
-
-4. Access RabbitMQ dashboard:
-   ```
-   http://localhost:15672
-   ```
-
----
-
-<!-- ## **Testing Locally**
-
-1. Start Minikube:
-   ```bash
-   minikube start
-   ```
-
-2. Deploy services to Minikube:
-   ```bash
-   kubectl apply -f k8s/
-   ```
-
-3. Access the application via Minikube's IP address:
-   ```bash
-   minikube service list
-   ```
-
---- -->
 
 ---
 
