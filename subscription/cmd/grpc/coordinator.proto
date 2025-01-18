@@ -1,7 +1,7 @@
 syntax = "proto3";
-option go_package = "./orchestrator;pb_orchestrator";
+option go_package = "./coordinator;pb_coordinator";
 
-service OrchestratorListener {
+service CoordinatorListener {
   rpc JoinPublication (JoinPublicationRequest) returns (JoinPublicationResponse);
   rpc RollbackJoinPublication (RollbackJoinPublicationRequest) returns (Response);
 

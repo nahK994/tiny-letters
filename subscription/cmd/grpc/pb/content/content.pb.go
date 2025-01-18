@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.0
 // 	protoc        v3.21.12
-// source: email.proto
+// source: content.proto
 
-package pb_email
+package pb_content
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -19,17 +19,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-var File_email_proto protoreflect.FileDescriptor
+var File_content_proto protoreflect.FileDescriptor
 
-var file_email_proto_rawDesc = []byte{
-	0x0a, 0x0b, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x32, 0x0f, 0x0a,
-	0x0d, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x4c, 0x69, 0x73, 0x74, 0x65, 0x6e, 0x65, 0x72, 0x42, 0x12,
-	0x5a, 0x10, 0x2e, 0x2f, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x3b, 0x70, 0x62, 0x5f, 0x65, 0x6d, 0x61,
-	0x69, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_content_proto_rawDesc = []byte{
+	0x0a, 0x0d, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x32,
+	0x11, 0x0a, 0x0f, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x65, 0x6e,
+	0x65, 0x72, 0x42, 0x16, 0x5a, 0x14, 0x2e, 0x2f, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x3b,
+	0x70, 0x62, 0x5f, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
-var file_email_proto_goTypes = []any{}
-var file_email_proto_depIdxs = []int32{
+var file_content_proto_goTypes = []any{}
+var file_content_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -37,26 +38,26 @@ var file_email_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_email_proto_init() }
-func file_email_proto_init() {
-	if File_email_proto != nil {
+func init() { file_content_proto_init() }
+func file_content_proto_init() {
+	if File_content_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_email_proto_rawDesc,
+			RawDescriptor: file_content_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_email_proto_goTypes,
-		DependencyIndexes: file_email_proto_depIdxs,
+		GoTypes:           file_content_proto_goTypes,
+		DependencyIndexes: file_content_proto_depIdxs,
 	}.Build()
-	File_email_proto = out.File
-	file_email_proto_rawDesc = nil
-	file_email_proto_goTypes = nil
-	file_email_proto_depIdxs = nil
+	File_content_proto = out.File
+	file_content_proto_rawDesc = nil
+	file_content_proto_goTypes = nil
+	file_content_proto_depIdxs = nil
 }

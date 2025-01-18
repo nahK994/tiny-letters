@@ -16,8 +16,8 @@ type GRPCConfig struct {
 }
 
 type CommConfig struct {
-	Orchestrator GRPCConfig
-	Email        GRPCConfig
+	Coordinator GRPCConfig
+	Content     GRPCConfig
 }
 
 type AppConfig struct {
@@ -36,11 +36,11 @@ type Config struct {
 var appConfig Config = Config{
 	App: AppConfig{
 		CommConfig: CommConfig{
-			Orchestrator: GRPCConfig{
+			Coordinator: GRPCConfig{
 				Port:   50002,
 				Domain: domain,
 			},
-			Email: GRPCConfig{
+			Content: GRPCConfig{
 				Port:   50003,
 				Domain: domain,
 			},

@@ -1,13 +1,13 @@
-package orchestrator
+package content
 
 import (
 	"fmt"
 	"log"
 	"net"
 	"sync"
-	pb_orchestrator "tiny-letter/subscription/cmd/grpc/pb/orchestrator"
+	pb_content "tiny-letter/subscription/cmd/grpc/pb/content"
 	"tiny-letter/subscription/pkg/app"
-	orchestrator_handlers "tiny-letter/subscription/pkg/handlers/orchestrator"
+	content_handlers "tiny-letter/subscription/pkg/handlers/content"
 
 	"google.golang.org/grpc"
 )
@@ -21,7 +21,7 @@ func Listen(wg *sync.WaitGroup, commConfig *app.GRPCConfig) {
 	}
 
 	s := grpc.NewServer()
-	pb_orchestrator.RegisterOrchestratorListenerServer(s, orchestrator_handlers.GetOrchestratorHandlers())
+	pb_content.RegisterContentListenerServer(s, content_handlers.GetEmailHandlers())
 
 	fmt.Println("Starting server...")
 	fmt.Printf("Hosting server on: %s\n", lis.Addr().String())

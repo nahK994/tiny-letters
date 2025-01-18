@@ -1,13 +1,13 @@
-package email
+package coordinator
 
 import (
 	"fmt"
 	"log"
 	"net"
 	"sync"
-	pb_email "tiny-letter/subscription/cmd/grpc/pb/email"
+	pb_coordinator "tiny-letter/subscription/cmd/grpc/pb/coordinator"
 	"tiny-letter/subscription/pkg/app"
-	email_handlers "tiny-letter/subscription/pkg/handlers/email"
+	coordinator_handlers "tiny-letter/subscription/pkg/handlers/coordinator"
 
 	"google.golang.org/grpc"
 )
@@ -21,7 +21,7 @@ func Listen(wg *sync.WaitGroup, commConfig *app.GRPCConfig) {
 	}
 
 	s := grpc.NewServer()
-	pb_email.RegisterEmailListenerServer(s, email_handlers.GetEmailHandlers())
+	pb_coordinator.RegisterCoordinatorListenerServer(s, coordinator_handlers.GetOrchestratorHandlers())
 
 	fmt.Println("Starting server...")
 	fmt.Printf("Hosting server on: %s\n", lis.Addr().String())
