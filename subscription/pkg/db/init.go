@@ -17,44 +17,56 @@ func NewRepository(db *sql.DB) *Repository {
 }
 
 func createTables(db *sql.DB) error {
-	createSubscriptionPlanTable := `
-	CREATE TABLE IF NOT EXISTS subscription_plans (
+	createPublisherSubscriptionPlansTable := `
+	CREATE TABLE IF NOT EXISTS publisher_subscription_plans (
 		id SERIAL PRIMARY KEY,
 		name VARCHAR(20) NOT NULL,
 		order INT NOT NULL
 	);
 	`
 
-	createPublisherSubscriptionManagementTable := `
-	CREATE TABLE IF NOT EXISTS publisher_subscription_managements (
+	createPublisherSubscriptionsTable := `
+	CREATE TABLE IF NOT EXISTS publisher_subscriptions (
 		id SERIAL PRIMARY KEY,
 		user_id INT NOT NULL,
-		subscription_id INT NOT NULL,
-		CONSTRAINT fk_publisher_subscription_managements_subscription FOREIGN KEY (subscription_id) REFERENCES subscription_plans(id) ON DELETE CASCADE
+		plan_id INT NOT NULL,
+		CONSTRAINT fk_publisher_subscription FOREIGN KEY (plan_id) REFERENCES publisher_subscription_plans(id) ON DELETE CASCADE
 	);
-	CREATE INDEX IF NOT EXISTS idx_publisher_subscription_management_subscription_id ON publisher_subscription_managements(subscription_id);
+	CREATE INDEX IF NOT EXISTS idx_publisher_subscription_plan_id ON publisher_subscriptions(plan_id);
+	CREATE INDEX IF NOT EXISTS idx_publisher_subscription_user_id ON publisher_subscriptions(user_id);
 	`
 
-	createSubscriberSubscriptionManagementTable := `
-	CREATE TABLE IF NOT EXISTS subscriber_subscription_managements (
+	createSubscriberSubscribersTable := `
+	CREATE TABLE IF NOT EXISTS subscriber_subscribers (
 		id SERIAL PRIMARY KEY,
 		user_id INT NOT NULL,
-		subscription_id INT NOT NULL,
 		publication_id INT NOT NULL,
-		CONSTRAINT fk_subscriber_subscription_managements_subscription FOREIGN KEY (subscription_id) REFERENCES subscription_plans(id) ON DELETE CASCADE
+		is_premium BOOLEAN NOT NULL,
 	);
-	CREATE INDEX IF NOT EXISTS idx_subscriber_subscription_management_subscription_id ON subscriber_subscription_managements(subscription_id);
-	CREATE INDEX IF NOT EXISTS idx_subscriber_subscription_management_publication_id ON subscriber_subscription_managements(publication_id);
+	CREATE INDEX IF NOT EXISTS idx_publisher_subscriber_user_id ON subscriber_subscribers(user_id);
+	CREATE INDEX IF NOT EXISTS idx_publisher_subscriber_publication_id ON subscriber_subscribers(publication_id);
 	`
 
-	if _, err := db.Exec(createSubscriptionPlanTable); err != nil {
-		return fmt.Errorf("could not create subscription_plans table: %w", err)
+	createAudienceLimitsTable := `
+	CREATE TABLE IF NOT EXISTS audience_limits (
+		id SERIAL PRIMARY KEY,
+		plan_id INT NOT NULL,
+		size INT NOT NULL,
+	CONSTRAINT fk_audience_limit FOREIGN KEY (plan_id) REFERENCES publisher_subscription_plans(id) ON DELETE CASCADE
+	);
+	`
+
+	if _, err := db.Exec(createPublisherSubscriptionPlansTable); err != nil {
+		return fmt.Errorf("could not create publisher_subscription_plans table: %w", err)
 	}
-	if _, err := db.Exec(createPublisherSubscriptionManagementTable); err != nil {
-		return fmt.Errorf("could not create publisher_subscription_managements table: %w", err)
+	if _, err := db.Exec(createPublisherSubscriptionsTable); err != nil {
+		return fmt.Errorf("could not create publisher_subscriptions table: %w", err)
 	}
-	if _, err := db.Exec(createSubscriberSubscriptionManagementTable); err != nil {
-		return fmt.Errorf("could not create subscriber_subscription_managements table: %w", err)
+	if _, err := db.Exec(createSubscriberSubscribersTable); err != nil {
+		return fmt.Errorf("could not create subscriber_subscribers table: %w", err)
+	}
+	if _, err := db.Exec(createAudienceLimitsTable); err != nil {
+		return fmt.Errorf("could not create audience_limits table: %w", err)
 	}
 
 	return nil
