@@ -4,69 +4,74 @@ import (
 	"fmt"
 )
 
-func (r *Repository) SubscribePublisherPlan(data PublisherSubscriptionRequest) error {
+func (r *Repository) SubscribePublisherPlan(data *PublisherSubscriptionRequest) error {
 	query := `
-	INSERT INTO publisher_subscription_managements (user_id, subscription_id)
+	INSERT INTO publisher_subscriptions (user_id, plan_id)
 	VALUES ($1, $2)
 	`
-	if _, err := r.DB.Exec(query, data.UserId, data.PlanId); err != nil {
+	_, err := r.DB.Exec(query, data.UserId, data.PlanId)
+	if err != nil {
 		return fmt.Errorf("failed to subscribe publisher to plan: %w", err)
 	}
 	return nil
 }
 
-func (r *Repository) JoinPublication(data ManagePublicationSubscriptionRequest) error {
+func (r *Repository) UnsubscribePublisherPlan(data *RevokePublisherSubscribeRequest) error {
 	query := `
-	INSERT INTO subscriber_subscription_managements (user_id, subscription_id, publication_id)
-	VALUES ($1, $2, $3)
-	`
-	_, err := r.DB.Exec(query, data.UserId, data.PlanId, data.PublicationId)
-	if err != nil {
-		return fmt.Errorf("failed to subscribe subscriber to plan: %w", err)
-	}
-	return nil
-}
-
-func (r *Repository) ChangePublicationSubscription(data ChangePublicationSubscriptionRequest) error {
-	query := `
-	UPDATE subscriber_subscription_managements
-	SET subscription_id = $1
-	WHERE user_id = $2 AND publication_id = $3
-	`
-	if _, err := r.DB.Exec(query, data.ChangedPlanId, data.UserId, data.PublicationId); err != nil {
-		return fmt.Errorf("failed to change subscriber subscription plan: %w", err)
-	}
-	return nil
-}
-
-func (r *Repository) ChangePublisherSubscriptionPlan(data ChangePublisherPlanRequest) error {
-	query := `
-	UPDATE subscriber_subscription_managements
-	SET subscription_id = $1
-	WHERE user_id = $2
-	`
-	if _, err := r.DB.Exec(query, data.ChangedPlanId, data.UserId); err != nil {
-		return fmt.Errorf("failed to change publication subscription plan: %w", err)
-	}
-	return nil
-}
-
-func (r *Repository) UnsubscriptionPublisherPlan(data UnsubscribePublisherRequest) error {
-	query := `
-	DELETE FROM publisher_subscription_managements WHERE user_id = $1
+	DELETE FROM publisher_subscriptions WHERE user_id = $1
 	`
 	if _, err := r.DB.Exec(query, data.UserId); err != nil {
-		return fmt.Errorf("failed to change publication subscription plan: %w", err)
+		return fmt.Errorf("failed to revoke publisher subscription: %w", err)
 	}
 	return nil
 }
 
-func (r *Repository) LeavePublication(data ManagePublicationSubscriptionRequest) error {
+func (r *Repository) ChangePublisherPlan(data *ChangePublisherPlanRequest) error {
 	query := `
-	DELETE FROM subscriber_subscription_managements WHERE user_id = $1 AND publication_id = $2
+	UPDATE publisher_subscriptions SET plan_id = $2 WHERE user_id = $1
+	`
+	if _, err := r.DB.Exec(query, data.UserId, data.ChangedPlanId); err != nil {
+		return fmt.Errorf("failed to change publisher subscription plan: %w", err)
+	}
+	return nil
+}
+
+func (r *Repository) JoinPublication(data *SubscriberSubscriptionRequest) error {
+	query := `
+	INSERT INTO subscriber_subscriptions (user_id, publication_id, is_premium)
+	VALUES ($1, $2, $3)
+	`
+	_, err := r.DB.Exec(query, data.UserId, data.PublicationId, data.IsPremium)
+	if err != nil {
+		return fmt.Errorf("failed to join publication: %w", err)
+	}
+	return nil
+}
+
+func (r *Repository) LeavePublication(data *RevokeSubscriberSubscriptionRequest) error {
+	query := `
+	DELETE FROM subscriber_subscriptions WHERE user_id = $1 AND publication_id = $2
 	`
 	if _, err := r.DB.Exec(query, data.UserId, data.PublicationId); err != nil {
-		return fmt.Errorf("failed to change publication subscription plan: %w", err)
+		return fmt.Errorf("failed to leave publication: %w", err)
+	}
+	return nil
+}
+
+func (r *Repository) ChangeSubscriberPlan(data *ChangeSubscriberSubscriptionRequest) error {
+	query := `
+	SELECT is_premium FROM subscriber_subscriptions WHERE user_id = $1 AND publication_id = $2
+	`
+	var isPremium bool
+	if err := r.DB.QueryRow(query, data.UserId, data.PublicationId).Scan(&isPremium); err != nil {
+		return fmt.Errorf("failed to get subscription premium status: %w", err)
+	}
+
+	query = `
+	UPDATE subscriber_subscriptions SET is_premium = $3 WHERE user_id = $1 AND publication_id = $2
+	`
+	if _, err := r.DB.Exec(query, data.UserId, data.PublicationId, !isPremium); err != nil {
+		return fmt.Errorf("failed to update subscription premium status: %w", err)
 	}
 	return nil
 }

@@ -2,14 +2,19 @@ package db
 
 import "errors"
 
-type PublisherSubscriptionRequest struct {
-	UserId int `json:"userId"`
-	PlanId int `json:"planId"`
+type SubscriberSubscriptionRequest struct {
+	UserId        int  `json:"userId"`
+	PublicationId int  `json:"publicationId"`
+	IsPremium     bool `json:"isPremium"`
 }
 
-type ManagePublicationSubscriptionRequest struct {
+type RevokeSubscriberSubscriptionRequest struct {
 	UserId        int `json:"userId"`
-	PlanId        int `json:"planId"`
+	PublicationId int `json:"publicationId"`
+}
+
+type ChangeSubscriberSubscriptionRequest struct {
+	UserId        int `json:"userId"`
 	PublicationId int `json:"publicationId"`
 }
 
@@ -18,13 +23,12 @@ type ChangePublisherPlanRequest struct {
 	ChangedPlanId int `json:"changedPlanId"`
 }
 
-type ChangePublicationSubscriptionRequest struct {
-	UserId        int `json:"userId"`
-	PublicationId int `json:"publicationId"`
-	ChangedPlanId int `json:"changedPlanId"`
+type PublisherSubscriptionRequest struct {
+	UserId int `json:"userId"`
+	PlanId int `json:"planId"`
 }
 
-type UnsubscribePublisherRequest struct {
+type RevokePublisherSubscribeRequest struct {
 	UserId int `json:"userId"`
 }
 
@@ -38,12 +42,9 @@ func (r *PublisherSubscriptionRequest) Validate() error {
 	return nil
 }
 
-func (r *ManagePublicationSubscriptionRequest) Validate() error {
+func (r *SubscriberSubscriptionRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
-	}
-	if r.PlanId <= 0 {
-		return errors.New("planId must be greater than 0")
 	}
 	if r.PublicationId <= 0 {
 		return errors.New("publicationId must be greater than 0")
@@ -61,12 +62,9 @@ func (r *ChangePublisherPlanRequest) Validate() error {
 	return nil
 }
 
-func (r *ChangePublicationSubscriptionRequest) Validate() error {
+func (r *ChangeSubscriberSubscriptionRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
-	}
-	if r.ChangedPlanId <= 0 {
-		return errors.New("changedPlanId must be greater than 0")
 	}
 	if r.PublicationId <= 0 {
 		return errors.New("publicationId must be greater than 0")
@@ -74,9 +72,19 @@ func (r *ChangePublicationSubscriptionRequest) Validate() error {
 	return nil
 }
 
-func (r *UnsubscribePublisherRequest) Validate() error {
+func (r *RevokePublisherSubscribeRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
+	}
+	return nil
+}
+
+func (r *RevokeSubscriberSubscriptionRequest) Validate() error {
+	if r.UserId <= 0 {
+		return errors.New("userId must be greater than 0")
+	}
+	if r.PublicationId <= 0 {
+		return errors.New("publicationId must be greater than 0")
 	}
 	return nil
 }

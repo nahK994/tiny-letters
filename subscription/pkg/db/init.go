@@ -28,7 +28,7 @@ func createTables(db *sql.DB) error {
 	createPublisherSubscriptionsTable := `
 	CREATE TABLE IF NOT EXISTS publisher_subscriptions (
 		id SERIAL PRIMARY KEY,
-		user_id INT NOT NULL,
+		user_id INT NOT NULL UNIQUE,
 		plan_id INT NOT NULL,
 		CONSTRAINT fk_publisher_subscription FOREIGN KEY (plan_id) REFERENCES publisher_subscription_plans(id) ON DELETE CASCADE
 	);
@@ -37,7 +37,7 @@ func createTables(db *sql.DB) error {
 	`
 
 	createSubscriberSubscribersTable := `
-	CREATE TABLE IF NOT EXISTS subscriber_subscribers (
+	CREATE TABLE IF NOT EXISTS subscriber_subscriptions (
 		id SERIAL PRIMARY KEY,
 		user_id INT NOT NULL,
 		publication_id INT NOT NULL,
