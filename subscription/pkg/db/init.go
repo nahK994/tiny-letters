@@ -12,10 +12,6 @@ type Repository struct {
 	DB *sql.DB
 }
 
-func NewRepository(db *sql.DB) *Repository {
-	return &Repository{DB: db}
-}
-
 func createTables(db *sql.DB) error {
 	createPublisherSubscriptionPlansTable := `
 	CREATE TABLE IF NOT EXISTS publisher_subscription_plans (

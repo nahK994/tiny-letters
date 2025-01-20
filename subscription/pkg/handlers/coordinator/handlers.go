@@ -3,6 +3,7 @@ package coordinator_handlers
 import (
 	"context"
 	pb_coordinator "tiny-letter/subscription/cmd/grpc/pb/coordinator"
+	"tiny-letter/subscription/pkg/db"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -10,10 +11,13 @@ import (
 
 type CoordinatorListener struct {
 	pb_coordinator.UnimplementedCoordinatorListenerServer
+	db *db.Repository
 }
 
-func GetOrchestratorHandlers() *CoordinatorListener {
-	return &CoordinatorListener{}
+func GetCoordinatorHandlers(db *db.Repository) *CoordinatorListener {
+	return &CoordinatorListener{
+		db: db,
+	}
 }
 
 func (l *CoordinatorListener) JoinPublication(context.Context, *pb_coordinator.JoinPublicationRequest) (*pb_coordinator.JoinPublicationResponse, error) {
