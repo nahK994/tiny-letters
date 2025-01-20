@@ -2,15 +2,12 @@ package main
 
 import (
 	"sync"
-	"tiny-letter/subscription/cmd/grpc/listener/content"
-	"tiny-letter/subscription/cmd/grpc/listener/coordinator"
-	"tiny-letter/subscription/pkg/app"
+	"tiny-letter/subscription/cmd/grpc/server"
 )
 
 func main() {
-	config := app.GetConfig()
 	var wg sync.WaitGroup
-	go coordinator.Listen(&wg, &config.App.Coordinator)
-	go content.Listen(&wg, &config.App.Content)
+	wg.Add(1)
+	go server.Serve(&wg)
 	wg.Wait()
 }
