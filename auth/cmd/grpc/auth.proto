@@ -3,13 +3,13 @@ syntax = "proto3";
 option go_package = ".;pb_auth";
 
 service NotifyAuth {
-  rpc JoinPublication (JoinPublicationRequest) returns (JoinPublicationResponse);
-  rpc LeavePublication (LeavePublicationRequest) returns (LeavePublicationResponse);
-  rpc ChangeSubscriberSubscription (ChangeSubscriberSubscriptionRequest) returns (ChangeSubscriberSubscriptionResponse);
+  rpc JoinPublication (JoinPublicationRequest) returns (Response);
+  rpc LeavePublication (LeavePublicationRequest) returns (Response);
+  rpc ChangeSubscriberSubscription (ChangeSubscriberSubscriptionRequest) returns (Response);
 
-  rpc ConfirmPublisherSubscription (ConfirmPublisherSubscriptionRequest) returns (ConfirmPublisherSubscriptionResponse);
-  rpc RevokePublisherSubscription (RevokePublisherSubscriptionRequest) returns (RevokePublisherSubscriptionResponse);
-  rpc ChangePublisherSubscription (ChangePublisherSubscriptionRequest) returns (ChangePublisherSubscriptionResponse);
+  rpc ConfirmPublisherSubscription (ConfirmPublisherSubscriptionRequest) returns (Response);
+  rpc RevokePublisherSubscription (RevokePublisherSubscriptionRequest) returns (Response);
+  rpc ChangePublisherSubscription (ChangePublisherSubscriptionRequest) returns (Response);
 }
 
 message Response {
@@ -21,47 +21,28 @@ message JoinPublicationRequest {
   int32 publication_id = 2;
   bool is_premium = 3;
 }
-message JoinPublicationResponse {
-  int32 subscription_id = 1;
-}
 
 message LeavePublicationRequest {
   int32 user_id = 1;
   int32 publication_id = 2;
-}
-message LeavePublicationResponse {
-  bool is_premium = 1;
 }
 
 message ChangeSubscriberSubscriptionRequest {
   int32 user_id = 1;
   int32 publication_id = 2;
 }
-message ChangeSubscriberSubscriptionResponse {
-  int32 subscription_id = 1;
-}
 
 message ConfirmPublisherSubscriptionRequest {
   int32 user_id = 1;
   int32 plan_id = 2;
-}
-message ConfirmPublisherSubscriptionResponse {
-  int32 subscription_id = 1;
 }
 
 message RevokePublisherSubscriptionRequest {
   int32 user_id = 1;
   int32 plan_id = 2;
 }
-message RevokePublisherSubscriptionResponse {
-  int32 plan_id = 2;
-}
 
 message ChangePublisherSubscriptionRequest {
   int32 user_id = 1;
   int32 plan_id = 2;
-}
-message ChangePublisherSubscriptionResponse {
-  int32 subscription_id = 1;
-  int32 old_plan_id = 2;
 }

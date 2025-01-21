@@ -31,12 +31,12 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NotifyAuthClient interface {
-	JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error)
-	LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*LeavePublicationResponse, error)
-	ChangeSubscriberSubscription(ctx context.Context, in *ChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*ChangeSubscriberSubscriptionResponse, error)
-	ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*ConfirmPublisherSubscriptionResponse, error)
-	RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*RevokePublisherSubscriptionResponse, error)
-	ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*ChangePublisherSubscriptionResponse, error)
+	JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*Response, error)
+	LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*Response, error)
+	ChangeSubscriberSubscription(ctx context.Context, in *ChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
+	ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
+	RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
+	ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type notifyAuthClient struct {
@@ -47,9 +47,9 @@ func NewNotifyAuthClient(cc grpc.ClientConnInterface) NotifyAuthClient {
 	return &notifyAuthClient{cc}
 }
 
-func (c *notifyAuthClient) JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error) {
+func (c *notifyAuthClient) JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(JoinPublicationResponse)
+	out := new(Response)
 	err := c.cc.Invoke(ctx, NotifyAuth_JoinPublication_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -57,9 +57,9 @@ func (c *notifyAuthClient) JoinPublication(ctx context.Context, in *JoinPublicat
 	return out, nil
 }
 
-func (c *notifyAuthClient) LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*LeavePublicationResponse, error) {
+func (c *notifyAuthClient) LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(LeavePublicationResponse)
+	out := new(Response)
 	err := c.cc.Invoke(ctx, NotifyAuth_LeavePublication_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -67,9 +67,9 @@ func (c *notifyAuthClient) LeavePublication(ctx context.Context, in *LeavePublic
 	return out, nil
 }
 
-func (c *notifyAuthClient) ChangeSubscriberSubscription(ctx context.Context, in *ChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*ChangeSubscriberSubscriptionResponse, error) {
+func (c *notifyAuthClient) ChangeSubscriberSubscription(ctx context.Context, in *ChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ChangeSubscriberSubscriptionResponse)
+	out := new(Response)
 	err := c.cc.Invoke(ctx, NotifyAuth_ChangeSubscriberSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -77,9 +77,9 @@ func (c *notifyAuthClient) ChangeSubscriberSubscription(ctx context.Context, in 
 	return out, nil
 }
 
-func (c *notifyAuthClient) ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*ConfirmPublisherSubscriptionResponse, error) {
+func (c *notifyAuthClient) ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ConfirmPublisherSubscriptionResponse)
+	out := new(Response)
 	err := c.cc.Invoke(ctx, NotifyAuth_ConfirmPublisherSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -87,9 +87,9 @@ func (c *notifyAuthClient) ConfirmPublisherSubscription(ctx context.Context, in 
 	return out, nil
 }
 
-func (c *notifyAuthClient) RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*RevokePublisherSubscriptionResponse, error) {
+func (c *notifyAuthClient) RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RevokePublisherSubscriptionResponse)
+	out := new(Response)
 	err := c.cc.Invoke(ctx, NotifyAuth_RevokePublisherSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -97,9 +97,9 @@ func (c *notifyAuthClient) RevokePublisherSubscription(ctx context.Context, in *
 	return out, nil
 }
 
-func (c *notifyAuthClient) ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*ChangePublisherSubscriptionResponse, error) {
+func (c *notifyAuthClient) ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ChangePublisherSubscriptionResponse)
+	out := new(Response)
 	err := c.cc.Invoke(ctx, NotifyAuth_ChangePublisherSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -111,12 +111,12 @@ func (c *notifyAuthClient) ChangePublisherSubscription(ctx context.Context, in *
 // All implementations must embed UnimplementedNotifyAuthServer
 // for forward compatibility.
 type NotifyAuthServer interface {
-	JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error)
-	LeavePublication(context.Context, *LeavePublicationRequest) (*LeavePublicationResponse, error)
-	ChangeSubscriberSubscription(context.Context, *ChangeSubscriberSubscriptionRequest) (*ChangeSubscriberSubscriptionResponse, error)
-	ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error)
-	RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*RevokePublisherSubscriptionResponse, error)
-	ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*ChangePublisherSubscriptionResponse, error)
+	JoinPublication(context.Context, *JoinPublicationRequest) (*Response, error)
+	LeavePublication(context.Context, *LeavePublicationRequest) (*Response, error)
+	ChangeSubscriberSubscription(context.Context, *ChangeSubscriberSubscriptionRequest) (*Response, error)
+	ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*Response, error)
+	RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*Response, error)
+	ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*Response, error)
 	mustEmbedUnimplementedNotifyAuthServer()
 }
 
@@ -127,22 +127,22 @@ type NotifyAuthServer interface {
 // pointer dereference when methods are called.
 type UnimplementedNotifyAuthServer struct{}
 
-func (UnimplementedNotifyAuthServer) JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error) {
+func (UnimplementedNotifyAuthServer) JoinPublication(context.Context, *JoinPublicationRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JoinPublication not implemented")
 }
-func (UnimplementedNotifyAuthServer) LeavePublication(context.Context, *LeavePublicationRequest) (*LeavePublicationResponse, error) {
+func (UnimplementedNotifyAuthServer) LeavePublication(context.Context, *LeavePublicationRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LeavePublication not implemented")
 }
-func (UnimplementedNotifyAuthServer) ChangeSubscriberSubscription(context.Context, *ChangeSubscriberSubscriptionRequest) (*ChangeSubscriberSubscriptionResponse, error) {
+func (UnimplementedNotifyAuthServer) ChangeSubscriberSubscription(context.Context, *ChangeSubscriberSubscriptionRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeSubscriberSubscription not implemented")
 }
-func (UnimplementedNotifyAuthServer) ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error) {
+func (UnimplementedNotifyAuthServer) ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfirmPublisherSubscription not implemented")
 }
-func (UnimplementedNotifyAuthServer) RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*RevokePublisherSubscriptionResponse, error) {
+func (UnimplementedNotifyAuthServer) RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokePublisherSubscription not implemented")
 }
-func (UnimplementedNotifyAuthServer) ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*ChangePublisherSubscriptionResponse, error) {
+func (UnimplementedNotifyAuthServer) ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangePublisherSubscription not implemented")
 }
 func (UnimplementedNotifyAuthServer) mustEmbedUnimplementedNotifyAuthServer() {}
