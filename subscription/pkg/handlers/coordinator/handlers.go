@@ -91,6 +91,7 @@ func (l *CoordinatorListener) RollbackLeavePublication(c context.Context, req *p
 
 	return &pb_coordinator.Response{IsSuccess: true}, nil
 }
+
 func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, req *pb_coordinator.ChangeSubscriberSubscriptionRequest) (*pb_coordinator.ChangeSubscriberSubscriptionResponse, error) {
 	data := &db.ChangeSubscriberSubscriptionRequest{
 		UserId:        int(req.GetUserId()),
@@ -109,6 +110,7 @@ func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, re
 		SubscriptionId: int32(subscriptionId),
 	}, nil
 }
+
 func (l *CoordinatorListener) RollbackChangePublicationPlan(c context.Context, req *pb_coordinator.RollbackChangeSubscriberSubscriptionRequest) (*pb_coordinator.Response, error) {
 	data := &db.RollbackChangeSubscriberSubscriptionRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
@@ -124,6 +126,7 @@ func (l *CoordinatorListener) RollbackChangePublicationPlan(c context.Context, r
 
 	return &pb_coordinator.Response{IsSuccess: true}, nil
 }
+
 func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, req *pb_coordinator.ConfirmPublisherSubscriptionRequest) (*pb_coordinator.ConfirmPublisherSubscriptionResponse, error) {
 	data := &db.ConfirmPublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
@@ -142,6 +145,7 @@ func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, re
 		SubscriptionId: int32(subscriptionId),
 	}, nil
 }
+
 func (l *CoordinatorListener) RollbackConfirmPublisherSubscription(c context.Context, req *pb_coordinator.RollbackConfirmPublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
 	data := &db.RollbackConfirmPublisherSubscriptionRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
@@ -157,6 +161,7 @@ func (l *CoordinatorListener) RollbackConfirmPublisherSubscription(c context.Con
 
 	return &pb_coordinator.Response{IsSuccess: true}, nil
 }
+
 func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req *pb_coordinator.RevokePublisherSubscriptionRequest) (*pb_coordinator.RevokePublisherSubscriptionResponse, error) {
 	data := &db.RevokePublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
@@ -171,10 +176,10 @@ func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req
 	}
 
 	return &pb_coordinator.RevokePublisherSubscriptionResponse{
-		UserId: int32(data.UserId),
 		PlanId: int32(oldPlanId),
 	}, nil
 }
+
 func (l *CoordinatorListener) RollbackRevokePublisherSubscription(c context.Context, req *pb_coordinator.RollbackRevokePublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
 	data := &db.RollbackRevokePublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
@@ -191,6 +196,7 @@ func (l *CoordinatorListener) RollbackRevokePublisherSubscription(c context.Cont
 
 	return &pb_coordinator.Response{IsSuccess: true}, nil
 }
+
 func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req *pb_coordinator.ChangePublisherSubscriptionRequest) (*pb_coordinator.ChangePublisherSubscriptionResponse, error) {
 	data := &db.ChangePublisherSubscriptionRequest{
 		UserId:        int(req.GetUserId()),
@@ -210,6 +216,7 @@ func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req
 		OldPlanId:      int32(oldPlanId),
 	}, nil
 }
+
 func (l *CoordinatorListener) RollbackChangePublisherSubscription(c context.Context, req *pb_coordinator.RollbackChangePublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
 	data := &db.RollbackChangePublisherSubscriptionRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
