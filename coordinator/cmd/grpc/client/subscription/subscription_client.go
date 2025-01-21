@@ -19,8 +19,6 @@ type (
 	oldPublisherSubscriptionPlanId    int
 	subscriptionId                    int
 	oldSubscriberSubscriptionPlanType bool
-	planID                            int32
-	userID                            int32
 )
 
 func InitializeSubscriptionClient(addr string) error {
@@ -62,15 +60,15 @@ func RollbackConfirmPublisherSubscription(SubscriptionId int) error {
 	return err
 }
 
-func RevokePublisherSubscription(userId int) (userID, planID, error) {
+func RevokePublisherSubscription(userId int) (oldPublisherSubscriptionPlanId, error) {
 	response, err := subscriptionClient.RevokePublisherSubscription(context.Background(), &pb_subscription.RevokePublisherSubscriptionRequest{
 		UserId: int32(userId),
 	})
 	if err != nil {
-		return -1, -1, err
+		return -1, err
 	}
 
-	return userID(response.UserId), planID(response.PlanId), nil
+	return oldPublisherSubscriptionPlanId(response.PlanId), nil
 }
 
 func RollbackRevokePublisherSubscription(userID, planID int) error {
@@ -157,7 +155,7 @@ func ChangeSubscriberSubscription(userID, planID int) (subscriptionId, error) {
 	return subscriptionId(response.SubscriptionId), nil
 }
 
-func RollbackChangeSubscriberSubscription(subscriptionID, oldPlanId int) error {
+func RollbackChangeSubscriberSubscription(subscriptionID int) error {
 	_, err := subscriptionClient.RollbackChangeSubscriberSubscription(context.Background(), &pb_subscription.RollbackChangeSubscriberSubscriptionRequest{
 		SubscriptionId: int32(subscriptionID),
 	})

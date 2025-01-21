@@ -77,7 +77,6 @@ message RevokePublisherSubscriptionRequest {
   int32 plan_id = 2;
 }
 message RevokePublisherSubscriptionResponse {
-  int32 user_id = 1;
   int32 plan_id = 2;
 }
 message RollbackRevokePublisherSubscriptionRequest {

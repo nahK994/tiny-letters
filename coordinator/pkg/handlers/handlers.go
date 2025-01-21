@@ -15,7 +15,7 @@ func NewHandler() *Handler {
 }
 
 // HandlePublisherSubscription handles publisher subscription with 2PC
-func (h *Handler) HandlePublisherSubscription(c *gin.Context) {
+func (h *Handler) HandleConfirmPublisherSubscription(c *gin.Context) {
 	var req struct {
 		UserID int `json:"user_id" binding:"required"`
 		PlanID int `json:"plan_id" binding:"required"`
@@ -32,9 +32,9 @@ func (h *Handler) HandlePublisherSubscription(c *gin.Context) {
 		return
 	}
 
-	err = grpc_auth.ConfirmPublisherSubscription(req.UserID, req.PlanID, int(subscriptionId))
+	err = grpc_auth.ConfirmPublisherSubscription(req.UserID, req.PlanID)
 	if err != nil {
-		grpc_subscription.RevokePublisherSubscription(req.UserID)
+		grpc_subscription.RollbackConfirmPublisherSubscription(int(subscriptionId))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}
@@ -43,7 +43,7 @@ func (h *Handler) HandlePublisherSubscription(c *gin.Context) {
 }
 
 // HandlePublisherUnsubscription handles publisher unsubscription with 2PC
-func (h *Handler) HandlePublisherUnsubscription(c *gin.Context) {
+func (h *Handler) HandleRevokePublisherSubscription(c *gin.Context) {
 	var req struct {
 		UserID int `json:"user_id" binding:"required"`
 	}
@@ -53,15 +53,15 @@ func (h *Handler) HandlePublisherUnsubscription(c *gin.Context) {
 		return
 	}
 
-	subscriptionID, err := grpc_subscription.RevokePublisherSubscription(req.UserID)
+	planId, err := grpc_subscription.RevokePublisherSubscription(req.UserID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
 		return
 	}
 
-	err = grpc_auth.RevokePublisherSubscription(req.UserID, int(subscriptionID))
+	err = grpc_auth.RevokePublisherSubscription(req.UserID, int(planId))
 	if err != nil {
-		grpc_subscription.RollbackRevokePublisherSubscription(req.UserID)
+		grpc_subscription.RollbackRevokePublisherSubscription(req.UserID, int(planId))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}
@@ -70,7 +70,7 @@ func (h *Handler) HandlePublisherUnsubscription(c *gin.Context) {
 }
 
 // HandleChangePublisherPlan handles plan changes for publishers with 2PC
-func (h *Handler) HandleChangePublisherPlan(c *gin.Context) {
+func (h *Handler) HandleChangePublisherSubscription(c *gin.Context) {
 	var req struct {
 		UserID int `json:"user_id" binding:"required"`
 		PlanID int `json:"plan_id" binding:"required"`
@@ -87,7 +87,7 @@ func (h *Handler) HandleChangePublisherPlan(c *gin.Context) {
 		return
 	}
 
-	err = grpc_auth.ChangePublisherSubscription(req.UserID, req.PlanID, int(subscriptionID))
+	err = grpc_auth.ChangePublisherSubscription(req.UserID, req.PlanID)
 	if err != nil {
 		grpc_subscription.RollbackChangePublisherSubscription(int(subscriptionID), int(oldPlanId))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
@@ -117,7 +117,7 @@ func (h *Handler) HandleJoinPublication(c *gin.Context) {
 		return
 	}
 
-	err = grpc_auth.JoinPublication(req.UserID, req.PublicationID, int(subscriptionID), req.IsPremium)
+	err = grpc_auth.JoinPublication(req.UserID, req.PublicationID, req.IsPremium)
 	if err != nil {
 		grpc_subscription.RollbackJoinPublication(int(subscriptionID))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
@@ -139,15 +139,15 @@ func (h *Handler) HandleLeavePublication(c *gin.Context) {
 		return
 	}
 
-	subscriptionID, err := grpc_subscription.LeavePublication(req.UserID, req.PublicationID)
+	isPremium, err := grpc_subscription.LeavePublication(req.UserID, req.PublicationID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
 		return
 	}
 
-	err = grpc_auth.LeavePublication(req.UserID, req.PublicationID, int(subscriptionID))
+	err = grpc_auth.LeavePublication(req.UserID, req.PublicationID)
 	if err != nil {
-		grpc_subscription.RollbackLeavePublication(int(subscriptionID))
+		grpc_subscription.RollbackLeavePublication(req.UserID, req.PublicationID, bool(isPremium))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}
@@ -156,7 +156,7 @@ func (h *Handler) HandleLeavePublication(c *gin.Context) {
 }
 
 // HandleChangeSubscriberPlan handles plan changes for subscribers with 2PC
-func (h *Handler) HandleChangeSubscriberPlan(c *gin.Context) {
+func (h *Handler) ChangeSubscriberSubscription(c *gin.Context) {
 	var req struct {
 		UserID        int `json:"user_id" binding:"required"`
 		PublicationID int `json:"publication_id" binding:"required"`
@@ -167,15 +167,15 @@ func (h *Handler) HandleChangeSubscriberPlan(c *gin.Context) {
 		return
 	}
 
-	subscriptionID, err := grpc_subscription.ChangePublicationPlan(req.UserID, req.PublicationID)
+	subscriptionID, err := grpc_subscription.ChangeSubscriberSubscription(req.UserID, req.PublicationID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
 		return
 	}
 
-	err = grpc_auth.ChangePublicationPlan(req.UserID, req.PublicationID, int(subscriptionID))
+	err = grpc_auth.ChangeSubscriberSubscription(req.UserID, req.PublicationID)
 	if err != nil {
-		grpc_subscription.RollbackChangePublicationPlan(int(subscriptionID))
+		grpc_subscription.RollbackChangeSubscriberSubscription(int(subscriptionID))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}

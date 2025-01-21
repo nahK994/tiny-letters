@@ -34,11 +34,10 @@ func ShutdownAuthClient() {
 	}
 }
 
-func ConfirmPublisherSubscription(userID, planID, subscriptionId int) error {
+func ConfirmPublisherSubscription(userID, planID int) error {
 	_, err := authClient.ConfirmPublisherSubscription(context.Background(), &pb_auth.ConfirmPublisherSubscriptionRequest{
-		UserId:         int32(userID),
-		PlanId:         int32(planID),
-		SubscriptionId: int32(subscriptionId),
+		UserId: int32(userID),
+		PlanId: int32(planID),
 	})
 	if err != nil {
 		return err
@@ -47,9 +46,10 @@ func ConfirmPublisherSubscription(userID, planID, subscriptionId int) error {
 	return nil
 }
 
-func RevokePublisherSubscription(userId, subscriptionId int) error {
+func RevokePublisherSubscription(userId, planId int) error {
 	_, err := authClient.RevokePublisherSubscription(context.Background(), &pb_auth.RevokePublisherSubscriptionRequest{
-		SubscriptionId: int32(subscriptionId),
+		UserId: int32(userId),
+		PlanId: int32(planId),
 	})
 	if err != nil {
 		return err
@@ -58,10 +58,10 @@ func RevokePublisherSubscription(userId, subscriptionId int) error {
 	return nil
 }
 
-func ChangePublisherSubscription(userId, planID, subscriptionId int) error {
+func ChangePublisherSubscription(userId, planID int) error {
 	_, err := authClient.ChangePublisherSubscription(context.Background(), &pb_auth.ChangePublisherSubscriptionRequest{
-		PlanId:         int32(planID),
-		SubscriptionId: int32(subscriptionId),
+		PlanId: int32(planID),
+		UserId: int32(userId),
 	})
 	if err != nil {
 		return err
@@ -70,12 +70,11 @@ func ChangePublisherSubscription(userId, planID, subscriptionId int) error {
 	return nil
 }
 
-func JoinPublication(userID, publicationID, subscriptionId int, isPremium bool) error {
+func JoinPublication(userID, publicationID int, isPremium bool) error {
 	_, err := authClient.JoinPublication(context.Background(), &pb_auth.JoinPublicationRequest{
-		UserId:         int32(userID),
-		PublicationId:  int32(publicationID),
-		SubscriptionId: int32(subscriptionId),
-		IsPremium:      isPremium,
+		UserId:        int32(userID),
+		PublicationId: int32(publicationID),
+		IsPremium:     isPremium,
 	})
 	if err != nil {
 		return err
@@ -84,11 +83,10 @@ func JoinPublication(userID, publicationID, subscriptionId int, isPremium bool) 
 	return nil
 }
 
-func LeavePublication(userID, publicationID, subscriptionId int) error {
+func LeavePublication(userID, publicationID int) error {
 	_, err := authClient.LeavePublication(context.Background(), &pb_auth.LeavePublicationRequest{
-		UserId:         int32(userID),
-		PublicationId:  int32(publicationID),
-		SubscriptionId: int32(subscriptionId),
+		UserId:        int32(userID),
+		PublicationId: int32(publicationID),
 	})
 	if err != nil {
 		return err
@@ -97,9 +95,10 @@ func LeavePublication(userID, publicationID, subscriptionId int) error {
 	return nil
 }
 
-func ChangePublicationPlan(userID, publicationID, subscriptionId int) error {
-	_, err := authClient.ChangePublicationPlan(context.Background(), &pb_auth.ChangePublicationPlanRequest{
-		SubscriptionId: int32(subscriptionId),
+func ChangeSubscriberSubscription(userID, publicationID int) error {
+	_, err := authClient.ChangeSubscriberSubscription(context.Background(), &pb_auth.ChangeSubscriberSubscriptionRequest{
+		UserId:        int32(userID),
+		PublicationId: int32(publicationID),
 	})
 	if err != nil {
 		return err
