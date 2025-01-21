@@ -15,13 +15,9 @@ type BaseCommConfig struct {
 	Domain string
 }
 
-type GRPCConfig struct {
-	Subscriber_Auth BaseCommConfig
-}
-
 type CommConfig struct {
 	REST BaseCommConfig
-	GRPC GRPCConfig
+	GRPC BaseCommConfig
 }
 
 type AppConfig struct {
@@ -42,11 +38,9 @@ var appConfig Config = Config{
 				Port:   8000,
 				Domain: domain,
 			},
-			GRPC: GRPCConfig{
-				Subscriber_Auth: BaseCommConfig{
-					Domain: domain,
-					Port:   50000,
-				},
+			GRPC: BaseCommConfig{
+				Domain: domain,
+				Port:   50000,
 			},
 		},
 		JWT_secret:      "secret",
