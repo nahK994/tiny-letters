@@ -7,23 +7,29 @@ type Service struct {
 	Domain string
 }
 
-type Config struct {
-	Service
+type GRPC struct {
 	Subscription Service
 	Auth         Service
 }
 
+type Config struct {
+	GRPC
+	REST Service
+}
+
 var appConfig Config = Config{
-	Subscription: Service{
-		Port:   8001,
-		Domain: localhost,
+	GRPC: GRPC{
+		Subscription: Service{
+			Port:   50002,
+			Domain: localhost,
+		},
+		Auth: Service{
+			Port:   50000,
+			Domain: localhost,
+		},
 	},
-	Auth: Service{
-		Port:   50000,
-		Domain: localhost,
-	},
-	Service: Service{
-		Port:   8003,
+	REST: Service{
+		Port:   8080,
 		Domain: localhost,
 	},
 }

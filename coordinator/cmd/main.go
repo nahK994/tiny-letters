@@ -10,9 +10,9 @@ import (
 
 func main() {
 	config := app.GetConfig()
-	addr := fmt.Sprintf("%s:%d", config.Domain, config.Port)
+	addr := fmt.Sprintf("%s:%d", config.REST.Domain, config.REST.Port)
 
-	if err := grpc_client.IsGRPC_ClientAvailable(addr); err != nil {
+	if err := grpc_client.IsGRPC_ClientAvailable(&config.GRPC); err != nil {
 		log.Fatal(err.Error())
 	}
 	rest_server.Serve(addr)

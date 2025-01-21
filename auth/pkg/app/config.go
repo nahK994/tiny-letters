@@ -49,7 +49,7 @@ var appConfig Config = Config{
 	DB: DBConfig{
 		User:     "user",
 		Password: "password",
-		Name:     "user_db",
+		Name:     "auth_db",
 		Port:     5000,
 		Host:     domain,
 	},
