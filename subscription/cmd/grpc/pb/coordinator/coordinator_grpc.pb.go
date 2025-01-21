@@ -23,8 +23,8 @@ const (
 	CoordinatorListener_RollbackJoinPublication_FullMethodName              = "/CoordinatorListener/RollbackJoinPublication"
 	CoordinatorListener_LeavePublication_FullMethodName                     = "/CoordinatorListener/LeavePublication"
 	CoordinatorListener_RollbackLeavePublication_FullMethodName             = "/CoordinatorListener/RollbackLeavePublication"
-	CoordinatorListener_ChangePublicationPlan_FullMethodName                = "/CoordinatorListener/ChangePublicationPlan"
-	CoordinatorListener_RollbackChangePublicationPlan_FullMethodName        = "/CoordinatorListener/RollbackChangePublicationPlan"
+	CoordinatorListener_ChangeSubscriberSubscription_FullMethodName         = "/CoordinatorListener/ChangeSubscriberSubscription"
+	CoordinatorListener_RollbackChangeSubscriberSubscription_FullMethodName = "/CoordinatorListener/RollbackChangeSubscriberSubscription"
 	CoordinatorListener_ConfirmPublisherSubscription_FullMethodName         = "/CoordinatorListener/ConfirmPublisherSubscription"
 	CoordinatorListener_RollbackConfirmPublisherSubscription_FullMethodName = "/CoordinatorListener/RollbackConfirmPublisherSubscription"
 	CoordinatorListener_RevokePublisherSubscription_FullMethodName          = "/CoordinatorListener/RevokePublisherSubscription"
@@ -41,8 +41,8 @@ type CoordinatorListenerClient interface {
 	RollbackJoinPublication(ctx context.Context, in *RollbackJoinPublicationRequest, opts ...grpc.CallOption) (*Response, error)
 	LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*LeavePublicationResponse, error)
 	RollbackLeavePublication(ctx context.Context, in *RollbackLeavePublicationRequest, opts ...grpc.CallOption) (*Response, error)
-	ChangePublicationPlan(ctx context.Context, in *ChangePublicationPlanRequest, opts ...grpc.CallOption) (*ChangePublicationPlanResponse, error)
-	RollbackChangePublicationPlan(ctx context.Context, in *RollbackChangePublicationPlanRequest, opts ...grpc.CallOption) (*Response, error)
+	ChangeSubscriberSubscription(ctx context.Context, in *ChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*ChangeSubscriberSubscriptionResponse, error)
+	RollbackChangeSubscriberSubscription(ctx context.Context, in *RollbackChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
 	ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*ConfirmPublisherSubscriptionResponse, error)
 	RollbackConfirmPublisherSubscription(ctx context.Context, in *RollbackConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*Response, error)
 	RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*RevokePublisherSubscriptionResponse, error)
@@ -99,20 +99,20 @@ func (c *coordinatorListenerClient) RollbackLeavePublication(ctx context.Context
 	return out, nil
 }
 
-func (c *coordinatorListenerClient) ChangePublicationPlan(ctx context.Context, in *ChangePublicationPlanRequest, opts ...grpc.CallOption) (*ChangePublicationPlanResponse, error) {
+func (c *coordinatorListenerClient) ChangeSubscriberSubscription(ctx context.Context, in *ChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*ChangeSubscriberSubscriptionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ChangePublicationPlanResponse)
-	err := c.cc.Invoke(ctx, CoordinatorListener_ChangePublicationPlan_FullMethodName, in, out, cOpts...)
+	out := new(ChangeSubscriberSubscriptionResponse)
+	err := c.cc.Invoke(ctx, CoordinatorListener_ChangeSubscriberSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *coordinatorListenerClient) RollbackChangePublicationPlan(ctx context.Context, in *RollbackChangePublicationPlanRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *coordinatorListenerClient) RollbackChangeSubscriberSubscription(ctx context.Context, in *RollbackChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, CoordinatorListener_RollbackChangePublicationPlan_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, CoordinatorListener_RollbackChangeSubscriberSubscription_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -187,8 +187,8 @@ type CoordinatorListenerServer interface {
 	RollbackJoinPublication(context.Context, *RollbackJoinPublicationRequest) (*Response, error)
 	LeavePublication(context.Context, *LeavePublicationRequest) (*LeavePublicationResponse, error)
 	RollbackLeavePublication(context.Context, *RollbackLeavePublicationRequest) (*Response, error)
-	ChangePublicationPlan(context.Context, *ChangePublicationPlanRequest) (*ChangePublicationPlanResponse, error)
-	RollbackChangePublicationPlan(context.Context, *RollbackChangePublicationPlanRequest) (*Response, error)
+	ChangeSubscriberSubscription(context.Context, *ChangeSubscriberSubscriptionRequest) (*ChangeSubscriberSubscriptionResponse, error)
+	RollbackChangeSubscriberSubscription(context.Context, *RollbackChangeSubscriberSubscriptionRequest) (*Response, error)
 	ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error)
 	RollbackConfirmPublisherSubscription(context.Context, *RollbackConfirmPublisherSubscriptionRequest) (*Response, error)
 	RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*RevokePublisherSubscriptionResponse, error)
@@ -217,11 +217,11 @@ func (UnimplementedCoordinatorListenerServer) LeavePublication(context.Context, 
 func (UnimplementedCoordinatorListenerServer) RollbackLeavePublication(context.Context, *RollbackLeavePublicationRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RollbackLeavePublication not implemented")
 }
-func (UnimplementedCoordinatorListenerServer) ChangePublicationPlan(context.Context, *ChangePublicationPlanRequest) (*ChangePublicationPlanResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ChangePublicationPlan not implemented")
+func (UnimplementedCoordinatorListenerServer) ChangeSubscriberSubscription(context.Context, *ChangeSubscriberSubscriptionRequest) (*ChangeSubscriberSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeSubscriberSubscription not implemented")
 }
-func (UnimplementedCoordinatorListenerServer) RollbackChangePublicationPlan(context.Context, *RollbackChangePublicationPlanRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RollbackChangePublicationPlan not implemented")
+func (UnimplementedCoordinatorListenerServer) RollbackChangeSubscriberSubscription(context.Context, *RollbackChangeSubscriberSubscriptionRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackChangeSubscriberSubscription not implemented")
 }
 func (UnimplementedCoordinatorListenerServer) ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfirmPublisherSubscription not implemented")
@@ -334,38 +334,38 @@ func _CoordinatorListener_RollbackLeavePublication_Handler(srv interface{}, ctx 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CoordinatorListener_ChangePublicationPlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChangePublicationPlanRequest)
+func _CoordinatorListener_ChangeSubscriberSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangeSubscriberSubscriptionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CoordinatorListenerServer).ChangePublicationPlan(ctx, in)
+		return srv.(CoordinatorListenerServer).ChangeSubscriberSubscription(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CoordinatorListener_ChangePublicationPlan_FullMethodName,
+		FullMethod: CoordinatorListener_ChangeSubscriberSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoordinatorListenerServer).ChangePublicationPlan(ctx, req.(*ChangePublicationPlanRequest))
+		return srv.(CoordinatorListenerServer).ChangeSubscriberSubscription(ctx, req.(*ChangeSubscriberSubscriptionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CoordinatorListener_RollbackChangePublicationPlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RollbackChangePublicationPlanRequest)
+func _CoordinatorListener_RollbackChangeSubscriberSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackChangeSubscriberSubscriptionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CoordinatorListenerServer).RollbackChangePublicationPlan(ctx, in)
+		return srv.(CoordinatorListenerServer).RollbackChangeSubscriberSubscription(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CoordinatorListener_RollbackChangePublicationPlan_FullMethodName,
+		FullMethod: CoordinatorListener_RollbackChangeSubscriberSubscription_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoordinatorListenerServer).RollbackChangePublicationPlan(ctx, req.(*RollbackChangePublicationPlanRequest))
+		return srv.(CoordinatorListenerServer).RollbackChangeSubscriberSubscription(ctx, req.(*RollbackChangeSubscriberSubscriptionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -502,12 +502,12 @@ var CoordinatorListener_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _CoordinatorListener_RollbackLeavePublication_Handler,
 		},
 		{
-			MethodName: "ChangePublicationPlan",
-			Handler:    _CoordinatorListener_ChangePublicationPlan_Handler,
+			MethodName: "ChangeSubscriberSubscription",
+			Handler:    _CoordinatorListener_ChangeSubscriberSubscription_Handler,
 		},
 		{
-			MethodName: "RollbackChangePublicationPlan",
-			Handler:    _CoordinatorListener_RollbackChangePublicationPlan_Handler,
+			MethodName: "RollbackChangeSubscriberSubscription",
+			Handler:    _CoordinatorListener_RollbackChangeSubscriberSubscription_Handler,
 		},
 		{
 			MethodName: "ConfirmPublisherSubscription",
