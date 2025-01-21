@@ -1,13 +1,24 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"sync"
-	"tiny-letter/subscription/cmd/grpc/server"
+	grpc_server "tiny-letter/subscription/cmd/grpc/server"
+	"tiny-letter/subscription/pkg/app"
+	"tiny-letter/subscription/pkg/db"
 )
 
 func main() {
+	config := app.GetConfig()
+	addr := fmt.Sprintf("%s:%d", config.App.Domain, config.App.Port)
+	db, err := db.Init(config.DB)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+
 	var wg sync.WaitGroup
 	wg.Add(1)
-	go server.Serve(&wg)
+	go grpc_server.Serve(&wg, db, addr)
 	wg.Wait()
 }
