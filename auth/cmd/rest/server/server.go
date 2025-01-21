@@ -1,29 +1,20 @@
 package rest_server
 
 import (
-	"fmt"
-	"log"
 	"sync"
-	"tiny-letter/auth/pkg/app"
 	"tiny-letter/auth/pkg/db"
-	"tiny-letter/auth/pkg/handlers"
+	rest_handlers "tiny-letter/auth/pkg/handlers/rest"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Serve(wg *sync.WaitGroup) {
+func Serve(wg *sync.WaitGroup, db *db.Repository, addr string) {
 	defer wg.Done()
-	config := app.GetConfig()
-	db, err := db.Init(config.DB)
-	if err != nil {
-		log.Fatal(err)
-	}
-	h := handlers.NewHandler(db)
+	h := rest_handlers.GetREST_Handlers(db)
 
 	r := gin.Default()
 	r.POST("/login", h.Login)
 	r.POST("/register", h.HandleUserRegistration)
 
-	addr := fmt.Sprintf("%s:%d", config.App.REST.Domain, config.App.REST.Port)
 	r.Run(addr)
 }

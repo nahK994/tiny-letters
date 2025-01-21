@@ -19,139 +19,291 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NotificationListener_PublisherAction_FullMethodName  = "/NotificationListener/PublisherAction"
-	NotificationListener_SubscriberAction_FullMethodName = "/NotificationListener/SubscriberAction"
+	NotifyAuth_JoinPublication_FullMethodName              = "/NotifyAuth/JoinPublication"
+	NotifyAuth_LeavePublication_FullMethodName             = "/NotifyAuth/LeavePublication"
+	NotifyAuth_ChangeSubscriberSubscription_FullMethodName = "/NotifyAuth/ChangeSubscriberSubscription"
+	NotifyAuth_ConfirmPublisherSubscription_FullMethodName = "/NotifyAuth/ConfirmPublisherSubscription"
+	NotifyAuth_RevokePublisherSubscription_FullMethodName  = "/NotifyAuth/RevokePublisherSubscription"
+	NotifyAuth_ChangePublisherSubscription_FullMethodName  = "/NotifyAuth/ChangePublisherSubscription"
 )
 
-// NotificationListenerClient is the client API for NotificationListener service.
+// NotifyAuthClient is the client API for NotifyAuth service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type NotificationListenerClient interface {
-	PublisherAction(ctx context.Context, in *PublisherActionRequest, opts ...grpc.CallOption) (*Response, error)
-	SubscriberAction(ctx context.Context, in *SubscriberActionRequest, opts ...grpc.CallOption) (*Response, error)
+type NotifyAuthClient interface {
+	JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error)
+	LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*LeavePublicationResponse, error)
+	ChangeSubscriberSubscription(ctx context.Context, in *ChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*ChangeSubscriberSubscriptionResponse, error)
+	ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*ConfirmPublisherSubscriptionResponse, error)
+	RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*RevokePublisherSubscriptionResponse, error)
+	ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*ChangePublisherSubscriptionResponse, error)
 }
 
-type notificationListenerClient struct {
+type notifyAuthClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewNotificationListenerClient(cc grpc.ClientConnInterface) NotificationListenerClient {
-	return &notificationListenerClient{cc}
+func NewNotifyAuthClient(cc grpc.ClientConnInterface) NotifyAuthClient {
+	return &notifyAuthClient{cc}
 }
 
-func (c *notificationListenerClient) PublisherAction(ctx context.Context, in *PublisherActionRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifyAuthClient) JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
-	err := c.cc.Invoke(ctx, NotificationListener_PublisherAction_FullMethodName, in, out, cOpts...)
+	out := new(JoinPublicationResponse)
+	err := c.cc.Invoke(ctx, NotifyAuth_JoinPublication_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notificationListenerClient) SubscriberAction(ctx context.Context, in *SubscriberActionRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *notifyAuthClient) LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*LeavePublicationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
-	err := c.cc.Invoke(ctx, NotificationListener_SubscriberAction_FullMethodName, in, out, cOpts...)
+	out := new(LeavePublicationResponse)
+	err := c.cc.Invoke(ctx, NotifyAuth_LeavePublication_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// NotificationListenerServer is the server API for NotificationListener service.
-// All implementations must embed UnimplementedNotificationListenerServer
+func (c *notifyAuthClient) ChangeSubscriberSubscription(ctx context.Context, in *ChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*ChangeSubscriberSubscriptionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ChangeSubscriberSubscriptionResponse)
+	err := c.cc.Invoke(ctx, NotifyAuth_ChangeSubscriberSubscription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifyAuthClient) ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*ConfirmPublisherSubscriptionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ConfirmPublisherSubscriptionResponse)
+	err := c.cc.Invoke(ctx, NotifyAuth_ConfirmPublisherSubscription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifyAuthClient) RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*RevokePublisherSubscriptionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokePublisherSubscriptionResponse)
+	err := c.cc.Invoke(ctx, NotifyAuth_RevokePublisherSubscription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifyAuthClient) ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*ChangePublisherSubscriptionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ChangePublisherSubscriptionResponse)
+	err := c.cc.Invoke(ctx, NotifyAuth_ChangePublisherSubscription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// NotifyAuthServer is the server API for NotifyAuth service.
+// All implementations must embed UnimplementedNotifyAuthServer
 // for forward compatibility.
-type NotificationListenerServer interface {
-	PublisherAction(context.Context, *PublisherActionRequest) (*Response, error)
-	SubscriberAction(context.Context, *SubscriberActionRequest) (*Response, error)
-	mustEmbedUnimplementedNotificationListenerServer()
+type NotifyAuthServer interface {
+	JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error)
+	LeavePublication(context.Context, *LeavePublicationRequest) (*LeavePublicationResponse, error)
+	ChangeSubscriberSubscription(context.Context, *ChangeSubscriberSubscriptionRequest) (*ChangeSubscriberSubscriptionResponse, error)
+	ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error)
+	RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*RevokePublisherSubscriptionResponse, error)
+	ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*ChangePublisherSubscriptionResponse, error)
+	mustEmbedUnimplementedNotifyAuthServer()
 }
 
-// UnimplementedNotificationListenerServer must be embedded to have
+// UnimplementedNotifyAuthServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedNotificationListenerServer struct{}
+type UnimplementedNotifyAuthServer struct{}
 
-func (UnimplementedNotificationListenerServer) PublisherAction(context.Context, *PublisherActionRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PublisherAction not implemented")
+func (UnimplementedNotifyAuthServer) JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method JoinPublication not implemented")
 }
-func (UnimplementedNotificationListenerServer) SubscriberAction(context.Context, *SubscriberActionRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SubscriberAction not implemented")
+func (UnimplementedNotifyAuthServer) LeavePublication(context.Context, *LeavePublicationRequest) (*LeavePublicationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LeavePublication not implemented")
 }
-func (UnimplementedNotificationListenerServer) mustEmbedUnimplementedNotificationListenerServer() {}
-func (UnimplementedNotificationListenerServer) testEmbeddedByValue()                              {}
+func (UnimplementedNotifyAuthServer) ChangeSubscriberSubscription(context.Context, *ChangeSubscriberSubscriptionRequest) (*ChangeSubscriberSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeSubscriberSubscription not implemented")
+}
+func (UnimplementedNotifyAuthServer) ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmPublisherSubscription not implemented")
+}
+func (UnimplementedNotifyAuthServer) RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*RevokePublisherSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokePublisherSubscription not implemented")
+}
+func (UnimplementedNotifyAuthServer) ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*ChangePublisherSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangePublisherSubscription not implemented")
+}
+func (UnimplementedNotifyAuthServer) mustEmbedUnimplementedNotifyAuthServer() {}
+func (UnimplementedNotifyAuthServer) testEmbeddedByValue()                    {}
 
-// UnsafeNotificationListenerServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to NotificationListenerServer will
+// UnsafeNotifyAuthServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to NotifyAuthServer will
 // result in compilation errors.
-type UnsafeNotificationListenerServer interface {
-	mustEmbedUnimplementedNotificationListenerServer()
+type UnsafeNotifyAuthServer interface {
+	mustEmbedUnimplementedNotifyAuthServer()
 }
 
-func RegisterNotificationListenerServer(s grpc.ServiceRegistrar, srv NotificationListenerServer) {
-	// If the following call pancis, it indicates UnimplementedNotificationListenerServer was
+func RegisterNotifyAuthServer(s grpc.ServiceRegistrar, srv NotifyAuthServer) {
+	// If the following call pancis, it indicates UnimplementedNotifyAuthServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&NotificationListener_ServiceDesc, srv)
+	s.RegisterService(&NotifyAuth_ServiceDesc, srv)
 }
 
-func _NotificationListener_PublisherAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PublisherActionRequest)
+func _NotifyAuth_JoinPublication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JoinPublicationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotificationListenerServer).PublisherAction(ctx, in)
+		return srv.(NotifyAuthServer).JoinPublication(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotificationListener_PublisherAction_FullMethodName,
+		FullMethod: NotifyAuth_JoinPublication_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotificationListenerServer).PublisherAction(ctx, req.(*PublisherActionRequest))
+		return srv.(NotifyAuthServer).JoinPublication(ctx, req.(*JoinPublicationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotificationListener_SubscriberAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SubscriberActionRequest)
+func _NotifyAuth_LeavePublication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LeavePublicationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotificationListenerServer).SubscriberAction(ctx, in)
+		return srv.(NotifyAuthServer).LeavePublication(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotificationListener_SubscriberAction_FullMethodName,
+		FullMethod: NotifyAuth_LeavePublication_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotificationListenerServer).SubscriberAction(ctx, req.(*SubscriberActionRequest))
+		return srv.(NotifyAuthServer).LeavePublication(ctx, req.(*LeavePublicationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// NotificationListener_ServiceDesc is the grpc.ServiceDesc for NotificationListener service.
+func _NotifyAuth_ChangeSubscriberSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangeSubscriberSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyAuthServer).ChangeSubscriberSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyAuth_ChangeSubscriberSubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyAuthServer).ChangeSubscriberSubscription(ctx, req.(*ChangeSubscriberSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifyAuth_ConfirmPublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfirmPublisherSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyAuthServer).ConfirmPublisherSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyAuth_ConfirmPublisherSubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyAuthServer).ConfirmPublisherSubscription(ctx, req.(*ConfirmPublisherSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifyAuth_RevokePublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokePublisherSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyAuthServer).RevokePublisherSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyAuth_RevokePublisherSubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyAuthServer).RevokePublisherSubscription(ctx, req.(*RevokePublisherSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifyAuth_ChangePublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangePublisherSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyAuthServer).ChangePublisherSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyAuth_ChangePublisherSubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyAuthServer).ChangePublisherSubscription(ctx, req.(*ChangePublisherSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// NotifyAuth_ServiceDesc is the grpc.ServiceDesc for NotifyAuth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var NotificationListener_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "NotificationListener",
-	HandlerType: (*NotificationListenerServer)(nil),
+var NotifyAuth_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "NotifyAuth",
+	HandlerType: (*NotifyAuthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "PublisherAction",
-			Handler:    _NotificationListener_PublisherAction_Handler,
+			MethodName: "JoinPublication",
+			Handler:    _NotifyAuth_JoinPublication_Handler,
 		},
 		{
-			MethodName: "SubscriberAction",
-			Handler:    _NotificationListener_SubscriberAction_Handler,
+			MethodName: "LeavePublication",
+			Handler:    _NotifyAuth_LeavePublication_Handler,
+		},
+		{
+			MethodName: "ChangeSubscriberSubscription",
+			Handler:    _NotifyAuth_ChangeSubscriberSubscription_Handler,
+		},
+		{
+			MethodName: "ConfirmPublisherSubscription",
+			Handler:    _NotifyAuth_ConfirmPublisherSubscription_Handler,
+		},
+		{
+			MethodName: "RevokePublisherSubscription",
+			Handler:    _NotifyAuth_RevokePublisherSubscription_Handler,
+		},
+		{
+			MethodName: "ChangePublisherSubscription",
+			Handler:    _NotifyAuth_ChangePublisherSubscription_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
