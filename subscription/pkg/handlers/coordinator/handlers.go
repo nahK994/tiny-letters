@@ -70,7 +70,7 @@ func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_coordi
 	}
 
 	return &pb_coordinator.LeavePublicationResponse{
-		IsPremium: isPremium,
+		IsPremium: bool(isPremium),
 	}, nil
 }
 
@@ -124,21 +124,105 @@ func (l *CoordinatorListener) RollbackChangePublicationPlan(c context.Context, r
 
 	return &pb_coordinator.Response{IsSuccess: true}, nil
 }
-func (l *CoordinatorListener) ConfirmPublisherSubscription(context.Context, *pb_coordinator.ConfirmPublisherSubscriptionRequest) (*pb_coordinator.ConfirmPublisherSubscriptionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ConfirmPublisherSubscription not implemented")
+func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, req *pb_coordinator.ConfirmPublisherSubscriptionRequest) (*pb_coordinator.ConfirmPublisherSubscriptionResponse, error) {
+	data := &db.ConfirmPublisherSubscriptionRequest{
+		UserId: int(req.GetUserId()),
+		PlanId: int(req.GetPlanId()),
+	}
+	if err := data.Validate(); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid argument: %v", err)
+	}
+
+	subscriptionId, err := l.db.ConfirmPublisherSubscription(data)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to confirm publisher subscription: %v", err)
+	}
+
+	return &pb_coordinator.ConfirmPublisherSubscriptionResponse{
+		SubscriptionId: int32(subscriptionId),
+	}, nil
 }
-func (l *CoordinatorListener) RollbackConfirmPublisherSubscription(context.Context, *pb_coordinator.RollbackConfirmPublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RollbackConfirmPublisherSubscription not implemented")
+func (l *CoordinatorListener) RollbackConfirmPublisherSubscription(c context.Context, req *pb_coordinator.RollbackConfirmPublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
+	data := &db.RollbackConfirmPublisherSubscriptionRequest{
+		SubscriptionId: int(req.GetSubscriptionId()),
+	}
+	if err := data.Validate(); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid argument: %v", err)
+	}
+
+	err := l.db.RollbackConfirmPublisherSubscription(data)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to rollback confirm publisher subscription: %v", err)
+	}
+
+	return &pb_coordinator.Response{IsSuccess: true}, nil
 }
-func (l *CoordinatorListener) RevokePublisherSubscription(context.Context, *pb_coordinator.RevokePublisherSubscriptionRequest) (*pb_coordinator.RevokePublisherSubscriptionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RevokePublisherSubscription not implemented")
+func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req *pb_coordinator.RevokePublisherSubscriptionRequest) (*pb_coordinator.RevokePublisherSubscriptionResponse, error) {
+	data := &db.RevokePublisherSubscriptionRequest{
+		UserId: int(req.GetUserId()),
+	}
+	if err := data.Validate(); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid argument: %v", err)
+	}
+
+	oldPlanId, err := l.db.RevokePublisherSubscription(data)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to revoke publisher subscription: %v", err)
+	}
+
+	return &pb_coordinator.RevokePublisherSubscriptionResponse{
+		UserId: int32(data.UserId),
+		PlanId: int32(oldPlanId),
+	}, nil
 }
-func (l *CoordinatorListener) RollbackRevokePublisherSubscription(context.Context, *pb_coordinator.RollbackRevokePublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RollbackRevokePublisherSubscription not implemented")
+func (l *CoordinatorListener) RollbackRevokePublisherSubscription(c context.Context, req *pb_coordinator.RollbackRevokePublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
+	data := &db.RollbackRevokePublisherSubscriptionRequest{
+		UserId: int(req.GetUserId()),
+		PlanId: int(req.GetPlanId()),
+	}
+	if err := data.Validate(); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid argument: %v", err)
+	}
+
+	err := l.db.RollbackRevokePublisherSubscription(data)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to rollback revoke publisher subscription: %v", err)
+	}
+
+	return &pb_coordinator.Response{IsSuccess: true}, nil
 }
-func (l *CoordinatorListener) ChangePublisherSubscription(context.Context, *pb_coordinator.ChangePublisherSubscriptionRequest) (*pb_coordinator.ChangePublisherSubscriptionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ChangePublisherSubscription not implemented")
+func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req *pb_coordinator.ChangePublisherSubscriptionRequest) (*pb_coordinator.ChangePublisherSubscriptionResponse, error) {
+	data := &db.ChangePublisherSubscriptionRequest{
+		UserId:        int(req.GetUserId()),
+		ChangedPlanId: int(req.GetPlanId()),
+	}
+	if err := data.Validate(); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid argument: %v", err)
+	}
+
+	subscriptionId, oldPlanId, err := l.db.ChangePublisherSubscription(data)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to change publisher subscription: %v", err)
+	}
+
+	return &pb_coordinator.ChangePublisherSubscriptionResponse{
+		SubscriptionId: int32(subscriptionId),
+		OldPlanId:      int32(oldPlanId),
+	}, nil
 }
-func (l *CoordinatorListener) RollbackChangePublisherSubscription(context.Context, *pb_coordinator.RollbackChangePublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RollbackChangePublisherSubscription not implemented")
+func (l *CoordinatorListener) RollbackChangePublisherSubscription(c context.Context, req *pb_coordinator.RollbackChangePublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
+	data := &db.RollbackChangePublisherSubscriptionRequest{
+		SubscriptionId: int(req.GetSubscriptionId()),
+		OldPlanId:      int(req.GetOldPlanId()),
+	}
+	if err := data.Validate(); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid argument: %v", err)
+	}
+
+	err := l.db.RollbackChangePublisherSubscription(data)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to rollback change publisher subscription: %v", err)
+	}
+
+	return &pb_coordinator.Response{IsSuccess: true}, nil
 }

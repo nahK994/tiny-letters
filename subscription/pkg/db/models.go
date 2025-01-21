@@ -32,21 +32,35 @@ type RollbackChangeSubscriberSubscriptionRequest struct {
 	SubscriptionId int `json:"subscriptionId"`
 }
 
-type ChangePublisherPlanRequest struct {
-	UserId        int `json:"userId"`
-	ChangedPlanId int `json:"changedPlanId"`
-}
-
-type PublisherSubscriptionRequest struct {
+type ConfirmPublisherSubscriptionRequest struct {
 	UserId int `json:"userId"`
 	PlanId int `json:"planId"`
 }
 
-type RevokePublisherSubscribeRequest struct {
+type RollbackConfirmPublisherSubscriptionRequest struct {
+	SubscriptionId int `json:"subscriptionId"`
+}
+
+type RevokePublisherSubscriptionRequest struct {
 	UserId int `json:"userId"`
 }
 
-func (r *PublisherSubscriptionRequest) Validate() error {
+type RollbackRevokePublisherSubscriptionRequest struct {
+	UserId int `json:"userId"`
+	PlanId int `json:"planId"`
+}
+
+type ChangePublisherSubscriptionRequest struct {
+	UserId        int `json:"userId"`
+	ChangedPlanId int `json:"changedPlanId"`
+}
+
+type RollbackChangePublisherSubscriptionRequest struct {
+	SubscriptionId int `json:"subscriptionId"`
+	OldPlanId      int `json:"oldPlanId"`
+}
+
+func (r *ConfirmPublisherSubscriptionRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
 	}
@@ -66,7 +80,7 @@ func (r *JoinPublicationRequest) Validate() error {
 	return nil
 }
 
-func (r *ChangePublisherPlanRequest) Validate() error {
+func (r *ChangePublisherSubscriptionRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
 	}
@@ -86,7 +100,7 @@ func (r *ChangeSubscriberSubscriptionRequest) Validate() error {
 	return nil
 }
 
-func (r *RevokePublisherSubscribeRequest) Validate() error {
+func (r *RevokePublisherSubscriptionRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
 	}
@@ -123,6 +137,33 @@ func (r *RollbackLeavePublicationRequest) Validate() error {
 func (r *RollbackChangeSubscriberSubscriptionRequest) Validate() error {
 	if r.SubscriptionId <= 0 {
 		return errors.New("subscription must be greater than 0")
+	}
+	return nil
+}
+
+func (r *RollbackChangePublisherSubscriptionRequest) Validate() error {
+	if r.SubscriptionId <= 0 {
+		return errors.New("subscription must be greater than 0")
+	}
+	if r.OldPlanId <= 0 {
+		return errors.New("oldPlanId must be greater than 0")
+	}
+	return nil
+}
+
+func (r *RollbackConfirmPublisherSubscriptionRequest) Validate() error {
+	if r.SubscriptionId <= 0 {
+		return errors.New("subscription must be greater than 0")
+	}
+	return nil
+}
+
+func (r *RollbackRevokePublisherSubscriptionRequest) Validate() error {
+	if r.UserId <= 0 {
+		return errors.New("userId must be greater than 0")
+	}
+	if r.PlanId <= 0 {
+		return errors.New("planId must be greater than 0")
 	}
 	return nil
 }
