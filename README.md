@@ -73,7 +73,7 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
    - `id`, `publisher_id`, `created_at`, `updated_at`
 
 5. **Posts**
-   - `id`, `publication_id`, `content`, `is_premium`, `created_at`, `updated_at`
+   - `id`, `publication_id`, `title`, `content`, `is_premium`, `created_at`, `updated_at`
 
 6. **Publisher Subscription Plans**
    - `id`, `name`, `order`
