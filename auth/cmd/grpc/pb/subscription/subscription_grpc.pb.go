@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: subscription.proto
 
-package pb_auth
+package pb_subscription
 
 import (
 	context "context"

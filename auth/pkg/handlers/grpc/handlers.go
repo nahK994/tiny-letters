@@ -2,7 +2,7 @@ package grpc_handlers
 
 import (
 	"context"
-	pb_auth "tiny-letter/auth/cmd/grpc/pb"
+	pb_subscription "tiny-letter/auth/cmd/grpc/pb/subscription"
 	"tiny-letter/auth/pkg/db"
 
 	"google.golang.org/grpc/codes"
@@ -10,7 +10,7 @@ import (
 )
 
 type CoordinatorListener struct {
-	pb_auth.UnimplementedNotifyAuthServer
+	pb_subscription.UnimplementedNotifyAuthServer
 	db *db.Repository
 }
 
@@ -20,7 +20,7 @@ func GetCoordinatorHandlers(db *db.Repository) *CoordinatorListener {
 	}
 }
 
-func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_auth.JoinPublicationRequest) (*pb_auth.Response, error) {
+func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_subscription.JoinPublicationRequest) (*pb_subscription.Response, error) {
 	data := &db.JoinPublicationRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
@@ -34,10 +34,10 @@ func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_auth.Jo
 		return nil, status.Errorf(codes.Internal, "failed to join publication: %v", err)
 	}
 
-	return &pb_auth.Response{IsSuccess: true}, nil
+	return &pb_subscription.Response{IsSuccess: true}, nil
 
 }
-func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_auth.LeavePublicationRequest) (*pb_auth.Response, error) {
+func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_subscription.LeavePublicationRequest) (*pb_subscription.Response, error) {
 	data := &db.LeavePublicationRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
@@ -50,9 +50,9 @@ func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_auth.L
 		return nil, status.Errorf(codes.Internal, "failed to leave publication: %v", err)
 	}
 
-	return &pb_auth.Response{IsSuccess: true}, nil
+	return &pb_subscription.Response{IsSuccess: true}, nil
 }
-func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, req *pb_auth.ChangeSubscriberSubscriptionRequest) (*pb_auth.Response, error) {
+func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, req *pb_subscription.ChangeSubscriberSubscriptionRequest) (*pb_subscription.Response, error) {
 	data := &db.ChangeSubscriberSubscriptionRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
@@ -65,9 +65,9 @@ func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, re
 		return nil, status.Errorf(codes.Internal, "failed to change subscriber subscription: %v", err)
 	}
 
-	return &pb_auth.Response{IsSuccess: true}, nil
+	return &pb_subscription.Response{IsSuccess: true}, nil
 }
-func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, req *pb_auth.ConfirmPublisherSubscriptionRequest) (*pb_auth.Response, error) {
+func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, req *pb_subscription.ConfirmPublisherSubscriptionRequest) (*pb_subscription.Response, error) {
 	data := &db.ConfirmPublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
 		PlanId: int(req.GetPlanId()),
@@ -80,9 +80,9 @@ func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, re
 		return nil, status.Errorf(codes.Internal, "failed to confirm publisher subscription: %v", err)
 	}
 
-	return &pb_auth.Response{IsSuccess: true}, nil
+	return &pb_subscription.Response{IsSuccess: true}, nil
 }
-func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req *pb_auth.RevokePublisherSubscriptionRequest) (*pb_auth.Response, error) {
+func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req *pb_subscription.RevokePublisherSubscriptionRequest) (*pb_subscription.Response, error) {
 	data := &db.RevokePublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
 	}
@@ -94,9 +94,9 @@ func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req
 		return nil, status.Errorf(codes.Internal, "failed to revoke publisher subscription: %v", err)
 	}
 
-	return &pb_auth.Response{IsSuccess: true}, nil
+	return &pb_subscription.Response{IsSuccess: true}, nil
 }
-func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req *pb_auth.ChangePublisherSubscriptionRequest) (*pb_auth.Response, error) {
+func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req *pb_subscription.ChangePublisherSubscriptionRequest) (*pb_subscription.Response, error) {
 	data := &db.ChangePublisherSubscriptionRequest{
 		UserId:        int(req.GetUserId()),
 		ChangedPlanId: int(req.GetPlanId()),
@@ -109,5 +109,5 @@ func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req
 		return nil, status.Errorf(codes.Internal, "failed to change publisher subscription: %v", err)
 	}
 
-	return &pb_auth.Response{IsSuccess: true}, nil
+	return &pb_subscription.Response{IsSuccess: true}, nil
 }

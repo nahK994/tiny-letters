@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "./subscription;pb_auth";
+option go_package = "./subscription;pb_subscription";
 
 service NotifyAuth {
   rpc JoinPublication (JoinPublicationRequest) returns (Response);
