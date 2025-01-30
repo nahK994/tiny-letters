@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"tiny-letter/content/pkg/app"
+
+	_ "github.com/lib/pq"
 )
 
 type Repository struct {
