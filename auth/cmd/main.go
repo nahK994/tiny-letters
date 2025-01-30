@@ -12,8 +12,8 @@ import (
 
 func main() {
 	config := app.GetConfig()
-	grpcAddr := fmt.Sprintf("%s:%d", config.App.GRPC.Domain, config.App.GRPC.Port)
-	restAddr := fmt.Sprintf("%s:%d", config.App.REST.Domain, config.App.REST.Port)
+	grpcAddr := fmt.Sprintf("%s:%d", config.GRPC.Domain, config.GRPC.Port)
+	restAddr := fmt.Sprintf("%s:%d", config.REST.Domain, config.REST.Port)
 	db, err := db.Init(config.DB)
 	if err != nil {
 		log.Fatal(err)
