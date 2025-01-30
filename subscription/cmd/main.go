@@ -11,7 +11,7 @@ import (
 
 func main() {
 	config := app.GetConfig()
-	addr := fmt.Sprintf("%s:%d", config.App.Domain, config.App.Port)
+	addr := fmt.Sprintf("%s:%d", config.GRPC.Domain, config.GRPC.Port)
 	db, err := db.Init(config.DB)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)

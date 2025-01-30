@@ -10,24 +10,30 @@ type DBConfig struct {
 	Port     int
 }
 
+type CommConfig struct {
+	Domain string
+	Port   int
+}
+
 type AppConfig struct {
-	Domain          string
-	Port            int
 	JWT_secret      string
 	JWT_exp_minutes int
 }
 
 type Config struct {
-	App AppConfig
-	DB  DBConfig
+	App  AppConfig
+	DB   DBConfig
+	GRPC CommConfig
 }
 
 var appConfig Config = Config{
 	App: AppConfig{
-		Domain:          domain,
-		Port:            50002,
 		JWT_secret:      "secret",
 		JWT_exp_minutes: 60,
+	},
+	GRPC: CommConfig{
+		Domain: domain,
+		Port:   50002,
 	},
 	DB: DBConfig{
 		User:     "user",
