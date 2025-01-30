@@ -2,7 +2,7 @@ package app
 
 const domain = "localhost"
 
-type DBConfig struct {
+type DB_config struct {
 	User     string
 	Password string
 	Host     string
@@ -22,7 +22,7 @@ type AppConfig struct {
 
 type Config struct {
 	App  AppConfig
-	DB   DBConfig
+	DB   DB_config
 	REST CommConfig
 	GRPC CommConfig
 }
@@ -40,7 +40,7 @@ var appConfig Config = Config{
 		Domain: domain,
 		Port:   50000,
 	},
-	DB: DBConfig{
+	DB: DB_config{
 		User:     "user",
 		Password: "password",
 		Name:     "auth_db",

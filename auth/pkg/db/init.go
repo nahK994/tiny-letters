@@ -86,7 +86,7 @@ func createTables(db *sql.DB) error {
 	return nil
 }
 
-func Init(dbConfig app.DBConfig) (*Repository, error) {
+func Init(dbConfig app.DB_config) (*Repository, error) {
 	var err error
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
 	db, err := sql.Open("postgres", connStr)
