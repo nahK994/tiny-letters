@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v3.21.12
-// source: auth.proto
+// source: subscription.proto
 
 package pb_auth
 
@@ -307,5 +307,5 @@ var NotifyAuth_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "auth.proto",
+	Metadata: "subscription.proto",
 }
