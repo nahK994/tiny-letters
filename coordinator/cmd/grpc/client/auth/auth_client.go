@@ -1,4 +1,4 @@
-package grpc_auth
+package auth
 
 import (
 	"context"

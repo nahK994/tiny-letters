@@ -2,8 +2,8 @@ package handler
 
 import (
 	"net/http"
-	grpc_auth "tiny-letter/coordinator/cmd/grpc/client/auth"
-	grpc_subscription "tiny-letter/coordinator/cmd/grpc/client/subscription"
+	"tiny-letter/coordinator/cmd/grpc/client/auth"
+	"tiny-letter/coordinator/cmd/grpc/client/subscription"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,15 +26,15 @@ func (h *Handler) HandleConfirmPublisherSubscription(c *gin.Context) {
 		return
 	}
 
-	subscriptionId, err := grpc_subscription.ConfirmPublisherSubscription(req.UserID, req.PlanID)
+	subscriptionId, err := subscription.ConfirmPublisherSubscription(req.UserID, req.PlanID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
 		return
 	}
 
-	err = grpc_auth.ConfirmPublisherSubscription(req.UserID, req.PlanID)
+	err = auth.ConfirmPublisherSubscription(req.UserID, req.PlanID)
 	if err != nil {
-		grpc_subscription.RollbackConfirmPublisherSubscription(int(subscriptionId))
+		subscription.RollbackConfirmPublisherSubscription(int(subscriptionId))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}
@@ -53,15 +53,15 @@ func (h *Handler) HandleRevokePublisherSubscription(c *gin.Context) {
 		return
 	}
 
-	planId, err := grpc_subscription.RevokePublisherSubscription(req.UserID)
+	planId, err := subscription.RevokePublisherSubscription(req.UserID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
 		return
 	}
 
-	err = grpc_auth.RevokePublisherSubscription(req.UserID, int(planId))
+	err = auth.RevokePublisherSubscription(req.UserID, int(planId))
 	if err != nil {
-		grpc_subscription.RollbackRevokePublisherSubscription(req.UserID, int(planId))
+		subscription.RollbackRevokePublisherSubscription(req.UserID, int(planId))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}
@@ -81,15 +81,15 @@ func (h *Handler) HandleChangePublisherSubscription(c *gin.Context) {
 		return
 	}
 
-	subscriptionID, oldPlanId, err := grpc_subscription.ChangePublisherSubscription(req.UserID, req.PlanID)
+	subscriptionID, oldPlanId, err := subscription.ChangePublisherSubscription(req.UserID, req.PlanID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
 		return
 	}
 
-	err = grpc_auth.ChangePublisherSubscription(req.UserID, req.PlanID)
+	err = auth.ChangePublisherSubscription(req.UserID, req.PlanID)
 	if err != nil {
-		grpc_subscription.RollbackChangePublisherSubscription(int(subscriptionID), int(oldPlanId))
+		subscription.RollbackChangePublisherSubscription(int(subscriptionID), int(oldPlanId))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}
@@ -111,15 +111,15 @@ func (h *Handler) HandleJoinPublication(c *gin.Context) {
 		return
 	}
 
-	subscriptionID, err := grpc_subscription.JoinPublication(req.UserID, req.PublicationID, req.IsPremium)
+	subscriptionID, err := subscription.JoinPublication(req.UserID, req.PublicationID, req.IsPremium)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
 		return
 	}
 
-	err = grpc_auth.JoinPublication(req.UserID, req.PublicationID, req.IsPremium)
+	err = auth.JoinPublication(req.UserID, req.PublicationID, req.IsPremium)
 	if err != nil {
-		grpc_subscription.RollbackJoinPublication(int(subscriptionID))
+		subscription.RollbackJoinPublication(int(subscriptionID))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}
@@ -139,15 +139,15 @@ func (h *Handler) HandleLeavePublication(c *gin.Context) {
 		return
 	}
 
-	isPremium, err := grpc_subscription.LeavePublication(req.UserID, req.PublicationID)
+	isPremium, err := subscription.LeavePublication(req.UserID, req.PublicationID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
 		return
 	}
 
-	err = grpc_auth.LeavePublication(req.UserID, req.PublicationID)
+	err = auth.LeavePublication(req.UserID, req.PublicationID)
 	if err != nil {
-		grpc_subscription.RollbackLeavePublication(req.UserID, req.PublicationID, bool(isPremium))
+		subscription.RollbackLeavePublication(req.UserID, req.PublicationID, bool(isPremium))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}
@@ -167,15 +167,15 @@ func (h *Handler) ChangeSubscriberSubscription(c *gin.Context) {
 		return
 	}
 
-	subscriptionID, err := grpc_subscription.ChangeSubscriberSubscription(req.UserID, req.PublicationID)
+	subscriptionID, err := subscription.ChangeSubscriberSubscription(req.UserID, req.PublicationID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
 		return
 	}
 
-	err = grpc_auth.ChangeSubscriberSubscription(req.UserID, req.PublicationID)
+	err = auth.ChangeSubscriberSubscription(req.UserID, req.PublicationID)
 	if err != nil {
-		grpc_subscription.RollbackChangeSubscriberSubscription(int(subscriptionID))
+		subscription.RollbackChangeSubscriberSubscription(int(subscriptionID))
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}

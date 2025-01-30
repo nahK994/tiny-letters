@@ -1,4 +1,4 @@
-package grpc_subscription
+package subscription
 
 import (
 	"context"
