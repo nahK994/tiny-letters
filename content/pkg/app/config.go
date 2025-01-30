@@ -5,9 +5,8 @@ const domain = "localhost"
 type DB_config struct {
 	User     string
 	Password string
-	Host     string
 	Name     string
-	Port     int
+	CommConfig
 }
 
 type AppConfig struct {
@@ -50,8 +49,10 @@ var appConfig Config = Config{
 		User:     "user",
 		Password: "password",
 		Name:     "content_db",
-		Port:     5001,
-		Host:     domain,
+		CommConfig: CommConfig{
+			Domain: domain,
+			Port:   5001,
+		},
 	},
 }
 
