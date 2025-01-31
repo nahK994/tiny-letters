@@ -8,7 +8,7 @@ import (
 
 func IsGRPC_ClientAvailable(grpcConfig *app.GRPC_config) error {
 	subsAddr := fmt.Sprintf("%s:%d", grpcConfig.Subscription.Domain, grpcConfig.Subscription.Port)
-	if subsConnErr := subscription.InitializeAuthClient(subsAddr); subsConnErr != nil {
+	if subsConnErr := subscription.InitializeSubscriptionClient(subsAddr); subsConnErr != nil {
 		return subsConnErr
 	}
 
