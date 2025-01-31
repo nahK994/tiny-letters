@@ -170,3 +170,14 @@ func (r *Repository) RollbackChangeSubscriberPlan(data *RollbackChangeSubscriber
 	}
 	return nil
 }
+
+func (r *Repository) IsAuthorizedPublisher(data *IsAuthorizedPublisherRequest) (bool, error) {
+	query := `
+	SELECT EXISTS(SELECT 1 FROM publishers WHERE user_id = $1 AND publication_id = $2)
+	`
+	var exists bool
+	if err := r.DB.QueryRow(query, data.UserId, data.PublicationId).Scan(&exists); err != nil {
+		return false, fmt.Errorf("failed to check if user is authorized publisher: %w", err)
+	}
+	return exists, nil
+}

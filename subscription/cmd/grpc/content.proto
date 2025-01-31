@@ -1,4 +1,15 @@
 syntax = "proto3";
 option go_package = "./content;pb_content";
 
-service ContentListener {}
+service ContentListener {
+  rpc IsAuthorizedPublisher(IsAuthorizedPublisherRequest) returns (Response);
+}
+
+message Response {
+  bool is_authorized = 1;
+}
+
+message IsAuthorizedPublisherRequest {
+  int32 publication_id = 1;
+  int32 user_id = 2;
+}

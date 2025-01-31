@@ -60,6 +60,11 @@ type RollbackChangePublisherSubscriptionRequest struct {
 	OldPlanId      int `json:"oldPlanId"`
 }
 
+type IsAuthorizedPublisherRequest struct {
+	UserId        int `json:"userId"`
+	PublicationId int `json:"publicationId"`
+}
+
 func (r *ConfirmPublisherSubscriptionRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
@@ -164,6 +169,16 @@ func (r *RollbackRevokePublisherSubscriptionRequest) Validate() error {
 	}
 	if r.PlanId <= 0 {
 		return errors.New("planId must be greater than 0")
+	}
+	return nil
+}
+
+func (r *IsAuthorizedPublisherRequest) Validate() error {
+	if r.UserId <= 0 {
+		return errors.New("userId must be greater than 0")
+	}
+	if r.PublicationId <= 0 {
+		return errors.New("publicationId must be greater than 0")
 	}
 	return nil
 }

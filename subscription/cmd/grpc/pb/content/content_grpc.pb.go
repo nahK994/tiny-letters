@@ -7,7 +7,10 @@
 package pb_content
 
 import (
+	context "context"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -15,10 +18,15 @@ import (
 // Requires gRPC-Go v1.64.0 or later.
 const _ = grpc.SupportPackageIsVersion9
 
+const (
+	ContentListener_IsAuthorizedPublisher_FullMethodName = "/ContentListener/IsAuthorizedPublisher"
+)
+
 // ContentListenerClient is the client API for ContentListener service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ContentListenerClient interface {
+	IsAuthorizedPublisher(ctx context.Context, in *IsAuthorizedPublisherRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type contentListenerClient struct {
@@ -29,10 +37,21 @@ func NewContentListenerClient(cc grpc.ClientConnInterface) ContentListenerClient
 	return &contentListenerClient{cc}
 }
 
+func (c *contentListenerClient) IsAuthorizedPublisher(ctx context.Context, in *IsAuthorizedPublisherRequest, opts ...grpc.CallOption) (*Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Response)
+	err := c.cc.Invoke(ctx, ContentListener_IsAuthorizedPublisher_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ContentListenerServer is the server API for ContentListener service.
 // All implementations must embed UnimplementedContentListenerServer
 // for forward compatibility.
 type ContentListenerServer interface {
+	IsAuthorizedPublisher(context.Context, *IsAuthorizedPublisherRequest) (*Response, error)
 	mustEmbedUnimplementedContentListenerServer()
 }
 
@@ -43,6 +62,9 @@ type ContentListenerServer interface {
 // pointer dereference when methods are called.
 type UnimplementedContentListenerServer struct{}
 
+func (UnimplementedContentListenerServer) IsAuthorizedPublisher(context.Context, *IsAuthorizedPublisherRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsAuthorizedPublisher not implemented")
+}
 func (UnimplementedContentListenerServer) mustEmbedUnimplementedContentListenerServer() {}
 func (UnimplementedContentListenerServer) testEmbeddedByValue()                         {}
 
@@ -64,13 +86,36 @@ func RegisterContentListenerServer(s grpc.ServiceRegistrar, srv ContentListenerS
 	s.RegisterService(&ContentListener_ServiceDesc, srv)
 }
 
+func _ContentListener_IsAuthorizedPublisher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IsAuthorizedPublisherRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentListenerServer).IsAuthorizedPublisher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ContentListener_IsAuthorizedPublisher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentListenerServer).IsAuthorizedPublisher(ctx, req.(*IsAuthorizedPublisherRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ContentListener_ServiceDesc is the grpc.ServiceDesc for ContentListener service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ContentListener_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "ContentListener",
 	HandlerType: (*ContentListenerServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "content.proto",
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IsAuthorizedPublisher",
+			Handler:    _ContentListener_IsAuthorizedPublisher_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "content.proto",
 }
