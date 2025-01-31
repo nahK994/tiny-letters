@@ -36,5 +36,5 @@ func CheckIsAuthorizedPublisher(userID, publicationID int) (bool, error) {
 		return false, err
 	}
 
-	return response.IsSuccess, nil
+	return response.IsAuthorized, nil
 }

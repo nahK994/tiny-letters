@@ -7,7 +7,7 @@ service AskSubscription {
 }
 
 message Response {
-  bool is_success = 1;
+  bool is_authorized = 1;
 }
 
 message IsAuthorizedPublisherRequest {
