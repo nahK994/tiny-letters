@@ -43,3 +43,10 @@ services:
       PGADMIN_LISTEN_PORT: 80
     ports:
       - 15431:80
+
+  kafka:
+    container_name: kafka
+    image: apache/kafka
+    restart: always
+    ports:
+      - 9092:9092 
