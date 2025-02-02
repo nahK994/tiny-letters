@@ -40,7 +40,7 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 
 ### **Diagram**
 
-![Architecture Diagram](./architecture-diagram.jpg "Architecture Diagram")
+![Architecture Diagram](./architectural_diagram.jpg "Architecture Diagram")
 
 ---
 
