@@ -2,6 +2,7 @@ package mq_consumer
 
 import (
 	"fmt"
+	"sync"
 	"tiny-letter/notification/pkg/app"
 	"tiny-letter/notification/pkg/handlers"
 
@@ -53,7 +54,8 @@ func ConnectConsumer() (ConfirmationConsumer, PublicationConsumer, error) {
 	return confirmationConsumer, publicationConsumer, nil
 }
 
-func (consumer *Consumer) StartConsuming() {
+func (consumer *Consumer) StartConsuming(wg *sync.WaitGroup) {
+	defer wg.Done()
 	for {
 		select {
 		case err := <-consumer.confirmationConsumer.Errors():
