@@ -65,6 +65,10 @@ type IsAuthorizedPublisherRequest struct {
 	PublicationId int `json:"publicationId"`
 }
 
+type GetContentSubscribersRequest struct {
+	PublicationId int `json:"publicationId"`
+}
+
 func (r *ConfirmPublisherSubscriptionRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
@@ -177,6 +181,13 @@ func (r *IsAuthorizedPublisherRequest) Validate() error {
 	if r.UserId <= 0 {
 		return errors.New("userId must be greater than 0")
 	}
+	if r.PublicationId <= 0 {
+		return errors.New("publicationId must be greater than 0")
+	}
+	return nil
+}
+
+func (r *GetContentSubscribersRequest) Validate() error {
 	if r.PublicationId <= 0 {
 		return errors.New("publicationId must be greater than 0")
 	}
