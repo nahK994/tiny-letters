@@ -2,7 +2,11 @@ module tiny-letter/notification
 
 go 1.23.0
 
-require github.com/IBM/sarama v1.45.0
+require (
+	github.com/IBM/sarama v1.45.0
+	google.golang.org/grpc v1.70.0
+	google.golang.org/protobuf v1.36.4
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -23,4 +27,7 @@ require (
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	golang.org/x/crypto v0.32.0 // indirect
 	golang.org/x/net v0.34.0 // indirect
+	golang.org/x/sys v0.29.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20241202173237-19429a94021a // indirect
 )
