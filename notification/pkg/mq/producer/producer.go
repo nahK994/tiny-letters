@@ -22,7 +22,7 @@ func NewProducer() (*Producer, error) {
 
 func connectProducer() (sarama.SyncProducer, error) {
 	appConfig := app.GetConfig()
-	broker := fmt.Sprintf("%s:%d", appConfig.Domain, appConfig.Port)
+	broker := fmt.Sprintf("%s:%d", appConfig.MQ.Domain, appConfig.MQ.Port)
 
 	mqConfig := sarama.NewConfig()
 	mqConfig.Producer.Return.Successes = appConfig.Producer.IsProducerReturnSuccess

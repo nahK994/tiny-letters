@@ -6,8 +6,8 @@ type (
 )
 
 type PublicationMessage struct {
-	PublisherId int
-	Content     string
+	PublicationId int
+	Content       string
 }
 
 type PublicationBroadcastMessage struct {

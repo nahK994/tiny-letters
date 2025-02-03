@@ -35,7 +35,7 @@ func NewConsumer(handler *handlers.Handler) (*Consumer, error) {
 
 func ConnectConsumer() (ConfirmationConsumer, PublicationConsumer, error) {
 	appConfig := app.GetConfig()
-	broker := fmt.Sprintf("%s:%d", appConfig.Domain, appConfig.Port)
+	broker := fmt.Sprintf("%s:%d", appConfig.MQ.Domain, appConfig.MQ.Port)
 	mqConfig := sarama.NewConfig()
 	mqConfig.Consumer.Return.Errors = appConfig.Consumer.IsConsumerReturnError
 	worker, err := sarama.NewConsumer([]string{broker}, mqConfig)

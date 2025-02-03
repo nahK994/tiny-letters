@@ -29,15 +29,21 @@ type Producer struct {
 }
 
 type Config struct {
-	Port     int
-	Domain   string
+	MQ       CommConfig
+	GRPC     CommConfig
 	Consumer Consumer
 	Producer Producer
 }
 
 var appConfig Config = Config{
-	Domain: localhost,
-	Port:   9092,
+	MQ: CommConfig{
+		Domain: localhost,
+		Port:   9092,
+	},
+	GRPC: CommConfig{
+		Port:   50002,
+		Domain: localhost,
+	},
 	Consumer: Consumer{
 		IsConsumerReturnError: true,
 		Confirmation: QueueConfig{
