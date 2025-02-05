@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "./subscription;pb_subscription";
+option go_package = "/auth_manager;pb_auth_manager";
 
-service NotifyAuth {
+service AuthManager {
   rpc JoinPublication (JoinPublicationRequest) returns (Response);
   rpc LeavePublication (LeavePublicationRequest) returns (Response);
   rpc ChangeSubscriberSubscription (ChangeSubscriberSubscriptionRequest) returns (Response);

@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 	"sync"
-	pb_subscription "tiny-letter/auth/cmd/grpc/pb/subscription"
+	pb_auth_manager "tiny-letter/auth/cmd/grpc/pb/auth_manager"
 	"tiny-letter/auth/pkg/db"
 	grpc_handlers "tiny-letter/auth/pkg/handlers/grpc"
 
@@ -15,7 +15,7 @@ import (
 func Serve(wg *sync.WaitGroup, db *db.Repository, addr string) {
 	defer wg.Done()
 	s := grpc.NewServer()
-	pb_subscription.RegisterNotifyAuthServer(s, grpc_handlers.GetCoordinatorHandlers(db))
+	pb_auth_manager.RegisterAuthManagerServer(s, grpc_handlers.GetCoordinatorHandlers(db))
 
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {

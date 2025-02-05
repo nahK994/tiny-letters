@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-	pb_auth "tiny-letter/coordinator/cmd/grpc/pb/auth"
+	pb_auth_manager "tiny-letter/coordinator/cmd/grpc/pb/auth_manager"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -12,7 +12,7 @@ import (
 
 var (
 	authConn   *grpc.ClientConn
-	authClient pb_auth.NotifyAuthClient
+	authClient pb_auth_manager.AuthManagerClient
 )
 
 func InitializeAuthClient(addr string) error {
@@ -22,7 +22,7 @@ func InitializeAuthClient(addr string) error {
 		return fmt.Errorf("failed to connect to Subscription service: %v", err)
 	}
 
-	authClient = pb_auth.NewNotifyAuthClient(authConn)
+	authClient = pb_auth_manager.NewAuthManagerClient(authConn)
 	log.Println("Subscription gRPC client successfully initialized.")
 	return nil
 }
@@ -35,7 +35,7 @@ func ShutdownAuthClient() {
 }
 
 func ConfirmPublisherSubscription(userID, planID int) error {
-	_, err := authClient.ConfirmPublisherSubscription(context.Background(), &pb_auth.ConfirmPublisherSubscriptionRequest{
+	_, err := authClient.ConfirmPublisherSubscription(context.Background(), &pb_auth_manager.ConfirmPublisherSubscriptionRequest{
 		UserId: int32(userID),
 		PlanId: int32(planID),
 	})
@@ -47,7 +47,7 @@ func ConfirmPublisherSubscription(userID, planID int) error {
 }
 
 func RevokePublisherSubscription(userId, planId int) error {
-	_, err := authClient.RevokePublisherSubscription(context.Background(), &pb_auth.RevokePublisherSubscriptionRequest{
+	_, err := authClient.RevokePublisherSubscription(context.Background(), &pb_auth_manager.RevokePublisherSubscriptionRequest{
 		UserId: int32(userId),
 		PlanId: int32(planId),
 	})
@@ -59,7 +59,7 @@ func RevokePublisherSubscription(userId, planId int) error {
 }
 
 func ChangePublisherSubscription(userId, planID int) error {
-	_, err := authClient.ChangePublisherSubscription(context.Background(), &pb_auth.ChangePublisherSubscriptionRequest{
+	_, err := authClient.ChangePublisherSubscription(context.Background(), &pb_auth_manager.ChangePublisherSubscriptionRequest{
 		PlanId: int32(planID),
 		UserId: int32(userId),
 	})
@@ -71,7 +71,7 @@ func ChangePublisherSubscription(userId, planID int) error {
 }
 
 func JoinPublication(userID, publicationID int, isPremium bool) error {
-	_, err := authClient.JoinPublication(context.Background(), &pb_auth.JoinPublicationRequest{
+	_, err := authClient.JoinPublication(context.Background(), &pb_auth_manager.JoinPublicationRequest{
 		UserId:        int32(userID),
 		PublicationId: int32(publicationID),
 		IsPremium:     isPremium,
@@ -84,7 +84,7 @@ func JoinPublication(userID, publicationID int, isPremium bool) error {
 }
 
 func LeavePublication(userID, publicationID int) error {
-	_, err := authClient.LeavePublication(context.Background(), &pb_auth.LeavePublicationRequest{
+	_, err := authClient.LeavePublication(context.Background(), &pb_auth_manager.LeavePublicationRequest{
 		UserId:        int32(userID),
 		PublicationId: int32(publicationID),
 	})
@@ -96,7 +96,7 @@ func LeavePublication(userID, publicationID int) error {
 }
 
 func ChangeSubscriberSubscription(userID, publicationID int) error {
-	_, err := authClient.ChangeSubscriberSubscription(context.Background(), &pb_auth.ChangeSubscriberSubscriptionRequest{
+	_, err := authClient.ChangeSubscriberSubscription(context.Background(), &pb_auth_manager.ChangeSubscriberSubscriptionRequest{
 		UserId:        int32(userID),
 		PublicationId: int32(publicationID),
 	})
