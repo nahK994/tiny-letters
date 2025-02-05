@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-	pb_subscription "tiny-letter/content/cmd/grpc/pb/subscription"
+	pb_publication_authorization "tiny-letter/content/cmd/grpc/pb/publication_authorization"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -12,7 +12,7 @@ import (
 
 var (
 	subscriptionConn   *grpc.ClientConn
-	subscriptionClient pb_subscription.AskSubscriptionClient
+	subscriptionClient pb_publication_authorization.PublicationAuthorizationClient
 )
 
 func InitializeSubscriptionClient(addr string) error {
@@ -22,13 +22,13 @@ func InitializeSubscriptionClient(addr string) error {
 		return fmt.Errorf("failed to connect to Subscription service: %v", err)
 	}
 
-	subscriptionClient = pb_subscription.NewAskSubscriptionClient(subscriptionConn)
+	subscriptionClient = pb_publication_authorization.NewPublicationAuthorizationClient(subscriptionConn)
 	log.Println("Subscription gRPC client successfully initialized.")
 	return nil
 }
 
 func CheckIsAuthorizedPublisher(userID, publicationID int) (bool, error) {
-	response, err := subscriptionClient.IsAuthorizedPublisher(context.Background(), &pb_subscription.IsAuthorizedPublisherRequest{
+	response, err := subscriptionClient.IsAuthorizedPublisher(context.Background(), &pb_publication_authorization.IsAuthorizedPublisherRequest{
 		PublicationId: int32(publicationID),
 		UserId:        int32(userID),
 	})

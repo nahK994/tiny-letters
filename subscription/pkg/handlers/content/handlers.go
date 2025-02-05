@@ -2,12 +2,12 @@ package content_handlers
 
 import (
 	"context"
-	pb_content "tiny-letter/subscription/cmd/grpc/pb/content"
+	pb_publication_authorization "tiny-letter/subscription/cmd/grpc/pb/publication_authorization"
 	"tiny-letter/subscription/pkg/db"
 )
 
 type ContentListener struct {
-	pb_content.UnimplementedContentListenerServer
+	pb_publication_authorization.UnimplementedPublicationAuthorizationServer
 	db *db.Repository
 }
 
@@ -17,7 +17,7 @@ func GetContentHandlers(db *db.Repository) *ContentListener {
 	}
 }
 
-func (l *ContentListener) IsAuthorizedPublisher(c context.Context, req *pb_content.IsAuthorizedPublisherRequest) (*pb_content.Response, error) {
+func (l *ContentListener) IsAuthorizedPublisher(c context.Context, req *pb_publication_authorization.IsAuthorizedPublisherRequest) (*pb_publication_authorization.Response, error) {
 	data := &db.IsAuthorizedPublisherRequest{
 		UserId:        int(req.UserId),
 		PublicationId: int(req.PublicationId),
@@ -31,5 +31,5 @@ func (l *ContentListener) IsAuthorizedPublisher(c context.Context, req *pb_conte
 		return nil, err
 	}
 
-	return &pb_content.Response{IsAuthorized: authorized}, nil
+	return &pb_publication_authorization.Response{IsAuthorized: authorized}, nil
 }

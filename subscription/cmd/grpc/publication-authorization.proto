@@ -1,8 +1,7 @@
 syntax = "proto3";
+option go_package = "./publication_authorization;pb_publication_authorization";
 
-option go_package = "./subscription;pb_subscription";
-
-service AskSubscription {
+service PublicationAuthorization {
   rpc IsAuthorizedPublisher(IsAuthorizedPublisherRequest) returns (Response);
 }
 

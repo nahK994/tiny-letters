@@ -1,7 +1,8 @@
 syntax = "proto3";
-option go_package = "./content;pb_content";
 
-service ContentListener {
+option go_package = "./publication_authorization;pb_publication_authorization";
+
+service PublicationAuthorization {
   rpc IsAuthorizedPublisher(IsAuthorizedPublisherRequest) returns (Response);
 }
 
