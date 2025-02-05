@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-	pb_subscription "tiny-letter/notification/cmd/grpc/pb/subscription"
+	pb_subscription_manager "tiny-letter/notification/cmd/grpc/pb/subscription_manager"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -12,7 +12,7 @@ import (
 
 var (
 	subscriptionConn   *grpc.ClientConn
-	subscriptionClient pb_subscription.AskSubscriptionClient
+	subscriptionClient pb_subscription_manager.SubscriptionManagerClient
 )
 
 func InitializeSubscriptionClient(addr string) error {
@@ -22,7 +22,7 @@ func InitializeSubscriptionClient(addr string) error {
 		return fmt.Errorf("failed to connect to Subscription service: %v", err)
 	}
 
-	subscriptionClient = pb_subscription.NewAskSubscriptionClient(subscriptionConn)
+	subscriptionClient = pb_subscription_manager.NewSubscriptionManagerClient(subscriptionConn)
 	log.Println("Subscription gRPC client successfully initialized.")
 	return nil
 }
@@ -35,7 +35,7 @@ func ShutdownSubscriptionClient() {
 }
 
 func GetContentSubscribers(publicationId int) ([]int32, error) {
-	resp, err := subscriptionClient.GetContentSubscribers(context.Background(), &pb_subscription.GetContentSubscribersRequest{
+	resp, err := subscriptionClient.GetContentSubscribers(context.Background(), &pb_subscription_manager.GetContentSubscribersRequest{
 		PublicationId: int32(publicationId),
 	})
 

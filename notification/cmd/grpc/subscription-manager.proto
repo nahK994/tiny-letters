@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "/subscription;pb_subscription";
+option go_package = "/subscription_manager;pb_subscription_manager";
 
-service AskSubscription {
+service SubscriptionManager {
   rpc GetContentSubscribers (GetContentSubscribersRequest) returns (GetContentSubscribersResponse);
 }
 

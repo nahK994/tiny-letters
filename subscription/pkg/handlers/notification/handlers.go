@@ -2,7 +2,7 @@ package notification_handlers
 
 import (
 	"context"
-	pb_notification "tiny-letter/subscription/cmd/grpc/pb/notification"
+	pb_subscription_manager "tiny-letter/subscription/cmd/grpc/pb/subscription_manager"
 	"tiny-letter/subscription/pkg/db"
 
 	"google.golang.org/grpc/codes"
@@ -10,7 +10,7 @@ import (
 )
 
 type NotificationListener struct {
-	pb_notification.UnimplementedNotificationListenerServer
+	pb_subscription_manager.UnimplementedSubscriptionManagerServer
 	db *db.Repository
 }
 
@@ -20,7 +20,7 @@ func GetNotificationHandlers(db *db.Repository) *NotificationListener {
 	}
 }
 
-func (n *NotificationListener) GetContentSubscribers(c context.Context, req *pb_notification.GetContentSubscribersRequest) (*pb_notification.GetContentSubscribersResponse, error) {
+func (n *NotificationListener) GetContentSubscribers(c context.Context, req *pb_subscription_manager.GetContentSubscribersRequest) (*pb_subscription_manager.GetContentSubscribersResponse, error) {
 	data := &db.GetContentSubscribersRequest{
 		PublicationId: int(req.PublicationId),
 	}
@@ -33,7 +33,7 @@ func (n *NotificationListener) GetContentSubscribers(c context.Context, req *pb_
 		return nil, status.Errorf(codes.Internal, "failed to get subscriberIds: %v", err)
 	}
 
-	return &pb_notification.GetContentSubscribersResponse{
+	return &pb_subscription_manager.GetContentSubscribersResponse{
 		SubscriberIds: subscriberIds,
 	}, nil
 }
