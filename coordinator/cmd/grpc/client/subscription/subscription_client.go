@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-	pb_subscription "tiny-letter/coordinator/cmd/grpc/pb/subscription"
+	pb_subscription_manager "tiny-letter/coordinator/cmd/grpc/pb/subscription_manager"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -12,7 +12,7 @@ import (
 
 var (
 	subscriptionConn   *grpc.ClientConn
-	subscriptionClient pb_subscription.NotifySubscriptionClient
+	subscriptionClient pb_subscription_manager.SubscriptionManagerClient
 )
 
 type (
@@ -28,7 +28,7 @@ func InitializeSubscriptionClient(addr string) error {
 		return fmt.Errorf("failed to connect to Subscription service: %v", err)
 	}
 
-	subscriptionClient = pb_subscription.NewNotifySubscriptionClient(subscriptionConn)
+	subscriptionClient = pb_subscription_manager.NewSubscriptionManagerClient(subscriptionConn)
 	log.Println("Subscription gRPC client successfully initialized.")
 	return nil
 }
@@ -41,7 +41,7 @@ func ShutdownSubscriptionClient() {
 }
 
 func ConfirmPublisherSubscription(userID, planID int) (subscriptionId, error) {
-	response, err := subscriptionClient.ConfirmPublisherSubscription(context.Background(), &pb_subscription.ConfirmPublisherSubscriptionRequest{
+	response, err := subscriptionClient.ConfirmPublisherSubscription(context.Background(), &pb_subscription_manager.ConfirmPublisherSubscriptionRequest{
 		UserId: int32(userID),
 		PlanId: int32(planID),
 	})
@@ -53,7 +53,7 @@ func ConfirmPublisherSubscription(userID, planID int) (subscriptionId, error) {
 }
 
 func RollbackConfirmPublisherSubscription(SubscriptionId int) error {
-	_, err := subscriptionClient.RollbackConfirmPublisherSubscription(context.Background(), &pb_subscription.RollbackConfirmPublisherSubscriptionRequest{
+	_, err := subscriptionClient.RollbackConfirmPublisherSubscription(context.Background(), &pb_subscription_manager.RollbackConfirmPublisherSubscriptionRequest{
 		SubscriptionId: int32(SubscriptionId),
 	})
 
@@ -61,7 +61,7 @@ func RollbackConfirmPublisherSubscription(SubscriptionId int) error {
 }
 
 func RevokePublisherSubscription(userId int) (oldPublisherSubscriptionPlanId, error) {
-	response, err := subscriptionClient.RevokePublisherSubscription(context.Background(), &pb_subscription.RevokePublisherSubscriptionRequest{
+	response, err := subscriptionClient.RevokePublisherSubscription(context.Background(), &pb_subscription_manager.RevokePublisherSubscriptionRequest{
 		UserId: int32(userId),
 	})
 	if err != nil {
@@ -72,7 +72,7 @@ func RevokePublisherSubscription(userId int) (oldPublisherSubscriptionPlanId, er
 }
 
 func RollbackRevokePublisherSubscription(userID, planID int) error {
-	_, err := subscriptionClient.RollbackRevokePublisherSubscription(context.Background(), &pb_subscription.RollbackRevokePublisherSubscriptionRequest{
+	_, err := subscriptionClient.RollbackRevokePublisherSubscription(context.Background(), &pb_subscription_manager.RollbackRevokePublisherSubscriptionRequest{
 		UserId: int32(userID),
 		PlanId: int32(planID),
 	})
@@ -81,7 +81,7 @@ func RollbackRevokePublisherSubscription(userID, planID int) error {
 }
 
 func ChangePublisherSubscription(userId, planID int) (subscriptionId, oldPublisherSubscriptionPlanId, error) {
-	response, err := subscriptionClient.ChangePublisherSubscription(context.Background(), &pb_subscription.ChangePublisherSubscriptionRequest{
+	response, err := subscriptionClient.ChangePublisherSubscription(context.Background(), &pb_subscription_manager.ChangePublisherSubscriptionRequest{
 		UserId: int32(userId),
 		PlanId: int32(planID),
 	})
@@ -93,7 +93,7 @@ func ChangePublisherSubscription(userId, planID int) (subscriptionId, oldPublish
 }
 
 func RollbackChangePublisherSubscription(subscriptionId, oldPlanId int) error {
-	_, err := subscriptionClient.RollbackChangePublisherSubscription(context.Background(), &pb_subscription.RollbackChangePublisherSubscriptionRequest{
+	_, err := subscriptionClient.RollbackChangePublisherSubscription(context.Background(), &pb_subscription_manager.RollbackChangePublisherSubscriptionRequest{
 		SubscriptionId: int32(subscriptionId),
 		OldPlanId:      int32(oldPlanId),
 	})
@@ -102,7 +102,7 @@ func RollbackChangePublisherSubscription(subscriptionId, oldPlanId int) error {
 }
 
 func JoinPublication(userID, publicationID int, isPremium bool) (subscriptionId, error) {
-	response, err := subscriptionClient.JoinPublication(context.Background(), &pb_subscription.JoinPublicationRequest{
+	response, err := subscriptionClient.JoinPublication(context.Background(), &pb_subscription_manager.JoinPublicationRequest{
 		UserId:        int32(userID),
 		PublicationId: int32(publicationID),
 		IsPremium:     isPremium,
@@ -115,7 +115,7 @@ func JoinPublication(userID, publicationID int, isPremium bool) (subscriptionId,
 }
 
 func RollbackJoinPublication(subscriptionID int) error {
-	_, err := subscriptionClient.RollbackJoinPublication(context.Background(), &pb_subscription.RollbackJoinPublicationRequest{
+	_, err := subscriptionClient.RollbackJoinPublication(context.Background(), &pb_subscription_manager.RollbackJoinPublicationRequest{
 		SubscriptionId: int32(subscriptionID),
 	})
 
@@ -123,7 +123,7 @@ func RollbackJoinPublication(subscriptionID int) error {
 }
 
 func LeavePublication(userID, publicationID int) (oldSubscriberSubscriptionPlanType, error) {
-	response, err := subscriptionClient.LeavePublication(context.Background(), &pb_subscription.LeavePublicationRequest{
+	response, err := subscriptionClient.LeavePublication(context.Background(), &pb_subscription_manager.LeavePublicationRequest{
 		UserId:        int32(userID),
 		PublicationId: int32(publicationID),
 	})
@@ -135,7 +135,7 @@ func LeavePublication(userID, publicationID int) (oldSubscriberSubscriptionPlanT
 }
 
 func RollbackLeavePublication(userID, publicationID int, isPremium bool) error {
-	_, err := subscriptionClient.RollbackLeavePublication(context.Background(), &pb_subscription.RollbackLeavePublicationRequest{
+	_, err := subscriptionClient.RollbackLeavePublication(context.Background(), &pb_subscription_manager.RollbackLeavePublicationRequest{
 		UserId:        int32(userID),
 		PublicationId: int32(publicationID),
 		IsPremium:     isPremium,
@@ -145,7 +145,7 @@ func RollbackLeavePublication(userID, publicationID int, isPremium bool) error {
 }
 
 func ChangeSubscriberSubscription(userID, planID int) (subscriptionId, error) {
-	response, err := subscriptionClient.ChangeSubscriberSubscription(context.Background(), &pb_subscription.ChangeSubscriberSubscriptionRequest{
+	response, err := subscriptionClient.ChangeSubscriberSubscription(context.Background(), &pb_subscription_manager.ChangeSubscriberSubscriptionRequest{
 		UserId: int32(userID),
 	})
 	if err != nil {
@@ -156,7 +156,7 @@ func ChangeSubscriberSubscription(userID, planID int) (subscriptionId, error) {
 }
 
 func RollbackChangeSubscriberSubscription(subscriptionID int) error {
-	_, err := subscriptionClient.RollbackChangeSubscriberSubscription(context.Background(), &pb_subscription.RollbackChangeSubscriberSubscriptionRequest{
+	_, err := subscriptionClient.RollbackChangeSubscriberSubscription(context.Background(), &pb_subscription_manager.RollbackChangeSubscriberSubscriptionRequest{
 		SubscriptionId: int32(subscriptionID),
 	})
 

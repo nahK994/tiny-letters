@@ -5,9 +5,9 @@ import (
 	"log"
 	"net"
 	"sync"
-	pb_coordinator "tiny-letter/subscription/cmd/grpc/pb/coordinator"
 	pb_notification "tiny-letter/subscription/cmd/grpc/pb/notification"
 	pb_publication_authorization "tiny-letter/subscription/cmd/grpc/pb/publication_authorization"
+	pb_subscription_manager "tiny-letter/subscription/cmd/grpc/pb/subscription_manager"
 	"tiny-letter/subscription/pkg/db"
 	content_handlers "tiny-letter/subscription/pkg/handlers/content"
 	coordinator_handlers "tiny-letter/subscription/pkg/handlers/coordinator"
@@ -25,7 +25,7 @@ func Serve(wg *sync.WaitGroup, db *db.Repository, addr string) {
 
 	s := grpc.NewServer()
 	pb_publication_authorization.RegisterPublicationAuthorizationServer(s, content_handlers.GetContentHandlers(db))
-	pb_coordinator.RegisterCoordinatorListenerServer(s, coordinator_handlers.GetCoordinatorHandlers(db))
+	pb_subscription_manager.RegisterSubscriptionManagerServer(s, coordinator_handlers.GetCoordinatorHandlers(db))
 	pb_notification.RegisterNotificationListenerServer(s, notification_handlers.GetNotificationHandlers(db))
 
 	fmt.Println("Starting server...")

@@ -1,7 +1,7 @@
 syntax = "proto3";
-option go_package = "./coordinator;pb_coordinator";
+option go_package = "./subscription_manager;pb_subscription_manager";
 
-service CoordinatorListener {
+service SubscriptionManager {
   rpc JoinPublication (JoinPublicationRequest) returns (JoinPublicationResponse);
   rpc RollbackJoinPublication (RollbackJoinPublicationRequest) returns (Response);
 

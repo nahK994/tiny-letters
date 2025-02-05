@@ -2,7 +2,7 @@ package coordinator_handlers
 
 import (
 	"context"
-	pb_coordinator "tiny-letter/subscription/cmd/grpc/pb/coordinator"
+	pb_subscription_manager "tiny-letter/subscription/cmd/grpc/pb/subscription_manager"
 	"tiny-letter/subscription/pkg/db"
 
 	"google.golang.org/grpc/codes"
@@ -10,7 +10,7 @@ import (
 )
 
 type CoordinatorListener struct {
-	pb_coordinator.UnimplementedCoordinatorListenerServer
+	pb_subscription_manager.UnimplementedSubscriptionManagerServer
 	db *db.Repository
 }
 
@@ -20,7 +20,7 @@ func GetCoordinatorHandlers(db *db.Repository) *CoordinatorListener {
 	}
 }
 
-func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_coordinator.JoinPublicationRequest) (*pb_coordinator.JoinPublicationResponse, error) {
+func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_subscription_manager.JoinPublicationRequest) (*pb_subscription_manager.JoinPublicationResponse, error) {
 	data := &db.JoinPublicationRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
@@ -35,11 +35,11 @@ func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_coordin
 		return nil, status.Errorf(codes.Internal, "failed to join publication: %v", err)
 	}
 
-	return &pb_coordinator.JoinPublicationResponse{
+	return &pb_subscription_manager.JoinPublicationResponse{
 		SubscriptionId: int32(subscriptionId),
 	}, nil
 }
-func (l *CoordinatorListener) RollbackJoinPublication(c context.Context, req *pb_coordinator.RollbackJoinPublicationRequest) (*pb_coordinator.Response, error) {
+func (l *CoordinatorListener) RollbackJoinPublication(c context.Context, req *pb_subscription_manager.RollbackJoinPublicationRequest) (*pb_subscription_manager.Response, error) {
 	data := &db.RollbackJoinPublicationRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
 	}
@@ -52,10 +52,10 @@ func (l *CoordinatorListener) RollbackJoinPublication(c context.Context, req *pb
 		return nil, status.Errorf(codes.Internal, "failed to rollback join publication: %v", err)
 	}
 
-	return &pb_coordinator.Response{IsSuccess: true}, nil
+	return &pb_subscription_manager.Response{IsSuccess: true}, nil
 }
 
-func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_coordinator.LeavePublicationRequest) (*pb_coordinator.LeavePublicationResponse, error) {
+func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_subscription_manager.LeavePublicationRequest) (*pb_subscription_manager.LeavePublicationResponse, error) {
 	data := &db.LeavePublicationRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
@@ -69,12 +69,12 @@ func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_coordi
 		return nil, status.Errorf(codes.Internal, "failed to leave publication: %v", err)
 	}
 
-	return &pb_coordinator.LeavePublicationResponse{
+	return &pb_subscription_manager.LeavePublicationResponse{
 		IsPremium: bool(isPremium),
 	}, nil
 }
 
-func (l *CoordinatorListener) RollbackLeavePublication(c context.Context, req *pb_coordinator.RollbackLeavePublicationRequest) (*pb_coordinator.Response, error) {
+func (l *CoordinatorListener) RollbackLeavePublication(c context.Context, req *pb_subscription_manager.RollbackLeavePublicationRequest) (*pb_subscription_manager.Response, error) {
 	data := &db.RollbackLeavePublicationRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
@@ -89,10 +89,10 @@ func (l *CoordinatorListener) RollbackLeavePublication(c context.Context, req *p
 		return nil, status.Errorf(codes.Internal, "failed to rollback leave publication: %v", err)
 	}
 
-	return &pb_coordinator.Response{IsSuccess: true}, nil
+	return &pb_subscription_manager.Response{IsSuccess: true}, nil
 }
 
-func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, req *pb_coordinator.ChangeSubscriberSubscriptionRequest) (*pb_coordinator.ChangeSubscriberSubscriptionResponse, error) {
+func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, req *pb_subscription_manager.ChangeSubscriberSubscriptionRequest) (*pb_subscription_manager.ChangeSubscriberSubscriptionResponse, error) {
 	data := &db.ChangeSubscriberSubscriptionRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
@@ -106,12 +106,12 @@ func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, re
 		return nil, status.Errorf(codes.Internal, "failed to change publication plan: %v", err)
 	}
 
-	return &pb_coordinator.ChangeSubscriberSubscriptionResponse{
+	return &pb_subscription_manager.ChangeSubscriberSubscriptionResponse{
 		SubscriptionId: int32(subscriptionId),
 	}, nil
 }
 
-func (l *CoordinatorListener) RollbackChangePublicationPlan(c context.Context, req *pb_coordinator.RollbackChangeSubscriberSubscriptionRequest) (*pb_coordinator.Response, error) {
+func (l *CoordinatorListener) RollbackChangePublicationPlan(c context.Context, req *pb_subscription_manager.RollbackChangeSubscriberSubscriptionRequest) (*pb_subscription_manager.Response, error) {
 	data := &db.RollbackChangeSubscriberSubscriptionRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
 	}
@@ -124,10 +124,10 @@ func (l *CoordinatorListener) RollbackChangePublicationPlan(c context.Context, r
 		return nil, status.Errorf(codes.Internal, "failed to rollback change publication plan: %v", err)
 	}
 
-	return &pb_coordinator.Response{IsSuccess: true}, nil
+	return &pb_subscription_manager.Response{IsSuccess: true}, nil
 }
 
-func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, req *pb_coordinator.ConfirmPublisherSubscriptionRequest) (*pb_coordinator.ConfirmPublisherSubscriptionResponse, error) {
+func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, req *pb_subscription_manager.ConfirmPublisherSubscriptionRequest) (*pb_subscription_manager.ConfirmPublisherSubscriptionResponse, error) {
 	data := &db.ConfirmPublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
 		PlanId: int(req.GetPlanId()),
@@ -141,12 +141,12 @@ func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, re
 		return nil, status.Errorf(codes.Internal, "failed to confirm publisher subscription: %v", err)
 	}
 
-	return &pb_coordinator.ConfirmPublisherSubscriptionResponse{
+	return &pb_subscription_manager.ConfirmPublisherSubscriptionResponse{
 		SubscriptionId: int32(subscriptionId),
 	}, nil
 }
 
-func (l *CoordinatorListener) RollbackConfirmPublisherSubscription(c context.Context, req *pb_coordinator.RollbackConfirmPublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
+func (l *CoordinatorListener) RollbackConfirmPublisherSubscription(c context.Context, req *pb_subscription_manager.RollbackConfirmPublisherSubscriptionRequest) (*pb_subscription_manager.Response, error) {
 	data := &db.RollbackConfirmPublisherSubscriptionRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
 	}
@@ -159,10 +159,10 @@ func (l *CoordinatorListener) RollbackConfirmPublisherSubscription(c context.Con
 		return nil, status.Errorf(codes.Internal, "failed to rollback confirm publisher subscription: %v", err)
 	}
 
-	return &pb_coordinator.Response{IsSuccess: true}, nil
+	return &pb_subscription_manager.Response{IsSuccess: true}, nil
 }
 
-func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req *pb_coordinator.RevokePublisherSubscriptionRequest) (*pb_coordinator.RevokePublisherSubscriptionResponse, error) {
+func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req *pb_subscription_manager.RevokePublisherSubscriptionRequest) (*pb_subscription_manager.RevokePublisherSubscriptionResponse, error) {
 	data := &db.RevokePublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
 	}
@@ -175,12 +175,12 @@ func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req
 		return nil, status.Errorf(codes.Internal, "failed to revoke publisher subscription: %v", err)
 	}
 
-	return &pb_coordinator.RevokePublisherSubscriptionResponse{
+	return &pb_subscription_manager.RevokePublisherSubscriptionResponse{
 		PlanId: int32(oldPlanId),
 	}, nil
 }
 
-func (l *CoordinatorListener) RollbackRevokePublisherSubscription(c context.Context, req *pb_coordinator.RollbackRevokePublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
+func (l *CoordinatorListener) RollbackRevokePublisherSubscription(c context.Context, req *pb_subscription_manager.RollbackRevokePublisherSubscriptionRequest) (*pb_subscription_manager.Response, error) {
 	data := &db.RollbackRevokePublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
 		PlanId: int(req.GetPlanId()),
@@ -194,10 +194,10 @@ func (l *CoordinatorListener) RollbackRevokePublisherSubscription(c context.Cont
 		return nil, status.Errorf(codes.Internal, "failed to rollback revoke publisher subscription: %v", err)
 	}
 
-	return &pb_coordinator.Response{IsSuccess: true}, nil
+	return &pb_subscription_manager.Response{IsSuccess: true}, nil
 }
 
-func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req *pb_coordinator.ChangePublisherSubscriptionRequest) (*pb_coordinator.ChangePublisherSubscriptionResponse, error) {
+func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req *pb_subscription_manager.ChangePublisherSubscriptionRequest) (*pb_subscription_manager.ChangePublisherSubscriptionResponse, error) {
 	data := &db.ChangePublisherSubscriptionRequest{
 		UserId:        int(req.GetUserId()),
 		ChangedPlanId: int(req.GetPlanId()),
@@ -211,13 +211,13 @@ func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req
 		return nil, status.Errorf(codes.Internal, "failed to change publisher subscription: %v", err)
 	}
 
-	return &pb_coordinator.ChangePublisherSubscriptionResponse{
+	return &pb_subscription_manager.ChangePublisherSubscriptionResponse{
 		SubscriptionId: int32(subscriptionId),
 		OldPlanId:      int32(oldPlanId),
 	}, nil
 }
 
-func (l *CoordinatorListener) RollbackChangePublisherSubscription(c context.Context, req *pb_coordinator.RollbackChangePublisherSubscriptionRequest) (*pb_coordinator.Response, error) {
+func (l *CoordinatorListener) RollbackChangePublisherSubscription(c context.Context, req *pb_subscription_manager.RollbackChangePublisherSubscriptionRequest) (*pb_subscription_manager.Response, error) {
 	data := &db.RollbackChangePublisherSubscriptionRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
 		OldPlanId:      int(req.GetOldPlanId()),
@@ -231,5 +231,5 @@ func (l *CoordinatorListener) RollbackChangePublisherSubscription(c context.Cont
 		return nil, status.Errorf(codes.Internal, "failed to rollback change publisher subscription: %v", err)
 	}
 
-	return &pb_coordinator.Response{IsSuccess: true}, nil
+	return &pb_subscription_manager.Response{IsSuccess: true}, nil
 }
