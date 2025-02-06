@@ -12,12 +12,12 @@ import (
 func main() {
 	config := app.GetConfig()
 
-	producer, err := mq_producer.NewProducer(&config.MQ)
+	producer, err := mq_producer.NewProducer(&config)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 	handlers := handlers.NewHandler(producer)
-	consumer, err := mq_consumer.NewConsumer(handlers, &config.MQ)
+	consumer, err := mq_consumer.NewConsumer(handlers, &config)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

@@ -1,10 +1,6 @@
 package app
 
-import constant "tiny-letter/notification/pkg/constants"
-
-const (
-	localhost = "localhost"
-)
+import "tiny-letter/notification/pkg/constants"
 
 type CommConfig struct {
 	Port   int
@@ -24,38 +20,27 @@ type Producer struct {
 	NumberOfRetry           int
 }
 
-type MQ_config struct {
+type Config struct {
 	CommConfig
 	Consumer Consumer
 	Producer Producer
 }
 
-type Config struct {
-	MQ   MQ_config
-	GRPC CommConfig
-}
-
 var appConfig Config = Config{
-	GRPC: CommConfig{
-		Port:   50002,
-		Domain: localhost,
+	CommConfig: CommConfig{
+		Port:   constants.MQ_port,
+		Domain: constants.Domain,
 	},
-	MQ: MQ_config{
-		CommConfig: CommConfig{
-			Port:   9092,
-			Domain: localhost,
-		},
-		Consumer: Consumer{
-			IsConsumerReturnError: true,
-			ConfirmationTopic:     constant.ConfirmationNotification,
-			PublicationTopic:      constant.PublicationNotification,
-		},
-		Producer: Producer{
-			NumberOfRetry:           5,
-			IsProducerReturnSuccess: true,
-			ConfirmationTopic:       constant.ConfirmationEmail,
-			PublicationTopic:        constant.PublicationEmail,
-		},
+	Consumer: Consumer{
+		IsConsumerReturnError: constants.Consumer_IsConsumerReturnError,
+		ConfirmationTopic:     constants.ConfirmationNotification,
+		PublicationTopic:      constants.PublicationNotification,
+	},
+	Producer: Producer{
+		NumberOfRetry:           constants.Producer_NumberOfRetry,
+		IsProducerReturnSuccess: constants.Producer_IsProducerReturnSuccess,
+		ConfirmationTopic:       constants.ConfirmationEmail,
+		PublicationTopic:        constants.PublicationEmail,
 	},
 }
 

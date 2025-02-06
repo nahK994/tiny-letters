@@ -20,7 +20,7 @@ type Consumer struct {
 	handler              *handlers.Handler
 }
 
-func NewConsumer(handler *handlers.Handler, config *app.MQ_config) (*Consumer, error) {
+func NewConsumer(handler *handlers.Handler, config *app.Config) (*Consumer, error) {
 	confirmationConsumer, publicationConsumer, err := ConnectConsumer(config)
 	if err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func NewConsumer(handler *handlers.Handler, config *app.MQ_config) (*Consumer, e
 	}, nil
 }
 
-func ConnectConsumer(config *app.MQ_config) (ConfirmationConsumer, PublicationConsumer, error) {
+func ConnectConsumer(config *app.Config) (ConfirmationConsumer, PublicationConsumer, error) {
 	broker := fmt.Sprintf("%s:%d", config.Domain, config.Port)
 	mqConfig := sarama.NewConfig()
 	mqConfig.Consumer.Return.Errors = config.Consumer.IsConsumerReturnError

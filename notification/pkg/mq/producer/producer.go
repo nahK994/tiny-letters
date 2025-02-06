@@ -11,7 +11,7 @@ type Producer struct {
 	producer sarama.SyncProducer
 }
 
-func NewProducer(config *app.MQ_config) (*Producer, error) {
+func NewProducer(config *app.Config) (*Producer, error) {
 	producer, err := connectProducer(config)
 	if err != nil {
 		return nil, err
@@ -20,7 +20,7 @@ func NewProducer(config *app.MQ_config) (*Producer, error) {
 	return &Producer{producer: producer}, nil
 }
 
-func connectProducer(config *app.MQ_config) (sarama.SyncProducer, error) {
+func connectProducer(config *app.Config) (sarama.SyncProducer, error) {
 	broker := fmt.Sprintf("%s:%d", config.Domain, config.Port)
 
 	mqConfig := sarama.NewConfig()
