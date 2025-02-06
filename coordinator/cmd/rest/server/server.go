@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"tiny-letter/coordinator/pkg/app"
 	handler "tiny-letter/coordinator/pkg/handlers"
+	mq_producer "tiny-letter/coordinator/pkg/mq"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Serve(commConfig *app.CommConfig) {
-	h := handler.NewHandler()
+func Serve(commConfig *app.CommConfig, producer *mq_producer.Producer) {
+	h := handler.NewHandler(producer)
 
 	r := gin.Default()
 	r.Group("/publisher")
@@ -23,7 +24,7 @@ func Serve(commConfig *app.CommConfig) {
 	{
 		r.POST("/join-publication", h.HandleJoinPublication)
 		r.POST("/leave-publication", h.HandleLeavePublication)
-		r.POST("/change-plan", h.ChangeSubscriberSubscription)
+		r.POST("/change-plan", h.HandleChangeSubscriberSubscription)
 	}
 
 	addr := fmt.Sprintf("%s:%d", commConfig.Domain, commConfig.Port)

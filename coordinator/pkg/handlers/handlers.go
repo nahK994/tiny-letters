@@ -1,17 +1,34 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 	"tiny-letter/coordinator/cmd/grpc/client/auth"
 	"tiny-letter/coordinator/cmd/grpc/client/subscription"
+	"tiny-letter/coordinator/pkg/constants"
+	"tiny-letter/coordinator/pkg/models"
+	mq_producer "tiny-letter/coordinator/pkg/mq"
 
 	"github.com/gin-gonic/gin"
 )
 
-type Handler struct{}
+type Handler struct {
+	producer *mq_producer.Producer
+}
 
-func NewHandler() *Handler {
-	return &Handler{}
+func NewHandler(producer *mq_producer.Producer) *Handler {
+	return &Handler{
+		producer: producer,
+	}
+}
+
+func (h *Handler) pushToQueue(action string, data json.RawMessage) {
+	msg := models.ConfirmationMessage{
+		Action: action,
+		Data:   data,
+	}
+	msgBytes, _ := json.Marshal(msg)
+	h.producer.Push(msgBytes)
 }
 
 // HandlePublisherSubscription handles publisher subscription with 2PC
@@ -124,6 +141,15 @@ func (h *Handler) HandleJoinPublication(c *gin.Context) {
 		return
 	}
 
+	msgData, _ := json.Marshal(
+		models.JoinPublicationData{
+			UserId:        req.UserID,
+			PlanType:      req.IsPremium,
+			PublicationId: req.PublicationID,
+		},
+	)
+	h.pushToQueue(constants.Subscribe, msgData)
+
 	c.JSON(http.StatusOK, "Join publication confirmed")
 }
 
@@ -156,7 +182,7 @@ func (h *Handler) HandleLeavePublication(c *gin.Context) {
 }
 
 // HandleChangeSubscriberPlan handles plan changes for subscribers with 2PC
-func (h *Handler) ChangeSubscriberSubscription(c *gin.Context) {
+func (h *Handler) HandleChangeSubscriberSubscription(c *gin.Context) {
 	var req struct {
 		UserID        int `json:"user_id" binding:"required"`
 		PublicationID int `json:"publication_id" binding:"required"`
