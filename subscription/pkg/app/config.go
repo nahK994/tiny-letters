@@ -1,6 +1,9 @@
 package app
 
-const domain = "localhost"
+const (
+	domain                   = "localhost"
+	ConfirmationNotification = "confirmation_notification"
+)
 
 type DB_config struct {
 	User     string
@@ -19,10 +22,18 @@ type AppConfig struct {
 	JWT_exp_minutes int
 }
 
+type MQ_config struct {
+	CommConfig
+	Topic                   string
+	NumberOfRetry           int
+	IsProducerReturnSuccess bool
+}
+
 type Config struct {
 	App  AppConfig
 	DB   DB_config
 	GRPC CommConfig
+	MQ   MQ_config
 }
 
 var appConfig Config = Config{
@@ -41,6 +52,15 @@ var appConfig Config = Config{
 		CommConfig: CommConfig{
 			Domain: domain,
 			Port:   5002,
+		},
+	},
+	MQ: MQ_config{
+		NumberOfRetry:           5,
+		IsProducerReturnSuccess: true,
+		Topic:                   ConfirmationNotification,
+		CommConfig: CommConfig{
+			Domain: domain,
+			Port:   9092,
 		},
 	},
 }

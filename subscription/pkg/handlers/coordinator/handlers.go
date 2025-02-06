@@ -4,6 +4,7 @@ import (
 	"context"
 	pb_subscription_manager "tiny-letter/subscription/cmd/grpc/pb/subscription_manager"
 	"tiny-letter/subscription/pkg/db"
+	mq_producer "tiny-letter/subscription/pkg/mq/producer"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -11,12 +12,14 @@ import (
 
 type CoordinatorListener struct {
 	pb_subscription_manager.UnimplementedSubscriptionManagerServer
-	db *db.Repository
+	db       *db.Repository
+	producer *mq_producer.Producer
 }
 
-func GetCoordinatorHandlers(db *db.Repository) *CoordinatorListener {
+func GetCoordinatorHandlers(db *db.Repository, producer *mq_producer.Producer) *CoordinatorListener {
 	return &CoordinatorListener{
-		db: db,
+		db:       db,
+		producer: producer,
 	}
 }
 
