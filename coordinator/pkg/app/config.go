@@ -1,9 +1,6 @@
 package app
 
-const (
-	localhost                = "localhost"
-	ConfirmationNotification = "confirmation_notification"
-)
+import "tiny-letter/coordinator/pkg/constants"
 
 type CommConfig struct {
 	Port   int
@@ -31,25 +28,25 @@ type Config struct {
 var appConfig Config = Config{
 	GRPC: GRPC{
 		Subscription: CommConfig{
-			Port:   50002,
-			Domain: localhost,
+			Port:   constants.GRPC_subscription_port,
+			Domain: constants.Domain,
 		},
 		Auth: CommConfig{
-			Port:   50000,
-			Domain: localhost,
+			Port:   constants.GRPC_auth_port,
+			Domain: constants.Domain,
 		},
 	},
 	REST: CommConfig{
-		Port:   8080,
-		Domain: localhost,
+		Port:   constants.REST_port,
+		Domain: constants.Domain,
 	},
 	MQ: MQ_config{
-		NumberOfRetry:           5,
-		IsProducerReturnSuccess: true,
-		Topic:                   ConfirmationNotification,
+		NumberOfRetry:           constants.MQ_NumberOfRetry,
+		IsProducerReturnSuccess: constants.MQ_IsProducerReturnSuccess,
+		Topic:                   constants.MQ_topic,
 		CommConfig: CommConfig{
-			Domain: localhost,
-			Port:   9092,
+			Domain: constants.Domain,
+			Port:   constants.MQ_port,
 		},
 	},
 }
