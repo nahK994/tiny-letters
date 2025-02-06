@@ -1,32 +1,38 @@
 package models
 
-type (
-	ActionType string
-	IsPremium  bool
-)
+import "encoding/json"
 
-type PublicationMessage struct {
-	PublicationId int
-	Content       string
+type ConfirmationMessage struct {
+	Action string `json:"action"`
+	Data   json.RawMessage
 }
 
-type PublicationBroadcastMessage struct {
-	SubscriberIds []int
-	Content       string
+type JoinPublicationData struct {
+	UserId        int  `json:"user_id"`
+	PublicationId int  `json:"publication_id"`
+	PlanType      bool `json:"plan_type"`
 }
 
-type PublisherConfirmationMessage struct {
-	UserId      int        `json:"user_id"`
-	Action      ActionType `json:"action"`
-	PlanName    string     `json:"plan_name,omitempty"`
-	OldPlanName string     `json:"old_plan_name,omitempty"`
-	NewPlanName string     `json:"new_plan_name,omitempty"`
+type LeavePublicationData struct {
+	UserId        int `json:"user_id"`
+	PublicationId int `json:"publication_id"`
 }
 
-type SubscriberConfirmationMessage struct {
-	UserId      int        `json:"user_id"`
-	Action      ActionType `json:"action"`
-	PlanType    IsPremium  `json:"plan_type,omitempty"`
-	OldPlanType IsPremium  `json:"old_plan_type,omitempty"`
-	NewPlanType IsPremium  `json:"new_plan_type,omitempty"`
+type ChangeSubscriberSubscriptionData struct {
+	UserId        int `json:"user_id"`
+	PublicationId int `json:"publication_id"`
+}
+
+type ConfirmPublisherSubscriptionData struct {
+	UserId int `json:"user_id"`
+	PlanId int `json:"plan_id"`
+}
+
+type RevokePublisherSubscriptionData struct {
+	UserId int `json:"user_id"`
+}
+
+type ChangePublisherSubscriptionData struct {
+	UserId int `json:"user_id"`
+	PlanId int `json:"plan_id"`
 }

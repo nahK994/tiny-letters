@@ -1,9 +1,13 @@
 package constants
 
 const (
-	Subscribe   = "subscribe"
-	Unsubscribe = "unsubscribe"
-	ChangePlan  = "change_plan"
+	PublisherSubscribe   = "publisher_subscribe"
+	PublisherUnsubscribe = "publisher_unsubscribe"
+	PublisherChangePlan  = "publisher_change_plan"
+
+	SubscriberSubscribe   = "subscriber_subscribe"
+	SubscriberUnsubscribe = "subscriber_unsubscribe"
+	SubscriberChangePlan  = "subscriber_change_plan"
 
 	ConfirmationNotification = "confirmation_notification"
 	PublicationNotification  = "publication_notification"
