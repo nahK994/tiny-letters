@@ -56,6 +56,14 @@ func (h *Handler) HandleConfirmPublisherSubscription(c *gin.Context) {
 		return
 	}
 
+	msgData, _ := json.Marshal(
+		models.ConfirmPublisherSubscriptionData{
+			UserId: req.UserID,
+			PlanId: req.PlanID,
+		},
+	)
+	h.pushToQueue(constants.Subscribe, msgData)
+
 	c.JSON(http.StatusOK, "Publisher subscription confirmed")
 }
 
@@ -82,6 +90,13 @@ func (h *Handler) HandleRevokePublisherSubscription(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}
+
+	msgData, _ := json.Marshal(
+		models.RevokePublisherSubscriptionData{
+			UserId: req.UserID,
+		},
+	)
+	h.pushToQueue(constants.Unsubscribe, msgData)
 
 	c.JSON(http.StatusOK, "Publisher unsubscription confirmed")
 }
@@ -111,7 +126,14 @@ func (h *Handler) HandleChangePublisherSubscription(c *gin.Context) {
 		return
 	}
 
-	// Phase 2: Commit
+	msgData, _ := json.Marshal(
+		models.ChangePublisherSubscriptionData{
+			UserId: req.UserID,
+			PlanId: req.PlanID,
+		},
+	)
+	h.pushToQueue(constants.ChangePlan, msgData)
+
 	c.JSON(http.StatusOK, "Publisher plan change confirmed")
 }
 
@@ -178,6 +200,14 @@ func (h *Handler) HandleLeavePublication(c *gin.Context) {
 		return
 	}
 
+	msgData, _ := json.Marshal(
+		models.LeavePublicationData{
+			UserId:        req.UserID,
+			PublicationId: req.PublicationID,
+		},
+	)
+	h.pushToQueue(constants.Unsubscribe, msgData)
+
 	c.JSON(http.StatusOK, "Leave publication confirmed")
 }
 
@@ -205,6 +235,14 @@ func (h *Handler) HandleChangeSubscriberSubscription(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
 		return
 	}
+
+	msgData, _ := json.Marshal(
+		models.ChangeSubscriberSubscriptionData{
+			UserId:        req.UserID,
+			PublicationId: req.PublicationID,
+		},
+	)
+	h.pushToQueue(constants.ChangePlan, msgData)
 
 	c.JSON(http.StatusOK, "Subscriber plan change confirmed")
 }

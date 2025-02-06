@@ -22,3 +22,17 @@ type ChangeSubscriberSubscriptionData struct {
 	UserId        int `json:"user_id"`
 	PublicationId int `json:"publication_id"`
 }
+
+type ConfirmPublisherSubscriptionData struct {
+	UserId int `json:"user_id"`
+	PlanId int `json:"plan_id"`
+}
+
+type RevokePublisherSubscriptionData struct {
+	UserId int `json:"user_id"`
+}
+
+type ChangePublisherSubscriptionData struct {
+	UserId int `json:"user_id"`
+	PlanId int `json:"plan_id"`
+}
