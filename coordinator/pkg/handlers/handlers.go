@@ -62,7 +62,7 @@ func (h *Handler) HandleConfirmPublisherSubscription(c *gin.Context) {
 			PlanId: req.PlanID,
 		},
 	)
-	h.pushToQueue(constants.Subscribe, msgData)
+	h.pushToQueue(constants.PublisherSubscribe, msgData)
 
 	c.JSON(http.StatusOK, "Publisher subscription confirmed")
 }
@@ -96,7 +96,7 @@ func (h *Handler) HandleRevokePublisherSubscription(c *gin.Context) {
 			UserId: req.UserID,
 		},
 	)
-	h.pushToQueue(constants.Unsubscribe, msgData)
+	h.pushToQueue(constants.PublisherUnsubscribe, msgData)
 
 	c.JSON(http.StatusOK, "Publisher unsubscription confirmed")
 }
@@ -132,7 +132,7 @@ func (h *Handler) HandleChangePublisherSubscription(c *gin.Context) {
 			PlanId: req.PlanID,
 		},
 	)
-	h.pushToQueue(constants.ChangePlan, msgData)
+	h.pushToQueue(constants.PublisherChangePlan, msgData)
 
 	c.JSON(http.StatusOK, "Publisher plan change confirmed")
 }
@@ -170,7 +170,7 @@ func (h *Handler) HandleJoinPublication(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(constants.Subscribe, msgData)
+	h.pushToQueue(constants.SubscriberSubscribe, msgData)
 
 	c.JSON(http.StatusOK, "Join publication confirmed")
 }
@@ -206,7 +206,7 @@ func (h *Handler) HandleLeavePublication(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(constants.Unsubscribe, msgData)
+	h.pushToQueue(constants.SubscriberUnsubscribe, msgData)
 
 	c.JSON(http.StatusOK, "Leave publication confirmed")
 }
@@ -242,7 +242,7 @@ func (h *Handler) HandleChangeSubscriberSubscription(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(constants.ChangePlan, msgData)
+	h.pushToQueue(constants.SubscriberChangePlan, msgData)
 
 	c.JSON(http.StatusOK, "Subscriber plan change confirmed")
 }

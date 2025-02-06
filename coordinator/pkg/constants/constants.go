@@ -1,10 +1,13 @@
 package constants
 
 const (
-	Subscribe   = "subscribe"
-	Unsubscribe = "unsubscribe"
-	ChangePlan  = "change_plan"
-	Rollback    = "rollback"
+	PublisherSubscribe   = "publisher_subscribe"
+	PublisherUnsubscribe = "publisher_unsubscribe"
+	PublisherChangePlan  = "publisher_change_plan"
+
+	SubscriberSubscribe   = "subscriber_subscribe"
+	SubscriberUnsubscribe = "subscriber_unsubscribe"
+	SubscriberChangePlan  = "subscriber_change_plan"
 
 	Domain                 = "localhost"
 	GRPC_subscription_port = 50002
