@@ -11,8 +11,8 @@ type Producer struct {
 	producer sarama.SyncProducer
 }
 
-func NewProducer() (*Producer, error) {
-	producer, err := connectProducer()
+func NewProducer(config *app.MQ_config) (*Producer, error) {
+	producer, err := connectProducer(config)
 	if err != nil {
 		return nil, err
 	}
@@ -20,14 +20,13 @@ func NewProducer() (*Producer, error) {
 	return &Producer{producer: producer}, nil
 }
 
-func connectProducer() (sarama.SyncProducer, error) {
-	appConfig := app.GetConfig()
-	broker := fmt.Sprintf("%s:%d", appConfig.MQ.Domain, appConfig.MQ.Port)
+func connectProducer(config *app.MQ_config) (sarama.SyncProducer, error) {
+	broker := fmt.Sprintf("%s:%d", config.Domain, config.Port)
 
 	mqConfig := sarama.NewConfig()
-	mqConfig.Producer.Return.Successes = appConfig.Producer.IsProducerReturnSuccess
+	mqConfig.Producer.Return.Successes = config.Producer.IsProducerReturnSuccess
 	mqConfig.Producer.RequiredAcks = sarama.WaitForAll
-	mqConfig.Producer.Retry.Max = appConfig.Producer.NumberOfRetry
+	mqConfig.Producer.Retry.Max = config.Producer.NumberOfRetry
 
 	return sarama.NewSyncProducer([]string{broker}, mqConfig)
 }

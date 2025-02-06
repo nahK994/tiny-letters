@@ -20,8 +20,8 @@ type Consumer struct {
 	handler              *handlers.Handler
 }
 
-func NewConsumer(handler *handlers.Handler) (*Consumer, error) {
-	confirmationConsumer, publicationConsumer, err := ConnectConsumer()
+func NewConsumer(handler *handlers.Handler, config *app.MQ_config) (*Consumer, error) {
+	confirmationConsumer, publicationConsumer, err := ConnectConsumer(config)
 	if err != nil {
 		return nil, err
 	}
@@ -33,21 +33,20 @@ func NewConsumer(handler *handlers.Handler) (*Consumer, error) {
 	}, nil
 }
 
-func ConnectConsumer() (ConfirmationConsumer, PublicationConsumer, error) {
-	appConfig := app.GetConfig()
-	broker := fmt.Sprintf("%s:%d", appConfig.MQ.Domain, appConfig.MQ.Port)
+func ConnectConsumer(config *app.MQ_config) (ConfirmationConsumer, PublicationConsumer, error) {
+	broker := fmt.Sprintf("%s:%d", config.Domain, config.Port)
 	mqConfig := sarama.NewConfig()
-	mqConfig.Consumer.Return.Errors = appConfig.Consumer.IsConsumerReturnError
+	mqConfig.Consumer.Return.Errors = config.Consumer.IsConsumerReturnError
 	worker, err := sarama.NewConsumer([]string{broker}, mqConfig)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to start worker")
 	}
 
-	confirmationConsumer, err := worker.ConsumePartition(appConfig.Consumer.Confirmation.Topic, 0, sarama.OffsetOldest)
+	confirmationConsumer, err := worker.ConsumePartition(config.Consumer.Confirmation.Topic, 0, sarama.OffsetOldest)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to start confirmation consumer: %w", err)
 	}
-	publicationConsumer, err := worker.ConsumePartition(appConfig.Consumer.Publication.Topic, 0, sarama.OffsetOldest)
+	publicationConsumer, err := worker.ConsumePartition(config.Consumer.Publication.Topic, 0, sarama.OffsetOldest)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to start publication consumer: %w", err)
 	}

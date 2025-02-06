@@ -11,17 +11,17 @@ import (
 )
 
 func main() {
-	grpcConfig := app.GetConfig().GRPC
-	if err := grpc_client.IsGRPC_ClientAvailable(&grpcConfig); err != nil {
+	config := app.GetConfig()
+	if err := grpc_client.IsGRPC_ClientAvailable(&config.GRPC); err != nil {
 		log.Fatal(err.Error())
 	}
 
-	producer, err := mq_producer.NewProducer()
+	producer, err := mq_producer.NewProducer(&config.MQ)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 	handlers := handlers.NewHandler(producer)
-	consumer, err := mq_consumer.NewConsumer(handlers)
+	consumer, err := mq_consumer.NewConsumer(handlers, &config.MQ)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
