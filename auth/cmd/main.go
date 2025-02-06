@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"sync"
 	grpc_server "tiny-letter/auth/cmd/grpc/server"
@@ -12,8 +11,6 @@ import (
 
 func main() {
 	config := app.GetConfig()
-	grpcAddr := fmt.Sprintf("%s:%d", config.GRPC.Domain, config.GRPC.Port)
-	restAddr := fmt.Sprintf("%s:%d", config.REST.Domain, config.REST.Port)
 	db, err := db.Init(config.DB)
 	if err != nil {
 		log.Fatal(err)
@@ -21,7 +18,7 @@ func main() {
 
 	var wg sync.WaitGroup
 	wg.Add(2)
-	go grpc_server.Serve(&wg, db, grpcAddr)
-	go rest_server.Serve(&wg, db, restAddr)
+	go grpc_server.Serve(&wg, db, &config.REST)
+	go rest_server.Serve(&wg, db, &config.REST)
 	wg.Wait()
 }
