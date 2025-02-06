@@ -2,12 +2,8 @@ package coordinator_handlers
 
 import (
 	"context"
-	"encoding/json"
 	pb_subscription_manager "tiny-letter/subscription/cmd/grpc/pb/subscription_manager"
-	"tiny-letter/subscription/pkg/constants"
 	"tiny-letter/subscription/pkg/db"
-	"tiny-letter/subscription/pkg/models"
-	mq_producer "tiny-letter/subscription/pkg/mq/producer"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -15,14 +11,12 @@ import (
 
 type CoordinatorListener struct {
 	pb_subscription_manager.UnimplementedSubscriptionManagerServer
-	db       *db.Repository
-	producer *mq_producer.Producer
+	db *db.Repository
 }
 
-func GetCoordinatorHandlers(db *db.Repository, producer *mq_producer.Producer) *CoordinatorListener {
+func GetCoordinatorHandlers(db *db.Repository) *CoordinatorListener {
 	return &CoordinatorListener{
-		db:       db,
-		producer: producer,
+		db: db,
 	}
 }
 
@@ -40,20 +34,6 @@ func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_subscri
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to join publication: %v", err)
 	}
-
-	msgData, _ := json.Marshal(
-		models.JoinPublicationData{
-			UserId:        data.UserId,
-			PlanType:      data.IsPremium,
-			PublicationId: data.PublicationId,
-		},
-	)
-	msg := models.ConfirmationMessage{
-		Action: constants.Subscribe,
-		Data:   msgData,
-	}
-	msgBytes, _ := json.Marshal(msg)
-	l.producer.Push(msgBytes)
 
 	return &pb_subscription_manager.JoinPublicationResponse{
 		SubscriptionId: int32(subscriptionId),

@@ -11,12 +11,11 @@ import (
 	"tiny-letter/subscription/pkg/db"
 	content_handlers "tiny-letter/subscription/pkg/handlers/content"
 	coordinator_handlers "tiny-letter/subscription/pkg/handlers/coordinator"
-	mq_producer "tiny-letter/subscription/pkg/mq/producer"
 
 	"google.golang.org/grpc"
 )
 
-func Serve(wg *sync.WaitGroup, db *db.Repository, config *app.CommConfig, producer *mq_producer.Producer) {
+func Serve(wg *sync.WaitGroup, db *db.Repository, config *app.CommConfig) {
 	defer wg.Done()
 
 	addr := fmt.Sprintf("%s:%d", config.Domain, config.Port)
@@ -27,7 +26,7 @@ func Serve(wg *sync.WaitGroup, db *db.Repository, config *app.CommConfig, produc
 
 	s := grpc.NewServer()
 	pb_publication_authorization.RegisterPublicationAuthorizationServer(s, content_handlers.GetContentHandlers(db))
-	pb_subscription_manager.RegisterSubscriptionManagerServer(s, coordinator_handlers.GetCoordinatorHandlers(db, producer))
+	pb_subscription_manager.RegisterSubscriptionManagerServer(s, coordinator_handlers.GetCoordinatorHandlers(db))
 
 	fmt.Println("Starting server...")
 	fmt.Printf("Hosting server on: %s\n", lis.Addr().String())
