@@ -5,9 +5,9 @@ const (
 	Unsubscribe = "unsubscribe"
 	ChangePlan  = "change_plan"
 
-	NotificationConfirmation = "notification_confirmation"
-	NotificationPublication  = "notification_publication"
+	ConfirmationNotification = "confirmation_notification"
+	PublicationNotification  = "publication_notification"
 
-	EmailConfirmation = "email_confirmation"
-	EmailPublication  = "email_publication"
+	ConfirmationEmail = "confirmation_email"
+	PublicationEmail  = "publication_email"
 )

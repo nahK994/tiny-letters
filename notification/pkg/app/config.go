@@ -47,20 +47,20 @@ var appConfig Config = Config{
 	Consumer: Consumer{
 		IsConsumerReturnError: true,
 		Confirmation: QueueConfig{
-			Topic: constant.NotificationConfirmation,
+			Topic: constant.ConfirmationNotification,
 		},
 		Publication: QueueConfig{
-			Topic: constant.NotificationPublication,
+			Topic: constant.PublicationNotification,
 		},
 	},
 	Producer: Producer{
 		NumberOfRetry:           5,
 		IsProducerReturnSuccess: true,
 		Confirmation: QueueConfig{
-			Topic: constant.EmailConfirmation,
+			Topic: constant.ConfirmationEmail,
 		},
 		Publication: QueueConfig{
-			Topic: constant.EmailPublication,
+			Topic: constant.PublicationEmail,
 		},
 	},
 }
