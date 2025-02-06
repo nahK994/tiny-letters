@@ -1,7 +1,6 @@
 package mq_producer
 
 import (
-	"encoding/json"
 	"fmt"
 	"tiny-letter/subscription/pkg/app"
 
@@ -32,17 +31,12 @@ func connectProducer(config *app.MQ_config) (sarama.SyncProducer, error) {
 	return sarama.NewSyncProducer([]string{broker}, mqConfig)
 }
 
-func (p *Producer) Push(data interface{}) error {
-	message, err := json.Marshal(data)
-	if err != nil {
-		return err
-	}
-
+func (p *Producer) Push(val []byte) error {
 	msg := &sarama.ProducerMessage{
 		Topic: app.GetConfig().MQ.Topic,
-		Value: sarama.StringEncoder(message),
+		Value: sarama.StringEncoder(val),
 	}
-	_, _, err = p.producer.SendMessage(msg)
+	_, _, err := p.producer.SendMessage(msg)
 	if err != nil {
 		return err
 	}
