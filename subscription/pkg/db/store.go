@@ -181,27 +181,3 @@ func (r *Repository) IsAuthorizedPublisher(data *IsAuthorizedPublisherRequest) (
 	}
 	return exists, nil
 }
-
-func (r *Repository) GetContentSubscribers(data *GetContentSubscribersRequest) ([]int32, error) {
-	query := "SELECT user_id FROM subscriber_subscriptions WHERE publication_id = $1"
-	var subscriberIds []int32
-	rows, err := r.DB.Query(query, data.PublicationId)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get subscribers: %w", err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var id int32
-		if err := rows.Scan(&id); err != nil {
-			return nil, fmt.Errorf("failed to scan subscriber ID: %w", err)
-		}
-		subscriberIds = append(subscriberIds, id)
-	}
-
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("error iterating rows: %w", err)
-	}
-
-	return subscriberIds, nil
-}
