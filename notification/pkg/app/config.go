@@ -11,19 +11,15 @@ type CommConfig struct {
 	Domain string
 }
 
-type QueueConfig struct {
-	Topic string
-}
-
 type Consumer struct {
-	Confirmation          QueueConfig
-	Publication           QueueConfig
+	ConfirmationTopic     string
+	PublicationTopic      string
 	IsConsumerReturnError bool
 }
 
 type Producer struct {
-	Confirmation            QueueConfig
-	Publication             QueueConfig
+	ConfirmationTopic       string
+	PublicationTopic        string
 	IsProducerReturnSuccess bool
 	NumberOfRetry           int
 }
@@ -51,22 +47,14 @@ var appConfig Config = Config{
 		},
 		Consumer: Consumer{
 			IsConsumerReturnError: true,
-			Confirmation: QueueConfig{
-				Topic: constant.ConfirmationNotification,
-			},
-			Publication: QueueConfig{
-				Topic: constant.PublicationNotification,
-			},
+			ConfirmationTopic:     constant.ConfirmationNotification,
+			PublicationTopic:      constant.PublicationNotification,
 		},
 		Producer: Producer{
 			NumberOfRetry:           5,
 			IsProducerReturnSuccess: true,
-			Confirmation: QueueConfig{
-				Topic: constant.ConfirmationEmail,
-			},
-			Publication: QueueConfig{
-				Topic: constant.PublicationEmail,
-			},
+			ConfirmationTopic:       constant.ConfirmationEmail,
+			PublicationTopic:        constant.PublicationEmail,
 		},
 	},
 }
