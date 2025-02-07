@@ -128,8 +128,9 @@ func (h *Handler) HandleChangePublisherSubscription(c *gin.Context) {
 
 	msgData, _ := json.Marshal(
 		models.ChangePublisherSubscriptionData{
-			UserId: req.UserID,
-			PlanId: req.PlanID,
+			UserId:    req.UserID,
+			NewPlanId: req.PlanID,
+			OldPlanId: int(oldPlanId),
 		},
 	)
 	h.pushToQueue(constants.PublisherChangePlan, msgData)
