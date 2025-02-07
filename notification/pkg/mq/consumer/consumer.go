@@ -2,6 +2,7 @@ package mq_consumer
 
 import (
 	"fmt"
+	"log"
 	"sync"
 	"tiny-letter/notification/pkg/app"
 	"tiny-letter/notification/pkg/handlers"
@@ -60,7 +61,10 @@ func (consumer *Consumer) StartConsuming(wg *sync.WaitGroup) {
 		case err := <-consumer.confirmationConsumer.Errors():
 			fmt.Println(err)
 		case msg := <-consumer.confirmationConsumer.Messages():
-			consumer.handler.HandleConfirmationMsg(msg.Value)
+			err := consumer.handler.HandleConfirmationMsg(msg.Value)
+			if err != nil {
+				log.Fatalf("Error in consumer handling %s", err.Error())
+			}
 		case err := <-consumer.publicationConsumer.Errors():
 			fmt.Println(err)
 		case msg := <-consumer.publicationConsumer.Messages():
