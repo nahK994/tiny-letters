@@ -9,7 +9,7 @@ import (
 	pb_subscription_manager "tiny-letter/subscription/cmd/grpc/pb/subscription_manager"
 	"tiny-letter/subscription/pkg/app"
 	"tiny-letter/subscription/pkg/db"
-	content_handlers "tiny-letter/subscription/pkg/handlers/content"
+	publication_authorization_handlers "tiny-letter/subscription/pkg/handlers/publication-authorization"
 	subscription_manager_handlers "tiny-letter/subscription/pkg/handlers/subscription-manager"
 
 	"google.golang.org/grpc"
@@ -25,7 +25,7 @@ func Serve(wg *sync.WaitGroup, db *db.Repository, config *app.CommConfig) {
 	}
 
 	s := grpc.NewServer()
-	pb_publication_authorization.RegisterPublicationAuthorizationServer(s, content_handlers.GetContentHandlers(db))
+	pb_publication_authorization.RegisterPublicationAuthorizationServer(s, publication_authorization_handlers.GetPublicationAuthorizationHandler(db))
 	pb_subscription_manager.RegisterSubscriptionManagerServer(s, subscription_manager_handlers.GetSubscriptionManagerHandler(db))
 
 	fmt.Println("Starting server...")

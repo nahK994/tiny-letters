@@ -1,4 +1,4 @@
-package content_handlers
+package publication_authorization_handlers
 
 import (
 	"context"
@@ -7,18 +7,18 @@ import (
 	"tiny-letter/subscription/pkg/models"
 )
 
-type ContentListener struct {
+type PublicationAuthorizationHandler struct {
 	pb_publication_authorization.UnimplementedPublicationAuthorizationServer
 	db *db.Repository
 }
 
-func GetContentHandlers(db *db.Repository) *ContentListener {
-	return &ContentListener{
+func GetPublicationAuthorizationHandler(db *db.Repository) *PublicationAuthorizationHandler {
+	return &PublicationAuthorizationHandler{
 		db: db,
 	}
 }
 
-func (l *ContentListener) IsAuthorizedPublisher(c context.Context, req *pb_publication_authorization.IsAuthorizedPublisherRequest) (*pb_publication_authorization.Response, error) {
+func (l *PublicationAuthorizationHandler) IsAuthorizedPublisher(c context.Context, req *pb_publication_authorization.IsAuthorizedPublisherRequest) (*pb_publication_authorization.Response, error) {
 	data := &models.IsAuthorizedPublisherRequest{
 		UserId:        int(req.UserId),
 		PublicationId: int(req.PublicationId),
