@@ -19,6 +19,8 @@ service SubscriptionManager {
 
   rpc ChangePublisherSubscription (ChangePublisherSubscriptionRequest) returns (ChangePublisherSubscriptionResponse);
   rpc RollbackChangePublisherSubscription (RollbackChangePublisherSubscriptionRequest) returns (Response);
+
+  rpc GetContentSubscribers (GetContentSubscribersRequest) returns (GetContentSubscribersResponse);
 }
 
 message Response {
@@ -95,4 +97,11 @@ message ChangePublisherSubscriptionResponse {
 message RollbackChangePublisherSubscriptionRequest {
   int32 subscription_id = 1;
   int32 old_plan_id = 2;
+}
+
+message GetContentSubscribersRequest {
+  int32 publication_id = 1;
+}
+message GetContentSubscribersResponse {
+  repeated int32 subscriber_ids = 1;
 }
