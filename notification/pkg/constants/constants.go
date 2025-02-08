@@ -21,4 +21,6 @@ const (
 	Producer_NumberOfRetry           = 5
 	Producer_IsProducerReturnSuccess = true
 	Consumer_IsConsumerReturnError   = true
+
+	GRPC_port = 50002
 )

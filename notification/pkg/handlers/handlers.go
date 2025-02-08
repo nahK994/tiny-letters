@@ -55,6 +55,6 @@ func (h *Handler) HandleConfirmationMsg(msg []byte) error {
 	return nil
 }
 
-func (h *Handler) HandlePublicationMsg(msg []byte) {
-
+func (h *Handler) HandlePublicationMsg(msg []byte) error {
+	return nil
 }

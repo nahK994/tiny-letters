@@ -20,27 +20,38 @@ type Producer struct {
 	NumberOfRetry           int
 }
 
-type Config struct {
+type MQ_config struct {
 	CommConfig
 	Consumer Consumer
 	Producer Producer
 }
 
+type Config struct {
+	MQ   MQ_config
+	GRPC CommConfig
+}
+
 var appConfig Config = Config{
-	CommConfig: CommConfig{
-		Port:   constants.MQ_port,
+	MQ: MQ_config{
+		CommConfig: CommConfig{
+			Port:   constants.MQ_port,
+			Domain: constants.Domain,
+		},
+		Consumer: Consumer{
+			IsConsumerReturnError: constants.Consumer_IsConsumerReturnError,
+			ConfirmationTopic:     constants.ConfirmationNotification,
+			PublicationTopic:      constants.PublicationNotification,
+		},
+		Producer: Producer{
+			NumberOfRetry:           constants.Producer_NumberOfRetry,
+			IsProducerReturnSuccess: constants.Producer_IsProducerReturnSuccess,
+			ConfirmationTopic:       constants.ConfirmationEmail,
+			PublicationTopic:        constants.PublicationEmail,
+		},
+	},
+	GRPC: CommConfig{
 		Domain: constants.Domain,
-	},
-	Consumer: Consumer{
-		IsConsumerReturnError: constants.Consumer_IsConsumerReturnError,
-		ConfirmationTopic:     constants.ConfirmationNotification,
-		PublicationTopic:      constants.PublicationNotification,
-	},
-	Producer: Producer{
-		NumberOfRetry:           constants.Producer_NumberOfRetry,
-		IsProducerReturnSuccess: constants.Producer_IsProducerReturnSuccess,
-		ConfirmationTopic:       constants.ConfirmationEmail,
-		PublicationTopic:        constants.PublicationEmail,
+		Port:   constants.GRPC_port,
 	},
 }
 
