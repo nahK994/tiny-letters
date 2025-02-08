@@ -18,13 +18,13 @@ type CreatePostRequest struct {
 }
 
 type ContentData struct {
-	ContentId int
-	Content   string
+	ContentId int    `json:"content_id"`
+	Content   string `json:"content"`
 }
 
 type PublishContentMessage struct {
-	Action string
-	Data   json.RawMessage
+	Action string          `json:"action"`
+	Data   json.RawMessage `json:"data"`
 }
 
 func (req *CreatePublicationRequest) Validate() error {
