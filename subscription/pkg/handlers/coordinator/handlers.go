@@ -4,6 +4,7 @@ import (
 	"context"
 	pb_subscription_manager "tiny-letter/subscription/cmd/grpc/pb/subscription_manager"
 	"tiny-letter/subscription/pkg/db"
+	"tiny-letter/subscription/pkg/models"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -21,7 +22,7 @@ func GetCoordinatorHandlers(db *db.Repository) *CoordinatorListener {
 }
 
 func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_subscription_manager.JoinPublicationRequest) (*pb_subscription_manager.JoinPublicationResponse, error) {
-	data := &db.JoinPublicationRequest{
+	data := &models.JoinPublicationRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
 		IsPremium:     req.GetIsPremium(),
@@ -40,7 +41,7 @@ func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_subscri
 	}, nil
 }
 func (l *CoordinatorListener) RollbackJoinPublication(c context.Context, req *pb_subscription_manager.RollbackJoinPublicationRequest) (*pb_subscription_manager.Response, error) {
-	data := &db.RollbackJoinPublicationRequest{
+	data := &models.RollbackJoinPublicationRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
 	}
 	if err := data.Validate(); err != nil {
@@ -56,7 +57,7 @@ func (l *CoordinatorListener) RollbackJoinPublication(c context.Context, req *pb
 }
 
 func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_subscription_manager.LeavePublicationRequest) (*pb_subscription_manager.LeavePublicationResponse, error) {
-	data := &db.LeavePublicationRequest{
+	data := &models.LeavePublicationRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
 	}
@@ -75,7 +76,7 @@ func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_subscr
 }
 
 func (l *CoordinatorListener) RollbackLeavePublication(c context.Context, req *pb_subscription_manager.RollbackLeavePublicationRequest) (*pb_subscription_manager.Response, error) {
-	data := &db.RollbackLeavePublicationRequest{
+	data := &models.RollbackLeavePublicationRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
 		IsPremium:     req.GetIsPremium(),
@@ -93,7 +94,7 @@ func (l *CoordinatorListener) RollbackLeavePublication(c context.Context, req *p
 }
 
 func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, req *pb_subscription_manager.ChangeSubscriberSubscriptionRequest) (*pb_subscription_manager.ChangeSubscriberSubscriptionResponse, error) {
-	data := &db.ChangeSubscriberSubscriptionRequest{
+	data := &models.ChangeSubscriberSubscriptionRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
 	}
@@ -112,7 +113,7 @@ func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, re
 }
 
 func (l *CoordinatorListener) RollbackChangePublicationPlan(c context.Context, req *pb_subscription_manager.RollbackChangeSubscriberSubscriptionRequest) (*pb_subscription_manager.Response, error) {
-	data := &db.RollbackChangeSubscriberSubscriptionRequest{
+	data := &models.RollbackChangeSubscriberSubscriptionRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
 	}
 	if err := data.Validate(); err != nil {
@@ -128,7 +129,7 @@ func (l *CoordinatorListener) RollbackChangePublicationPlan(c context.Context, r
 }
 
 func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, req *pb_subscription_manager.ConfirmPublisherSubscriptionRequest) (*pb_subscription_manager.ConfirmPublisherSubscriptionResponse, error) {
-	data := &db.ConfirmPublisherSubscriptionRequest{
+	data := &models.ConfirmPublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
 		PlanId: int(req.GetPlanId()),
 	}
@@ -147,7 +148,7 @@ func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, re
 }
 
 func (l *CoordinatorListener) RollbackConfirmPublisherSubscription(c context.Context, req *pb_subscription_manager.RollbackConfirmPublisherSubscriptionRequest) (*pb_subscription_manager.Response, error) {
-	data := &db.RollbackConfirmPublisherSubscriptionRequest{
+	data := &models.RollbackConfirmPublisherSubscriptionRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
 	}
 	if err := data.Validate(); err != nil {
@@ -163,7 +164,7 @@ func (l *CoordinatorListener) RollbackConfirmPublisherSubscription(c context.Con
 }
 
 func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req *pb_subscription_manager.RevokePublisherSubscriptionRequest) (*pb_subscription_manager.RevokePublisherSubscriptionResponse, error) {
-	data := &db.RevokePublisherSubscriptionRequest{
+	data := &models.RevokePublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
 	}
 	if err := data.Validate(); err != nil {
@@ -181,7 +182,7 @@ func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req
 }
 
 func (l *CoordinatorListener) RollbackRevokePublisherSubscription(c context.Context, req *pb_subscription_manager.RollbackRevokePublisherSubscriptionRequest) (*pb_subscription_manager.Response, error) {
-	data := &db.RollbackRevokePublisherSubscriptionRequest{
+	data := &models.RollbackRevokePublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
 		PlanId: int(req.GetPlanId()),
 	}
@@ -198,7 +199,7 @@ func (l *CoordinatorListener) RollbackRevokePublisherSubscription(c context.Cont
 }
 
 func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req *pb_subscription_manager.ChangePublisherSubscriptionRequest) (*pb_subscription_manager.ChangePublisherSubscriptionResponse, error) {
-	data := &db.ChangePublisherSubscriptionRequest{
+	data := &models.ChangePublisherSubscriptionRequest{
 		UserId:        int(req.GetUserId()),
 		ChangedPlanId: int(req.GetPlanId()),
 	}
@@ -218,7 +219,7 @@ func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req
 }
 
 func (l *CoordinatorListener) RollbackChangePublisherSubscription(c context.Context, req *pb_subscription_manager.RollbackChangePublisherSubscriptionRequest) (*pb_subscription_manager.Response, error) {
-	data := &db.RollbackChangePublisherSubscriptionRequest{
+	data := &models.RollbackChangePublisherSubscriptionRequest{
 		SubscriptionId: int(req.GetSubscriptionId()),
 		OldPlanId:      int(req.GetOldPlanId()),
 	}

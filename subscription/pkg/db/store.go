@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"tiny-letter/subscription/pkg/models"
 )
 
 type (
@@ -10,7 +11,7 @@ type (
 	oldSubscriberSubscriptionPlanType bool
 )
 
-func (r *Repository) ConfirmPublisherSubscription(data *ConfirmPublisherSubscriptionRequest) (subscriptionId, error) {
+func (r *Repository) ConfirmPublisherSubscription(data *models.ConfirmPublisherSubscriptionRequest) (subscriptionId, error) {
 	var id int
 	query := `
 	INSERT INTO publisher_subscriptions (user_id, plan_id)
@@ -23,7 +24,7 @@ func (r *Repository) ConfirmPublisherSubscription(data *ConfirmPublisherSubscrip
 	return subscriptionId(id), nil
 }
 
-func (r *Repository) RollbackConfirmPublisherSubscription(data *RollbackConfirmPublisherSubscriptionRequest) error {
+func (r *Repository) RollbackConfirmPublisherSubscription(data *models.RollbackConfirmPublisherSubscriptionRequest) error {
 	query := `
 	DELETE FROM publisher_subscriptions WHERE id = $1
 	`
@@ -34,7 +35,7 @@ func (r *Repository) RollbackConfirmPublisherSubscription(data *RollbackConfirmP
 	return nil
 }
 
-func (r *Repository) RevokePublisherSubscription(data *RevokePublisherSubscriptionRequest) (oldPublisherSubscriptionPlanId, error) {
+func (r *Repository) RevokePublisherSubscription(data *models.RevokePublisherSubscriptionRequest) (oldPublisherSubscriptionPlanId, error) {
 	var oldPlanId int
 	query := `
 	DELETE FROM publisher_subscriptions WHERE user_id = $1 RETURNING plan_id
@@ -46,7 +47,7 @@ func (r *Repository) RevokePublisherSubscription(data *RevokePublisherSubscripti
 	return oldPublisherSubscriptionPlanId(oldPlanId), nil
 }
 
-func (r *Repository) RollbackRevokePublisherSubscription(data *RollbackRevokePublisherSubscriptionRequest) error {
+func (r *Repository) RollbackRevokePublisherSubscription(data *models.RollbackRevokePublisherSubscriptionRequest) error {
 	query := `
 	INSERT INTO publisher_subscriptions (user_id, plan_id) VALUES ($1, $2)
 	`
@@ -58,7 +59,7 @@ func (r *Repository) RollbackRevokePublisherSubscription(data *RollbackRevokePub
 	return nil
 }
 
-func (r *Repository) ChangePublisherSubscription(data *ChangePublisherSubscriptionRequest) (subscriptionId, oldPublisherSubscriptionPlanId, error) {
+func (r *Repository) ChangePublisherSubscription(data *models.ChangePublisherSubscriptionRequest) (subscriptionId, oldPublisherSubscriptionPlanId, error) {
 	var id, oldPlanId int
 	query := `
 	SELECT id, plan_id FROM publisher_subscriptions WHERE user_id = $1
@@ -77,7 +78,7 @@ func (r *Repository) ChangePublisherSubscription(data *ChangePublisherSubscripti
 	return subscriptionId(id), oldPublisherSubscriptionPlanId(oldPlanId), nil
 }
 
-func (r *Repository) RollbackChangePublisherSubscription(data *RollbackChangePublisherSubscriptionRequest) error {
+func (r *Repository) RollbackChangePublisherSubscription(data *models.RollbackChangePublisherSubscriptionRequest) error {
 	query := `
 	UPDATE publisher_subscriptions SET plan_id = $2 WHERE id = $1
 	`
@@ -87,7 +88,7 @@ func (r *Repository) RollbackChangePublisherSubscription(data *RollbackChangePub
 	return nil
 }
 
-func (r *Repository) JoinPublication(data *JoinPublicationRequest) (int, error) {
+func (r *Repository) JoinPublication(data *models.JoinPublicationRequest) (int, error) {
 	query := `
 	INSERT INTO subscriber_subscriptions (user_id, publication_id, is_premium)
 	VALUES ($1, $2, $3) RETURNING id
@@ -100,7 +101,7 @@ func (r *Repository) JoinPublication(data *JoinPublicationRequest) (int, error) 
 	return id, nil
 }
 
-func (r *Repository) RollbackJoinPublication(data *RollbackJoinPublicationRequest) error {
+func (r *Repository) RollbackJoinPublication(data *models.RollbackJoinPublicationRequest) error {
 	query := `
 	DELETE FROM subscriber_subscriptions WHERE id = $1
 	`
@@ -110,7 +111,7 @@ func (r *Repository) RollbackJoinPublication(data *RollbackJoinPublicationReques
 	return nil
 }
 
-func (r *Repository) LeavePublication(data *LeavePublicationRequest) (oldSubscriberSubscriptionPlanType, error) {
+func (r *Repository) LeavePublication(data *models.LeavePublicationRequest) (oldSubscriberSubscriptionPlanType, error) {
 	query := `
 	DELETE FROM subscriber_subscriptions WHERE user_id = $1 AND publication_id = $2 RETURNING is_premium
 	`
@@ -123,7 +124,7 @@ func (r *Repository) LeavePublication(data *LeavePublicationRequest) (oldSubscri
 	return oldSubscriberSubscriptionPlanType(isPremium), nil
 }
 
-func (r *Repository) RollbackLeavePublication(data *RollbackLeavePublicationRequest) error {
+func (r *Repository) RollbackLeavePublication(data *models.RollbackLeavePublicationRequest) error {
 	query := `
 	INSERT INTO subscriber_subscriptions (user_id, publication_id, is_premium) VALUES ($1, $2, $3)
 	`
@@ -134,7 +135,7 @@ func (r *Repository) RollbackLeavePublication(data *RollbackLeavePublicationRequ
 	return nil
 }
 
-func (r *Repository) ChangeSubscriberSubscription(data *ChangeSubscriberSubscriptionRequest) (subscriptionId, error) {
+func (r *Repository) ChangeSubscriberSubscription(data *models.ChangeSubscriberSubscriptionRequest) (subscriptionId, error) {
 	var id int
 	query := `
 	SELECT id, is_premium FROM subscriber_subscriptions WHERE user_id = $1 AND publication_id = $2
@@ -153,7 +154,7 @@ func (r *Repository) ChangeSubscriberSubscription(data *ChangeSubscriberSubscrip
 	return subscriptionId(id), nil
 }
 
-func (r *Repository) RollbackChangeSubscriberPlan(data *RollbackChangeSubscriberSubscriptionRequest) error {
+func (r *Repository) RollbackChangeSubscriberPlan(data *models.RollbackChangeSubscriberSubscriptionRequest) error {
 	query := `
 	SELECT is_premium FROM subscriber_subscriptions WHERE id = $1
 	`
@@ -171,7 +172,7 @@ func (r *Repository) RollbackChangeSubscriberPlan(data *RollbackChangeSubscriber
 	return nil
 }
 
-func (r *Repository) IsAuthorizedPublisher(data *IsAuthorizedPublisherRequest) (bool, error) {
+func (r *Repository) IsAuthorizedPublisher(data *models.IsAuthorizedPublisherRequest) (bool, error) {
 	query := `
 	SELECT EXISTS(SELECT 1 FROM publishers WHERE user_id = $1 AND publication_id = $2)
 	`
