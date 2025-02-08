@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"tiny-letter/auth/pkg/db"
+	"tiny-letter/auth/pkg/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +20,7 @@ func GetREST_Handlers(repo *db.Repository) *Handler {
 }
 
 func (h *Handler) Login(c *gin.Context) {
-	var payload db.LoginRequest
+	var payload models.LoginRequest
 	err := c.ShouldBindJSON(&payload)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "bad request")
@@ -41,7 +42,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	accessToken, err1 := generateJWT(&db.GenerateTokenRequest{
+	accessToken, err1 := generateJWT(&models.GenerateTokenRequest{
 		Id:   userInfo.Id,
 		Role: userInfo.Role,
 	})
@@ -57,7 +58,7 @@ func (h *Handler) Login(c *gin.Context) {
 }
 
 func (h *Handler) HandleUserRegistration(c *gin.Context) {
-	var userRequest db.CreateUserRequest
+	var userRequest models.CreateUserRequest
 	if err := c.ShouldBindJSON(userRequest); err != nil {
 		c.JSON(http.StatusBadRequest, "wrong user info format")
 		return
@@ -69,7 +70,7 @@ func (h *Handler) HandleUserRegistration(c *gin.Context) {
 		return
 	}
 	user_id, err := h.repo.CreateUser(
-		&db.CreateUserRequest{
+		&models.CreateUserRequest{
 			Name:     userRequest.Name,
 			Email:    userRequest.Email,
 			Password: hashedPassword,

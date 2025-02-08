@@ -3,7 +3,7 @@ package rest_handlers
 import (
 	"time"
 	"tiny-letter/auth/pkg/app"
-	"tiny-letter/auth/pkg/db"
+	"tiny-letter/auth/pkg/models"
 
 	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
@@ -19,7 +19,7 @@ func checkPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func generateJWT(r *db.GenerateTokenRequest) (string, error) {
+func generateJWT(r *models.GenerateTokenRequest) (string, error) {
 	appConfig := app.GetConfig().App
 	now := time.Now()
 	expTime := now.Add(time.Duration(appConfig.JWT_exp_minutes) * time.Minute)

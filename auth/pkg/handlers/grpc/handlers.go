@@ -4,6 +4,7 @@ import (
 	"context"
 	pb_auth_manager "tiny-letter/auth/cmd/grpc/pb/auth_manager"
 	"tiny-letter/auth/pkg/db"
+	"tiny-letter/auth/pkg/models"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -21,7 +22,7 @@ func GetCoordinatorHandlers(db *db.Repository) *CoordinatorListener {
 }
 
 func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_auth_manager.JoinPublicationRequest) (*pb_auth_manager.Response, error) {
-	data := &db.JoinPublicationRequest{
+	data := &models.JoinPublicationRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
 		IsPremium:     req.GetIsPremium(),
@@ -38,7 +39,7 @@ func (l *CoordinatorListener) JoinPublication(c context.Context, req *pb_auth_ma
 
 }
 func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_auth_manager.LeavePublicationRequest) (*pb_auth_manager.Response, error) {
-	data := &db.LeavePublicationRequest{
+	data := &models.LeavePublicationRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
 	}
@@ -53,7 +54,7 @@ func (l *CoordinatorListener) LeavePublication(c context.Context, req *pb_auth_m
 	return &pb_auth_manager.Response{IsSuccess: true}, nil
 }
 func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, req *pb_auth_manager.ChangeSubscriberSubscriptionRequest) (*pb_auth_manager.Response, error) {
-	data := &db.ChangeSubscriberSubscriptionRequest{
+	data := &models.ChangeSubscriberSubscriptionRequest{
 		UserId:        int(req.GetUserId()),
 		PublicationId: int(req.GetPublicationId()),
 	}
@@ -68,7 +69,7 @@ func (l *CoordinatorListener) ChangeSubscriberSubscription(c context.Context, re
 	return &pb_auth_manager.Response{IsSuccess: true}, nil
 }
 func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, req *pb_auth_manager.ConfirmPublisherSubscriptionRequest) (*pb_auth_manager.Response, error) {
-	data := &db.ConfirmPublisherSubscriptionRequest{
+	data := &models.ConfirmPublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
 		PlanId: int(req.GetPlanId()),
 	}
@@ -83,7 +84,7 @@ func (l *CoordinatorListener) ConfirmPublisherSubscription(c context.Context, re
 	return &pb_auth_manager.Response{IsSuccess: true}, nil
 }
 func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req *pb_auth_manager.RevokePublisherSubscriptionRequest) (*pb_auth_manager.Response, error) {
-	data := &db.RevokePublisherSubscriptionRequest{
+	data := &models.RevokePublisherSubscriptionRequest{
 		UserId: int(req.GetUserId()),
 	}
 	if err := data.Validate(); err != nil {
@@ -97,7 +98,7 @@ func (l *CoordinatorListener) RevokePublisherSubscription(c context.Context, req
 	return &pb_auth_manager.Response{IsSuccess: true}, nil
 }
 func (l *CoordinatorListener) ChangePublisherSubscription(c context.Context, req *pb_auth_manager.ChangePublisherSubscriptionRequest) (*pb_auth_manager.Response, error) {
-	data := &db.ChangePublisherSubscriptionRequest{
+	data := &models.ChangePublisherSubscriptionRequest{
 		UserId:        int(req.GetUserId()),
 		ChangedPlanId: int(req.GetPlanId()),
 	}

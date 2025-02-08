@@ -1,8 +1,11 @@
 package db
 
-import "fmt"
+import (
+	"fmt"
+	"tiny-letter/auth/pkg/models"
+)
 
-func (r *Repository) CreateUser(userInfo *CreateUserRequest) (int, error) {
+func (r *Repository) CreateUser(userInfo *models.CreateUserRequest) (int, error) {
 	var userId int
 	err := r.DB.QueryRow("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id", userInfo.Name, userInfo.Email, userInfo.Password).Scan(&userId)
 	if err != nil {
@@ -16,8 +19,8 @@ func (r *Repository) CreateUser(userInfo *CreateUserRequest) (int, error) {
 	return userId, err
 }
 
-func (r *Repository) GetUserInfoByEmail(email string) (*JWT_claim, error) {
-	var claim JWT_claim
+func (r *Repository) GetUserInfoByEmail(email string) (*models.JWT_claim, error) {
+	var claim models.JWT_claim
 	err := r.DB.QueryRow(`
 		SELECT id, password, role,
 		FROM users
@@ -30,7 +33,7 @@ func (r *Repository) GetUserInfoByEmail(email string) (*JWT_claim, error) {
 	return &claim, nil
 }
 
-func (r *Repository) ConfirmPublisherSubscription(data *ConfirmPublisherSubscriptionRequest) error {
+func (r *Repository) ConfirmPublisherSubscription(data *models.ConfirmPublisherSubscriptionRequest) error {
 	query := `
 	INSERT INTO publisher_subscriptions (user_id, plan_id)
 	VALUES ($1, $2)
@@ -42,7 +45,7 @@ func (r *Repository) ConfirmPublisherSubscription(data *ConfirmPublisherSubscrip
 	return nil
 }
 
-func (r *Repository) RevokePublisherSubscription(data *RevokePublisherSubscriptionRequest) error {
+func (r *Repository) RevokePublisherSubscription(data *models.RevokePublisherSubscriptionRequest) error {
 	query := `
 	DELETE FROM publisher_subscriptions WHERE user_id = $1
 	`
@@ -53,7 +56,7 @@ func (r *Repository) RevokePublisherSubscription(data *RevokePublisherSubscripti
 	return nil
 }
 
-func (r *Repository) ChangePublisherSubscription(data *ChangePublisherSubscriptionRequest) error {
+func (r *Repository) ChangePublisherSubscription(data *models.ChangePublisherSubscriptionRequest) error {
 	query := `
 	SELECT id, plan_id FROM publisher_subscriptions WHERE user_id = $1
 	`
@@ -71,7 +74,7 @@ func (r *Repository) ChangePublisherSubscription(data *ChangePublisherSubscripti
 	return nil
 }
 
-func (r *Repository) JoinPublication(data *JoinPublicationRequest) error {
+func (r *Repository) JoinPublication(data *models.JoinPublicationRequest) error {
 	query := `
 	INSERT INTO subscriber_subscriptions (user_id, publication_id, is_premium)
 	VALUES ($1, $2, $3)
@@ -83,7 +86,7 @@ func (r *Repository) JoinPublication(data *JoinPublicationRequest) error {
 	return nil
 }
 
-func (r *Repository) LeavePublication(data *LeavePublicationRequest) error {
+func (r *Repository) LeavePublication(data *models.LeavePublicationRequest) error {
 	query := `
 	DELETE FROM subscriber_subscriptions WHERE user_id = $1 AND publication_id = $2
 	`
@@ -95,7 +98,7 @@ func (r *Repository) LeavePublication(data *LeavePublicationRequest) error {
 	return nil
 }
 
-func (r *Repository) ChangeSubscriberSubscription(data *ChangeSubscriberSubscriptionRequest) error {
+func (r *Repository) ChangeSubscriberSubscription(data *models.ChangeSubscriberSubscriptionRequest) error {
 	query := `
 	SELECT is_premium FROM subscriber_subscriptions WHERE user_id = $1 AND publication_id = $2
 	`
