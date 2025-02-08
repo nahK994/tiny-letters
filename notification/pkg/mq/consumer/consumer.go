@@ -43,11 +43,11 @@ func ConnectConsumer(config *app.MQ_config) (ConfirmationConsumer, PublicationCo
 		return nil, nil, fmt.Errorf("failed to start worker")
 	}
 
-	confirmationConsumer, err := worker.ConsumePartition(config.Consumer.ConfirmationTopic, 0, sarama.OffsetOldest)
+	confirmationConsumer, err := worker.ConsumePartition(config.ConfirmationTopic, 0, sarama.OffsetOldest)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to start confirmation consumer: %w", err)
 	}
-	publicationConsumer, err := worker.ConsumePartition(config.Consumer.PublicationTopic, 0, sarama.OffsetOldest)
+	publicationConsumer, err := worker.ConsumePartition(config.PublicationTopic, 0, sarama.OffsetOldest)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to start publication consumer: %w", err)
 	}

@@ -8,19 +8,17 @@ type CommConfig struct {
 }
 
 type Consumer struct {
-	ConfirmationTopic     string
-	PublicationTopic      string
 	IsConsumerReturnError bool
 }
 
 type Producer struct {
-	ConfirmationTopic       string
-	PublicationTopic        string
 	IsProducerReturnSuccess bool
 	NumberOfRetry           int
 }
 
 type MQ_config struct {
+	ConfirmationTopic string
+	PublicationTopic  string
 	CommConfig
 	Consumer Consumer
 	Producer Producer
@@ -33,20 +31,18 @@ type Config struct {
 
 var appConfig Config = Config{
 	MQ: MQ_config{
+		ConfirmationTopic: constants.ConfirmationNotification,
+		PublicationTopic:  constants.PublicationNotification,
 		CommConfig: CommConfig{
 			Port:   constants.MQ_port,
 			Domain: constants.Domain,
 		},
 		Consumer: Consumer{
 			IsConsumerReturnError: constants.Consumer_IsConsumerReturnError,
-			ConfirmationTopic:     constants.ConfirmationNotification,
-			PublicationTopic:      constants.PublicationNotification,
 		},
 		Producer: Producer{
 			NumberOfRetry:           constants.Producer_NumberOfRetry,
 			IsProducerReturnSuccess: constants.Producer_IsProducerReturnSuccess,
-			ConfirmationTopic:       constants.ConfirmationEmail,
-			PublicationTopic:        constants.PublicationEmail,
 		},
 	},
 	GRPC: CommConfig{

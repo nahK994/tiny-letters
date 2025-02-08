@@ -37,3 +37,18 @@ type ChangePublisherSubscriptionData struct {
 	NewPlanId int `json:"new_plan_id"`
 	OldPlanId int `json:"old_plan_id"`
 }
+
+type ContentData struct {
+	ContentId int    `json:"content_id"`
+	Content   string `json:"content"`
+}
+
+type ConsumedContentMessage struct {
+	Action string          `json:"action"`
+	Data   json.RawMessage `json:"data"`
+}
+
+type PublishedContentMessage struct {
+	Content       string  `json:"content"`
+	SubscriberIds []int32 `json:"subscriber_ids"`
+}
