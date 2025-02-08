@@ -5,12 +5,13 @@ import (
 	"tiny-letter/content/pkg/app"
 	"tiny-letter/content/pkg/db"
 	"tiny-letter/content/pkg/handlers"
+	mq_producer "tiny-letter/content/pkg/mq"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Serve(db *db.Repository, commConfig *app.CommConfig) {
-	h := handlers.GetHandler(db)
+func Serve(db *db.Repository, commConfig *app.CommConfig, producer *mq_producer.Producer) {
+	h := handlers.GetHandler(db, producer)
 
 	r := gin.Default()
 	r.POST("/publications", h.HandleCreatePublication)

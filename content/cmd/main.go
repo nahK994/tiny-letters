@@ -6,6 +6,7 @@ import (
 	rest_server "tiny-letter/content/cmd/rest/server"
 	"tiny-letter/content/pkg/app"
 	"tiny-letter/content/pkg/db"
+	mq_producer "tiny-letter/content/pkg/mq"
 )
 
 func main() {
@@ -20,5 +21,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	rest_server.Serve(db, &config.REST)
+	producer, err := mq_producer.NewProducer(&config.MQ)
+	if err != nil {
+		log.Fatalf("Failed to connect to MQ: %v", err)
+	}
+
+	rest_server.Serve(db, &config.REST, producer)
 }

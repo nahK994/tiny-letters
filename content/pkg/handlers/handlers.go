@@ -2,17 +2,20 @@ package handlers
 
 import (
 	"tiny-letter/content/pkg/db"
+	mq_producer "tiny-letter/content/pkg/mq"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Handler struct {
-	DB *db.Repository
+	DB       *db.Repository
+	producer *mq_producer.Producer
 }
 
-func GetHandler(db *db.Repository) *Handler {
+func GetHandler(db *db.Repository, producer *mq_producer.Producer) *Handler {
 	return &Handler{
-		DB: db,
+		DB:       db,
+		producer: producer,
 	}
 }
 

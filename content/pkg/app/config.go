@@ -23,11 +23,19 @@ type GRPC_config struct {
 	Subscription CommConfig
 }
 
+type MQ_config struct {
+	CommConfig
+	Topic                   string
+	NumberOfRetry           int
+	IsProducerReturnSuccess bool
+}
+
 type Config struct {
 	App  AppConfig
 	DB   DB_config
 	REST CommConfig
 	GRPC GRPC_config
+	MQ   MQ_config
 }
 
 var appConfig Config = Config{
@@ -52,6 +60,15 @@ var appConfig Config = Config{
 		CommConfig: CommConfig{
 			Domain: constants.Domain,
 			Port:   constants.DB_port,
+		},
+	},
+	MQ: MQ_config{
+		NumberOfRetry:           constants.MQ_NumberOfRetry,
+		IsProducerReturnSuccess: constants.MQ_IsProducerReturnSuccess,
+		Topic:                   constants.MQ_topic,
+		CommConfig: CommConfig{
+			Domain: constants.Domain,
+			Port:   constants.MQ_port,
 		},
 	},
 }
