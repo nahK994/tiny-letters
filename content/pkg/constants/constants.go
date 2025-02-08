@@ -18,4 +18,6 @@ const (
 	MQ_NumberOfRetry           = 5
 	MQ_IsProducerReturnSuccess = true
 	MQ_topic                   = "publication_notification"
+
+	Publish = "publish"
 )

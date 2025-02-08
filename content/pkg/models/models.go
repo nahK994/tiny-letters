@@ -1,6 +1,9 @@
-package db
+package models
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type CreatePublicationRequest struct {
 	Name        string
@@ -12,6 +15,16 @@ type CreatePostRequest struct {
 	Content       string
 	PublicationID int
 	IsPremium     bool
+}
+
+type ContentData struct {
+	ContentId int
+	Content   string
+}
+
+type PublishContentMessage struct {
+	Action string
+	Data   json.RawMessage
 }
 
 func (req *CreatePublicationRequest) Validate() error {
