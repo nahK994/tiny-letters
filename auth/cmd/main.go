@@ -18,7 +18,7 @@ func main() {
 
 	var wg sync.WaitGroup
 	wg.Add(2)
-	go grpc_server.Serve(&wg, db, &config.REST)
+	go grpc_server.Serve(&wg, db, &config.GRPC)
 	go rest_server.Serve(&wg, db, &config.REST)
 	wg.Wait()
 }
