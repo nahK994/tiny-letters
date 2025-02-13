@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option go_package = "/email_service;pb_email_service";
+
+service EmailService {
+    rpc NotifyNewUser (NewUserRequest) returns (Response);
+}
+
+message NewUserRequest {
+    int32 user_id = 1;
+    string email = 2;
+}
+
+message Response {
+    bool success = 1;
+}
