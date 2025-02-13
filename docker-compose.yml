@@ -33,6 +33,17 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=subscription_db
 
+  email_db:
+    container_name: email_db
+    image: postgres
+    restart: always
+    ports:
+      - 5002:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=email_db
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4:8.3
