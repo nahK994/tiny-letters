@@ -11,7 +11,7 @@ import (
 
 func main() {
 	config := app.GetConfig()
-	db, err := db.Init(config.DB)
+	db, err := db.Init(&config.DB)
 	if err != nil {
 		log.Fatal(err)
 	}
