@@ -2,10 +2,10 @@ package main
 
 import (
 	"log"
-	grpc_client "tiny-letter/coordinator/cmd/grpc/client"
-	rest_server "tiny-letter/coordinator/cmd/rest/server"
-	"tiny-letter/coordinator/pkg/app"
-	mq_producer "tiny-letter/coordinator/pkg/mq"
+	grpc_client "tiny-letter/orchestrator/cmd/grpc/client"
+	rest_server "tiny-letter/orchestrator/cmd/rest/server"
+	"tiny-letter/orchestrator/pkg/app"
+	mq_producer "tiny-letter/orchestrator/pkg/mq"
 )
 
 func main() {

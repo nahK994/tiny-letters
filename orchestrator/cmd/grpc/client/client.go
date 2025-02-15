@@ -2,9 +2,9 @@ package grpc_client
 
 import (
 	"fmt"
-	"tiny-letter/coordinator/cmd/grpc/client/auth"
-	"tiny-letter/coordinator/cmd/grpc/client/subscription"
-	"tiny-letter/coordinator/pkg/app"
+	"tiny-letter/orchestrator/cmd/grpc/client/auth"
+	"tiny-letter/orchestrator/cmd/grpc/client/subscription"
+	"tiny-letter/orchestrator/pkg/app"
 )
 
 func IsGRPC_ClientAvailable(grpcConfig *app.GRPC) error {

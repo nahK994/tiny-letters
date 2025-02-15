@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-	pb_subscription_manager "tiny-letter/coordinator/cmd/grpc/pb/subscription_manager"
+	pb_subscription_manager "tiny-letter/orchestrator/cmd/grpc/pb/subscription_manager"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

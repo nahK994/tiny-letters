@@ -1,6 +1,6 @@
 package app
 
-import "tiny-letter/coordinator/pkg/constants"
+import "tiny-letter/orchestrator/pkg/constants"
 
 type CommConfig struct {
 	Port   int

@@ -2,7 +2,7 @@ package mq_producer
 
 import (
 	"fmt"
-	"tiny-letter/coordinator/pkg/app"
+	"tiny-letter/orchestrator/pkg/app"
 
 	"github.com/IBM/sarama"
 )

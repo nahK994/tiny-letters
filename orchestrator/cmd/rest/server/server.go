@@ -2,9 +2,9 @@ package rest_server
 
 import (
 	"fmt"
-	"tiny-letter/coordinator/pkg/app"
-	handler "tiny-letter/coordinator/pkg/handlers"
-	mq_producer "tiny-letter/coordinator/pkg/mq"
+	"tiny-letter/orchestrator/pkg/app"
+	handler "tiny-letter/orchestrator/pkg/handlers"
+	mq_producer "tiny-letter/orchestrator/pkg/mq"
 
 	"github.com/gin-gonic/gin"
 )

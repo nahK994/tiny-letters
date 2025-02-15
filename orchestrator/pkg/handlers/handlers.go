@@ -3,11 +3,11 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-	"tiny-letter/coordinator/cmd/grpc/client/auth"
-	"tiny-letter/coordinator/cmd/grpc/client/subscription"
-	"tiny-letter/coordinator/pkg/constants"
-	"tiny-letter/coordinator/pkg/models"
-	mq_producer "tiny-letter/coordinator/pkg/mq"
+	"tiny-letter/orchestrator/cmd/grpc/client/auth"
+	"tiny-letter/orchestrator/cmd/grpc/client/subscription"
+	"tiny-letter/orchestrator/pkg/constants"
+	"tiny-letter/orchestrator/pkg/models"
+	mq_producer "tiny-letter/orchestrator/pkg/mq"
 
 	"github.com/gin-gonic/gin"
 )
