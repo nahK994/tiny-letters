@@ -19,8 +19,15 @@ type MQ_config struct {
 	IsConsumerReturnError bool
 }
 
+type DB_config struct {
+	User     string
+	Password string
+	Name     string
+	CommConfig
+}
+
 type Config struct {
-	DB   CommConfig
+	DB   DB_config
 	MQ   MQ_config
 	GRPC CommConfig
 }
@@ -39,9 +46,14 @@ var appConfig Config = Config{
 		Domain: constants.Domain,
 		Port:   constants.GRPC_port,
 	},
-	DB: CommConfig{
-		Domain: constants.Domain,
-		Port:   constants.DB_port,
+	DB: DB_config{
+		User:     constants.DB_user,
+		Password: constants.DB_password,
+		Name:     constants.DB_name,
+		CommConfig: CommConfig{
+			Port:   constants.DB_port,
+			Domain: constants.Domain,
+		},
 	},
 }
 
