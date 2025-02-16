@@ -3,14 +3,18 @@ package mq_handlers
 import (
 	"encoding/json"
 	"tiny-letter/email/pkg/constants"
+	"tiny-letter/email/pkg/db"
 	"tiny-letter/email/pkg/models"
 )
 
 type MQ_ConsumerHandlers struct {
+	db *db.Repository
 }
 
-func New_ConsumerHandlers() *MQ_ConsumerHandlers {
-	return &MQ_ConsumerHandlers{}
+func New_ConsumerHandlers(db *db.Repository) *MQ_ConsumerHandlers {
+	return &MQ_ConsumerHandlers{
+		db: db,
+	}
 }
 
 func (h *MQ_ConsumerHandlers) HandleConfirmationMsg(msg []byte) error {
@@ -18,10 +22,10 @@ func (h *MQ_ConsumerHandlers) HandleConfirmationMsg(msg []byte) error {
 	json.Unmarshal(msg, &data)
 
 	switch data.Action {
-	case constants.SubscriberSubscribe:
+	case constants.JoinPublication:
 		return h.handleJoinPublication(msg)
 
-	case constants.SubscriberUnsubscribe:
+	case constants.LeavePublication:
 		return h.handleLeavePublication(msg)
 
 	case constants.SubscriberChangePlan:
@@ -35,6 +39,9 @@ func (h *MQ_ConsumerHandlers) HandleConfirmationMsg(msg []byte) error {
 
 	case constants.PublisherChangePlan:
 		return h.handleChangePublisherSubscription(msg)
+
+	case constants.RegisterUser:
+		return h.handleRegisterUser(msg)
 	}
 	return nil
 }
@@ -64,5 +71,15 @@ func (h *MQ_ConsumerHandlers) handleRevokePublisherSubscription(msg []byte) erro
 }
 
 func (h *MQ_ConsumerHandlers) handleChangePublisherSubscription(msg []byte) error {
+	return nil
+}
+
+func (h *MQ_ConsumerHandlers) handleRegisterUser(msg []byte) error {
+	var data models.UserRegistrationRequest
+	json.Unmarshal(msg, &data)
+	err := h.db.CreateUser(data)
+	if err != nil {
+		return err
+	}
 	return nil
 }

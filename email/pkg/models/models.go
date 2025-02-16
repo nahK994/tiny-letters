@@ -52,3 +52,9 @@ type PublishedContentMessage struct {
 	Content       string  `json:"content"`
 	SubscriberIds []int32 `json:"subscriber_ids"`
 }
+
+type UserRegistrationRequest struct {
+	UserId int    `json:"user_id"`
+	Email  string `json:"email"`
+	Type   string `json:"type"`
+}
