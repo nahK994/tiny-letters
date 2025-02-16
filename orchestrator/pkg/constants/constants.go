@@ -9,8 +9,7 @@ const (
 	LeavePublication     = "leave_publication"
 	SubscriberChangePlan = "subscriber_change_plan"
 
-	RegisterSubscriber = "register_subscriber"
-	RegisterPublisher  = "register_publisher"
+	RegisterUser = "register_user"
 
 	Domain                 = "localhost"
 	GRPC_subscription_port = 50002

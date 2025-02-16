@@ -5,9 +5,11 @@ const (
 	PublisherUnsubscribe = "publisher_unsubscribe"
 	PublisherChangePlan  = "publisher_change_plan"
 
-	SubscriberSubscribe   = "subscriber_subscribe"
-	SubscriberUnsubscribe = "subscriber_unsubscribe"
-	SubscriberChangePlan  = "subscriber_change_plan"
+	JoinPublication      = "join_publication"
+	LeavePublication     = "leave_publication"
+	SubscriberChangePlan = "subscriber_change_plan"
+
+	RegisterUser = "register_user"
 
 	ConfirmationEmail = "confirmation_email"
 	PublicationEmail  = "publication_email"
@@ -22,4 +24,10 @@ const (
 	DB_user     = "user"
 	DB_password = "password"
 	DB_name     = "email_db"
+
+	HostEmail        = "tinyletter043@gmail.com"
+	TemplatePath     = "templates/"
+	EmailAppPassword = "ddyv ctjj hgrq hejt"
+	RateLimit        = 2
+	BatchSize        = 2
 )
