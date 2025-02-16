@@ -5,9 +5,12 @@ const (
 	PublisherUnsubscribe = "publisher_unsubscribe"
 	PublisherChangePlan  = "publisher_change_plan"
 
-	SubscriberSubscribe   = "subscriber_subscribe"
-	SubscriberUnsubscribe = "subscriber_unsubscribe"
-	SubscriberChangePlan  = "subscriber_change_plan"
+	JoinPublication      = "join_publication"
+	LeavePublication     = "leave_publication"
+	SubscriberChangePlan = "subscriber_change_plan"
+
+	RegisterSubscriber = "register_subscriber"
+	RegisterPublisher  = "register_publisher"
 
 	Domain                 = "localhost"
 	GRPC_subscription_port = 50002

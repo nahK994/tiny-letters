@@ -171,7 +171,7 @@ func (h *Handler) HandleJoinPublication(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(constants.SubscriberSubscribe, msgData)
+	h.pushToQueue(constants.JoinPublication, msgData)
 
 	c.JSON(http.StatusOK, "Join publication confirmed")
 }
@@ -207,7 +207,7 @@ func (h *Handler) HandleLeavePublication(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(constants.SubscriberUnsubscribe, msgData)
+	h.pushToQueue(constants.LeavePublication, msgData)
 
 	c.JSON(http.StatusOK, "Leave publication confirmed")
 }

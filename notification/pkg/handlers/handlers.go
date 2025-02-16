@@ -23,10 +23,10 @@ func (h *Handler) HandleConfirmationMsg(msg []byte) error {
 	json.Unmarshal(msg, &data)
 
 	switch data.Action {
-	case constants.SubscriberSubscribe:
+	case constants.JoinPublication:
 		return h.handleJoinPublication(msg)
 
-	case constants.SubscriberUnsubscribe:
+	case constants.LeavePublication:
 		return h.handleLeavePublication(msg)
 
 	case constants.SubscriberChangePlan:

@@ -5,9 +5,9 @@ const (
 	PublisherUnsubscribe = "publisher_unsubscribe"
 	PublisherChangePlan  = "publisher_change_plan"
 
-	SubscriberSubscribe   = "subscriber_subscribe"
-	SubscriberUnsubscribe = "subscriber_unsubscribe"
-	SubscriberChangePlan  = "subscriber_change_plan"
+	JoinPublication      = "join_publication"
+	LeavePublication     = "leave_publication"
+	SubscriberChangePlan = "subscriber_change_plan"
 
 	ConfirmationNotification = "confirmation_notification"
 	PublicationNotification  = "publication_notification"
