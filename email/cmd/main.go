@@ -18,7 +18,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	consumerHandlers := mq_handlers.New_ConsumerHandlers()
+	consumerHandlers := mq_handlers.New_ConsumerHandlers(db)
 	mq, err := mq_consumer.NewConsumer(consumerHandlers, &config.MQ)
 	if err != nil {
 		log.Fatal(err)
