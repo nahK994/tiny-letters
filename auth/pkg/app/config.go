@@ -1,7 +1,5 @@
 package app
 
-import "tiny-letter/auth/pkg/constants"
-
 type DB_config struct {
 	User     string
 	Password string
@@ -28,24 +26,24 @@ type Config struct {
 
 var appConfig Config = Config{
 	App: AppConfig{
-		JWT_secret:      constants.JWT_secret,
-		JWT_exp_minutes: constants.JWT_exp_minutes,
+		JWT_secret:      "secret",
+		JWT_exp_minutes: 60,
 	},
 	REST: CommConfig{
-		Port:   constants.REST_port,
-		Domain: constants.Domain,
+		Port:   8000,
+		Domain: "localhost",
 	},
 	GRPC: CommConfig{
-		Domain: constants.Domain,
-		Port:   constants.GRPC_port,
+		Domain: "localhost",
+		Port:   50000,
 	},
 	DB: DB_config{
-		User:     constants.DB_user,
-		Password: constants.DB_password,
-		Name:     constants.DB_name,
+		User:     "user",
+		Password: "password",
+		Name:     "auth_db",
 		CommConfig: CommConfig{
-			Port:   constants.DB_port,
-			Domain: constants.Domain,
+			Port:   5000,
+			Domain: "localhost",
 		},
 	},
 }
