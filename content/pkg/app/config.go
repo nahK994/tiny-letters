@@ -1,7 +1,5 @@
 package app
 
-import "tiny-letter/content/pkg/constants"
-
 type DB_config struct {
 	User     string
 	Password string
@@ -23,11 +21,24 @@ type GRPC_config struct {
 	Subscription CommConfig
 }
 
-type MQ_config struct {
-	CommConfig
-	Topic                   string
+type MQ_producer struct {
 	NumberOfRetry           int
 	IsProducerReturnSuccess bool
+}
+
+type MsgActionConfig struct {
+	PublishContent string
+}
+
+type MQ_topic struct {
+	PublicationNotification string
+}
+
+type MQ_config struct {
+	CommConfig
+	Topic     MQ_topic
+	Producer  MQ_producer
+	MsgAction MsgActionConfig
 }
 
 type Config struct {
@@ -40,35 +51,42 @@ type Config struct {
 
 var appConfig Config = Config{
 	App: AppConfig{
-		JWT_secret:      constants.JWT_secret,
-		JWT_exp_minutes: constants.JWT_exp_minutes,
+		JWT_secret:      "secret",
+		JWT_exp_minutes: 60,
 	},
 	REST: CommConfig{
-		Domain: constants.Domain,
-		Port:   constants.REST_port,
+		Domain: "localhost",
+		Port:   8001,
 	},
 	GRPC: GRPC_config{
 		Subscription: CommConfig{
-			Domain: constants.Domain,
-			Port:   constants.GRPC_subscription_port,
+			Domain: "localhost",
+			Port:   50001,
 		},
 	},
 	DB: DB_config{
-		User:     constants.DB_user,
-		Password: constants.DB_password,
-		Name:     constants.DB_name,
+		User:     "user",
+		Password: "password",
+		Name:     "content_db",
 		CommConfig: CommConfig{
-			Domain: constants.Domain,
-			Port:   constants.DB_port,
+			Domain: "localhost",
+			Port:   5001,
 		},
 	},
 	MQ: MQ_config{
-		NumberOfRetry:           constants.MQ_NumberOfRetry,
-		IsProducerReturnSuccess: constants.MQ_IsProducerReturnSuccess,
-		Topic:                   constants.MQ_topic,
+		Producer: MQ_producer{
+			NumberOfRetry:           5,
+			IsProducerReturnSuccess: true,
+		},
+		Topic: MQ_topic{
+			PublicationNotification: "publication_notification",
+		},
 		CommConfig: CommConfig{
-			Domain: constants.Domain,
-			Port:   constants.MQ_port,
+			Domain: "localhost",
+			Port:   9092,
+		},
+		MsgAction: MsgActionConfig{
+			PublishContent: "publish_content",
 		},
 	},
 }

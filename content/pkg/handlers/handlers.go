@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
-	"tiny-letter/content/pkg/constants"
+	"tiny-letter/content/pkg/app"
 	"tiny-letter/content/pkg/db"
 	"tiny-letter/content/pkg/models"
 	mq_producer "tiny-letter/content/pkg/mq"
@@ -74,7 +74,9 @@ func (h *Handler) HandleCreatePost(c *gin.Context) {
 		ContentId: req.PublicationID,
 		Content:   req.Content,
 	})
-	h.pushToQueue(constants.Publish, msgData)
+
+	mq_action := app.GetConfig().MQ.MsgAction.PublishContent
+	h.pushToQueue(mq_action, msgData)
 
 	c.JSON(200, id)
 }
