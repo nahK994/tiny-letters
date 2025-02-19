@@ -2,7 +2,7 @@ package mq_handlers
 
 import (
 	"encoding/json"
-	"tiny-letter/email/pkg/constants"
+	"tiny-letter/email/pkg/app"
 	"tiny-letter/email/pkg/db"
 	"tiny-letter/email/pkg/models"
 )
@@ -20,27 +20,28 @@ func New_ConsumerHandlers(db *db.Repository) *MQ_ConsumerHandlers {
 func (h *MQ_ConsumerHandlers) HandleConfirmationMsg(msg []byte) error {
 	var data models.ConfirmationMessage
 	json.Unmarshal(msg, &data)
+	msgAction := app.GetConfig().MQ.MsgAction
 
 	switch data.Action {
-	case constants.JoinPublication:
+	case msgAction.JoinPublication:
 		return h.handleJoinPublication(msg)
 
-	case constants.LeavePublication:
+	case msgAction.LeavePublication:
 		return h.handleLeavePublication(msg)
 
-	case constants.SubscriberChangePlan:
+	case msgAction.SubscriberChangePlan:
 		return h.handleChangeSubscriberSubscription(msg)
 
-	case constants.PublisherSubscribe:
+	case msgAction.PublisherSubscribe:
 		return h.handleConfirmPublisherSubscription(msg)
 
-	case constants.PublisherUnsubscribe:
+	case msgAction.PublisherUnsubscribe:
 		return h.handleRevokePublisherSubscription(msg)
 
-	case constants.PublisherChangePlan:
+	case msgAction.PublisherChangePlan:
 		return h.handleChangePublisherSubscription(msg)
 
-	case constants.RegisterUser:
+	case msgAction.RegisterUser:
 		return h.handleRegisterUser(msg)
 	}
 	return nil

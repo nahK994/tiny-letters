@@ -8,7 +8,7 @@ import (
 	"os"
 	"sync"
 	"time"
-	"tiny-letter/email/pkg/constants"
+	"tiny-letter/email/pkg/app"
 
 	"gopkg.in/gomail.v2"
 )
@@ -19,6 +19,8 @@ type Email struct {
 	Subject string
 	Body    string
 }
+
+var emailConfig = app.GetConfig().Mail
 
 // Simulated email queue
 var emailQueue = []Email{
@@ -41,7 +43,7 @@ func readTemplate(templatePath string) (string, error) {
 // sendEmail simulates sending an email
 func sendEmail(email Email, templatePath string) error {
 	m := gomail.NewMessage()
-	m.SetHeader("From", constants.HostEmail)
+	m.SetHeader("From", emailConfig.HostEmail)
 	m.SetHeader("To", email.To)
 	m.SetHeader("Subject", email.Subject)
 
@@ -65,7 +67,7 @@ func sendEmail(email Email, templatePath string) error {
 	m.SetBody("text/html", bodyBuffer.String()) // Set HTML content
 
 	// Configure SMTP
-	d := gomail.NewDialer("smtp.gmail.com", 587, constants.HostEmail, constants.EmailAppPassword)
+	d := gomail.NewDialer("smtp.gmail.com", 587, emailConfig.HostEmail, emailConfig.EmailAppPassword)
 
 	// Simulate sending delay
 	time.Sleep(500 * time.Millisecond)
@@ -80,17 +82,17 @@ func sendEmail(email Email, templatePath string) error {
 // batchEmailSender processes emails in batches with rate limiting
 func batchEmailSender(emails []Email) {
 	var wg sync.WaitGroup
-	ticker := time.NewTicker(constants.RateLimit * time.Second)
+	ticker := time.NewTicker(time.Duration(emailConfig.RateLimit) * time.Second)
 	defer ticker.Stop()
 
-	batchSize := constants.BatchSize
+	batchSize := emailConfig.BatchSize
 	for i := 0; i < len(emails); i += batchSize {
 		batch := emails[i:min(i+batchSize, len(emails))]
 		for _, email := range batch {
 			wg.Add(1)
 			go func(email Email) {
 				defer wg.Done()
-				err := sendEmail(email, fmt.Sprintf("%s%s", constants.TemplatePath, "subscriber_welcome.html"))
+				err := sendEmail(email, fmt.Sprintf("%s%s", emailConfig.TemplatePath, "subscriber_welcome.html"))
 				if err != nil {
 					log.Println("Failed to send email:", err)
 				}

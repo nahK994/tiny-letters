@@ -37,17 +37,17 @@ func NewConsumer(handler *mq_handlers.MQ_ConsumerHandlers, config *app.MQ_config
 func ConnectConsumer(config *app.MQ_config) (ConfirmationConsumer, PublicationConsumer, error) {
 	broker := fmt.Sprintf("%s:%d", config.Domain, config.Port)
 	mqConfig := sarama.NewConfig()
-	mqConfig.Consumer.Return.Errors = config.IsConsumerReturnError
+	mqConfig.Consumer.Return.Errors = config.Consumer.IsConsumerReturnError
 	worker, err := sarama.NewConsumer([]string{broker}, mqConfig)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to start worker")
 	}
 
-	confirmationConsumer, err := worker.ConsumePartition(config.ConfirmationTopic, 0, sarama.OffsetOldest)
+	confirmationConsumer, err := worker.ConsumePartition(config.Topic.ConfirmationEmail, 0, sarama.OffsetOldest)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to start confirmation consumer: %w", err)
 	}
-	publicationConsumer, err := worker.ConsumePartition(config.PublicationTopic, 0, sarama.OffsetOldest)
+	publicationConsumer, err := worker.ConsumePartition(config.Topic.PublicationEmail, 0, sarama.OffsetOldest)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to start publication consumer: %w", err)
 	}
