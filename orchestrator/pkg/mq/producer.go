@@ -24,16 +24,16 @@ func connectProducer(config *app.MQ_config) (sarama.SyncProducer, error) {
 	broker := fmt.Sprintf("%s:%d", config.Domain, config.Port)
 
 	mqConfig := sarama.NewConfig()
-	mqConfig.Producer.Return.Successes = config.IsProducerReturnSuccess
+	mqConfig.Producer.Return.Successes = config.Producer.IsProducerReturnSuccess
 	mqConfig.Producer.RequiredAcks = sarama.WaitForAll
-	mqConfig.Producer.Retry.Max = config.NumberOfRetry
+	mqConfig.Producer.Retry.Max = config.Producer.NumberOfRetry
 
 	return sarama.NewSyncProducer([]string{broker}, mqConfig)
 }
 
 func (p *Producer) Push(val []byte) error {
 	msg := &sarama.ProducerMessage{
-		Topic: app.GetConfig().MQ.Topic,
+		Topic: app.GetConfig().MQ.Topic.ConfirmationNotification,
 		Value: sarama.StringEncoder(val),
 	}
 	_, _, err := p.producer.SendMessage(msg)

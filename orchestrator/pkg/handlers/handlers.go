@@ -5,12 +5,14 @@ import (
 	"net/http"
 	"tiny-letter/orchestrator/cmd/grpc/client/auth"
 	"tiny-letter/orchestrator/cmd/grpc/client/subscription"
-	"tiny-letter/orchestrator/pkg/constants"
+	"tiny-letter/orchestrator/pkg/app"
 	"tiny-letter/orchestrator/pkg/models"
 	mq_producer "tiny-letter/orchestrator/pkg/mq"
 
 	"github.com/gin-gonic/gin"
 )
+
+var mq = app.GetConfig().MQ
 
 type Handler struct {
 	producer *mq_producer.Producer
@@ -62,7 +64,7 @@ func (h *Handler) HandleConfirmPublisherSubscription(c *gin.Context) {
 			PlanId: req.PlanID,
 		},
 	)
-	h.pushToQueue(constants.PublisherSubscribe, msgData)
+	h.pushToQueue(mq.MsgAction.PublisherSubscribe, msgData)
 
 	c.JSON(http.StatusOK, "Publisher subscription confirmed")
 }
@@ -96,7 +98,7 @@ func (h *Handler) HandleRevokePublisherSubscription(c *gin.Context) {
 			UserId: req.UserID,
 		},
 	)
-	h.pushToQueue(constants.PublisherUnsubscribe, msgData)
+	h.pushToQueue(mq.MsgAction.PublisherUnsubscribe, msgData)
 
 	c.JSON(http.StatusOK, "Publisher unsubscription confirmed")
 }
@@ -133,7 +135,7 @@ func (h *Handler) HandleChangePublisherSubscription(c *gin.Context) {
 			OldPlanId: int(oldPlanId),
 		},
 	)
-	h.pushToQueue(constants.PublisherChangePlan, msgData)
+	h.pushToQueue(mq.MsgAction.PublisherChangePlan, msgData)
 
 	c.JSON(http.StatusOK, "Publisher plan change confirmed")
 }
@@ -171,7 +173,7 @@ func (h *Handler) HandleJoinPublication(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(constants.JoinPublication, msgData)
+	h.pushToQueue(mq.MsgAction.JoinPublication, msgData)
 
 	c.JSON(http.StatusOK, "Join publication confirmed")
 }
@@ -207,7 +209,7 @@ func (h *Handler) HandleLeavePublication(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(constants.LeavePublication, msgData)
+	h.pushToQueue(mq.MsgAction.LeavePublication, msgData)
 
 	c.JSON(http.StatusOK, "Leave publication confirmed")
 }
@@ -243,7 +245,7 @@ func (h *Handler) HandleChangeSubscriberSubscription(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(constants.SubscriberChangePlan, msgData)
+	h.pushToQueue(mq.MsgAction.SubscriberChangePlan, msgData)
 
 	c.JSON(http.StatusOK, "Subscriber plan change confirmed")
 }

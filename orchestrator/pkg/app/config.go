@@ -1,7 +1,5 @@
 package app
 
-import "tiny-letter/orchestrator/pkg/constants"
-
 type CommConfig struct {
 	Port   int
 	Domain string
@@ -12,11 +10,30 @@ type GRPC struct {
 	Auth         CommConfig
 }
 
+type Producer struct {
+	IsProducerReturnSuccess bool
+	NumberOfRetry           int
+}
+
+type MQ_topic struct {
+	ConfirmationNotification string
+}
+
+type MsgActionConfig struct {
+	JoinPublication      string
+	LeavePublication     string
+	SubscriberChangePlan string
+	PublisherSubscribe   string
+	PublisherUnsubscribe string
+	PublisherChangePlan  string
+	RegisterUser         string
+}
+
 type MQ_config struct {
 	CommConfig
-	Topic                   string
-	NumberOfRetry           int
-	IsProducerReturnSuccess bool
+	Topic     MQ_topic
+	Producer  Producer
+	MsgAction MsgActionConfig
 }
 
 type Config struct {
@@ -28,25 +45,38 @@ type Config struct {
 var appConfig Config = Config{
 	GRPC: GRPC{
 		Subscription: CommConfig{
-			Port:   constants.GRPC_subscription_port,
-			Domain: constants.Domain,
+			Port:   50002,
+			Domain: "localhost",
 		},
 		Auth: CommConfig{
-			Port:   constants.GRPC_auth_port,
-			Domain: constants.Domain,
+			Port:   50000,
+			Domain: "localhost",
 		},
 	},
 	REST: CommConfig{
-		Port:   constants.REST_port,
-		Domain: constants.Domain,
+		Port:   8080,
+		Domain: "localhost",
 	},
 	MQ: MQ_config{
-		NumberOfRetry:           constants.MQ_NumberOfRetry,
-		IsProducerReturnSuccess: constants.MQ_IsProducerReturnSuccess,
-		Topic:                   constants.MQ_topic,
+		Producer: Producer{
+			NumberOfRetry:           5,
+			IsProducerReturnSuccess: true,
+		},
+		Topic: MQ_topic{
+			ConfirmationNotification: "confirmation_notification",
+		},
 		CommConfig: CommConfig{
-			Domain: constants.Domain,
-			Port:   constants.MQ_port,
+			Domain: "localhost",
+			Port:   9092,
+		},
+		MsgAction: MsgActionConfig{
+			JoinPublication:      "join_publication",
+			LeavePublication:     "leave_publication",
+			SubscriberChangePlan: "subscriber_change_plan",
+			PublisherSubscribe:   "publisher_subscribe",
+			PublisherUnsubscribe: "publisher_unsubscribe",
+			PublisherChangePlan:  "publisher_change_plan",
+			RegisterUser:         "register_user",
 		},
 	},
 }
