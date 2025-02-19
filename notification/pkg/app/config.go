@@ -1,7 +1,5 @@
 package app
 
-import "tiny-letter/notification/pkg/constants"
-
 type CommConfig struct {
 	Port   int
 	Domain string
@@ -16,12 +14,27 @@ type Producer struct {
 	NumberOfRetry           int
 }
 
+type MsgActionConfig struct {
+	JoinPublication      string
+	LeavePublication     string
+	SubscriberChangePlan string
+	PublisherSubscribe   string
+	PublisherUnsubscribe string
+	PublisherChangePlan  string
+	RegisterUser         string
+}
+
+type MQ_topic struct {
+	ConfirmationEmail string
+	PublicationEmail  string
+}
+
 type MQ_config struct {
-	ConfirmationTopic string
-	PublicationTopic  string
+	Topic MQ_topic
 	CommConfig
-	Consumer Consumer
-	Producer Producer
+	Consumer  Consumer
+	Producer  Producer
+	MsgAction MsgActionConfig
 }
 
 type Config struct {
@@ -31,23 +44,33 @@ type Config struct {
 
 var appConfig Config = Config{
 	MQ: MQ_config{
-		ConfirmationTopic: constants.ConfirmationNotification,
-		PublicationTopic:  constants.PublicationNotification,
+		Topic: MQ_topic{
+			ConfirmationEmail: "confirmation_email",
+			PublicationEmail:  "publication_email",
+		},
 		CommConfig: CommConfig{
-			Port:   constants.MQ_port,
-			Domain: constants.Domain,
+			Port:   9092,
+			Domain: "localhost",
 		},
 		Consumer: Consumer{
-			IsConsumerReturnError: constants.Consumer_IsConsumerReturnError,
+			IsConsumerReturnError: true,
 		},
 		Producer: Producer{
-			NumberOfRetry:           constants.Producer_NumberOfRetry,
-			IsProducerReturnSuccess: constants.Producer_IsProducerReturnSuccess,
+			NumberOfRetry:           5,
+			IsProducerReturnSuccess: true,
+		},
+		MsgAction: MsgActionConfig{
+			JoinPublication:      "join_publication",
+			LeavePublication:     "leave_publication",
+			SubscriberChangePlan: "subscriber_change_plan",
+			PublisherSubscribe:   "publisher_subscribe",
+			PublisherUnsubscribe: "publisher_unsubscribe",
+			PublisherChangePlan:  "publisher_change_plan",
 		},
 	},
 	GRPC: CommConfig{
-		Domain: constants.Domain,
-		Port:   constants.GRPC_port,
+		Domain: "localhost",
+		Port:   50002,
 	},
 }
 
