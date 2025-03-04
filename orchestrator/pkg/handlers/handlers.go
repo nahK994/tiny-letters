@@ -33,7 +33,6 @@ func (h *Handler) pushToQueue(action string, data json.RawMessage) {
 	h.producer.Push(msgBytes)
 }
 
-// HandlePublisherSubscription handles publisher subscription with 2PC
 func (h *Handler) HandleConfirmPublisherSubscription(c *gin.Context) {
 	var req struct {
 		UserID int `json:"user_id" binding:"required"`
@@ -69,7 +68,6 @@ func (h *Handler) HandleConfirmPublisherSubscription(c *gin.Context) {
 	c.JSON(http.StatusOK, "Publisher subscription confirmed")
 }
 
-// HandlePublisherUnsubscription handles publisher unsubscription with 2PC
 func (h *Handler) HandleRevokePublisherSubscription(c *gin.Context) {
 	var req struct {
 		UserID int `json:"user_id" binding:"required"`
@@ -103,7 +101,6 @@ func (h *Handler) HandleRevokePublisherSubscription(c *gin.Context) {
 	c.JSON(http.StatusOK, "Publisher unsubscription confirmed")
 }
 
-// HandleChangePublisherPlan handles plan changes for publishers with 2PC
 func (h *Handler) HandleChangePublisherSubscription(c *gin.Context) {
 	var req struct {
 		UserID int `json:"user_id" binding:"required"`
@@ -140,7 +137,6 @@ func (h *Handler) HandleChangePublisherSubscription(c *gin.Context) {
 	c.JSON(http.StatusOK, "Publisher plan change confirmed")
 }
 
-// HandleJoinPublication handles joining a publication with 2PC
 func (h *Handler) HandleJoinPublication(c *gin.Context) {
 	var req struct {
 		UserID        int  `json:"user_id" binding:"required"`
@@ -178,7 +174,6 @@ func (h *Handler) HandleJoinPublication(c *gin.Context) {
 	c.JSON(http.StatusOK, "Join publication confirmed")
 }
 
-// HandleLeavePublication handles leaving a publication with 2PC
 func (h *Handler) HandleLeavePublication(c *gin.Context) {
 	var req struct {
 		UserID        int `json:"user_id" binding:"required"`
@@ -214,7 +209,6 @@ func (h *Handler) HandleLeavePublication(c *gin.Context) {
 	c.JSON(http.StatusOK, "Leave publication confirmed")
 }
 
-// HandleChangeSubscriberPlan handles plan changes for subscribers with 2PC
 func (h *Handler) HandleChangeSubscriberSubscription(c *gin.Context) {
 	var req struct {
 		UserID        int `json:"user_id" binding:"required"`
