@@ -3,10 +3,9 @@ package main
 import (
 	"log"
 	"sync"
-	grpc_server "tiny-letter/auth/cmd/grpc/server"
-	rest_server "tiny-letter/auth/cmd/rest/server"
 	"tiny-letter/auth/pkg/app"
 	"tiny-letter/auth/pkg/db"
+	"tiny-letter/auth/pkg/server"
 )
 
 func main() {
@@ -18,7 +17,7 @@ func main() {
 
 	var wg sync.WaitGroup
 	wg.Add(2)
-	go grpc_server.Serve(&wg, db, &config.GRPC)
-	go rest_server.Serve(&wg, db, &config.REST)
+	go server.ServeGRPC(&wg, db, &config.GRPC)
+	go server.ServeREST(&wg, db, &config.REST)
 	wg.Wait()
 }

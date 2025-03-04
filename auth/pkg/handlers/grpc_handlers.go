@@ -1,9 +1,9 @@
-package grpc_handlers
+package handlers
 
 import (
 	"context"
-	pb_auth_manager "tiny-letter/auth/cmd/grpc/pb/auth_manager"
 	"tiny-letter/auth/pkg/db"
+	pb_auth_manager "tiny-letter/auth/pkg/grpc/pb/auth_manager"
 	"tiny-letter/auth/pkg/models"
 
 	"google.golang.org/grpc/codes"
