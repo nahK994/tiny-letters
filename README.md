@@ -32,9 +32,11 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
    - Handles rate-limiting.
    - Sends emails to subscribers.
 
-6. **Coordinator Service**
-   - Coordinates between User Service, Subscription Service, and Email Service to ensure consistency via 2PC.
-   - Handles subscription, unsubscription, and plan change requests.
+6. **Saga Orchestration Service**
+   - Implements the Orchestration-based Saga pattern.
+   - Manages distributed transactions across microservices.
+   - Ensures data consistency through a series of coordinated steps.
+   - Rolls back changes if any service fails during the transaction.
 
 ---
 
@@ -48,7 +50,7 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 
 - **Programming Language**: Go (Golang)
 - **Database**: PostgreSQL
-- **Message Queue**: RabbitMQ
+- **Message Queue**: Kafka
 - **Authentication**: JWT
 - **Containerization**: Docker
 - **Orchestration**: Kubernetes (Minikube for local testing)
@@ -99,7 +101,7 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 - [Go](https://golang.org/)
 - [Docker](https://www.docker.com/)
 - [Minikube](https://minikube.sigs.k8s.io/docs/)
-- [RabbitMQ](https://www.rabbitmq.com/)
+- [Kafka](https://kafka.apache.org/)
 
 ### **Setup Instructions**
 
@@ -135,4 +137,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## **Contact**
 
-For any inquiries, please contact **Shomi Khan** at [nkskl6@gmail.com](mailto:nkskl6@gmail.com).
+For any inquiries, please contact **Shomi Khan** at [shomikhan043@gmail.com](mailto:shomikhan043@gmail.com).
