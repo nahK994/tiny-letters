@@ -1,23 +1,25 @@
-package mq_producer
+package mq
 
 import (
+	"encoding/json"
 	"fmt"
 	"tiny-letter/content/pkg/app"
+	"tiny-letter/content/pkg/models"
 
 	"github.com/IBM/sarama"
 )
 
-type Producer struct {
+type MQ struct {
 	producer sarama.SyncProducer
 }
 
-func NewProducer(config *app.MQ_config) (*Producer, error) {
+func NewProducer(config *app.MQ_config) (*MQ, error) {
 	producer, err := connectProducer(config)
 	if err != nil {
 		return nil, err
 	}
 	defer producer.Close()
-	return &Producer{producer: producer}, nil
+	return &MQ{producer: producer}, nil
 }
 
 func connectProducer(config *app.MQ_config) (sarama.SyncProducer, error) {
@@ -31,9 +33,20 @@ func connectProducer(config *app.MQ_config) (sarama.SyncProducer, error) {
 	return sarama.NewSyncProducer([]string{broker}, mqConfig)
 }
 
-func (p *Producer) Push(val []byte) error {
+func (p *MQ) PushToQueue(action string, data json.RawMessage) {
+	msg := models.PublishContentMessage{
+		Action: action,
+		Data:   data,
+	}
+	msgBytes, _ := json.Marshal(msg)
+
+	topic := app.GetConfig().MQ.Topic.PublicationNotification
+	p.push(topic, msgBytes)
+}
+
+func (p *MQ) push(topic string, val []byte) error {
 	msg := &sarama.ProducerMessage{
-		Topic: app.GetConfig().MQ.Topic.PublicationNotification,
+		Topic: topic,
 		Value: sarama.StringEncoder(val),
 	}
 	_, _, err := p.producer.SendMessage(msg)

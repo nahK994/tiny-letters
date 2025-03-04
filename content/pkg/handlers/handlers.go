@@ -5,30 +5,21 @@ import (
 	"tiny-letter/content/pkg/app"
 	"tiny-letter/content/pkg/db"
 	"tiny-letter/content/pkg/models"
-	mq_producer "tiny-letter/content/pkg/mq"
+	"tiny-letter/content/pkg/mq"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Handler struct {
-	db       *db.Repository
-	producer *mq_producer.Producer
+	db *db.Repository
+	mq *mq.MQ
 }
 
-func GetHandler(db *db.Repository, producer *mq_producer.Producer) *Handler {
+func GetHandler(db *db.Repository, mq *mq.MQ) *Handler {
 	return &Handler{
-		db:       db,
-		producer: producer,
+		db: db,
+		mq: mq,
 	}
-}
-
-func (h *Handler) pushToQueue(action string, data json.RawMessage) {
-	msg := models.PublishContentMessage{
-		Action: action,
-		Data:   data,
-	}
-	msgBytes, _ := json.Marshal(msg)
-	h.producer.Push(msgBytes)
 }
 
 func (h *Handler) HandleCreatePublication(c *gin.Context) {
@@ -76,7 +67,7 @@ func (h *Handler) HandleCreatePost(c *gin.Context) {
 	})
 
 	mq_action := app.GetConfig().MQ.MsgAction.PublishContent
-	h.pushToQueue(mq_action, msgData)
+	h.mq.PushToQueue(mq_action, msgData)
 
 	c.JSON(200, id)
 }
