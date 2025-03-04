@@ -4,7 +4,7 @@ import (
 	"log"
 	"tiny-letter/subscription/pkg/app"
 	"tiny-letter/subscription/pkg/db"
-	grpc_server "tiny-letter/subscription/pkg/grpc/server"
+	"tiny-letter/subscription/pkg/server"
 )
 
 func main() {
@@ -15,5 +15,5 @@ func main() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	grpc_server.Serve(db, &config.GRPC)
+	server.Serve(db, &config.GRPC)
 }
