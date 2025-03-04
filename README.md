@@ -1,4 +1,4 @@
-# TinyLetter
+# TinyLetters
 
 TinyLetter is a microservices-based scalable newsletter infrastructure designed to streamline the process of creating, managing, and delivering newsletters to subscribers. The project leverages a distributed architecture to ensure modularity, scalability, and ease of maintenance.
 
