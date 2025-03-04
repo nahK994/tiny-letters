@@ -1,9 +1,9 @@
-package subscription_manager_handlers
+package handlers
 
 import (
 	"context"
-	pb_subscription_manager "tiny-letter/subscription/cmd/grpc/pb/subscription_manager"
 	"tiny-letter/subscription/pkg/db"
+	pb_subscription_manager "tiny-letter/subscription/pkg/grpc/pb/subscription_manager"
 	"tiny-letter/subscription/pkg/models"
 
 	"google.golang.org/grpc/codes"

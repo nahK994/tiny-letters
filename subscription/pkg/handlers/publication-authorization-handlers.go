@@ -1,9 +1,9 @@
-package publication_authorization_handlers
+package handlers
 
 import (
 	"context"
-	pb_publication_authorization "tiny-letter/subscription/cmd/grpc/pb/publication_authorization"
 	"tiny-letter/subscription/pkg/db"
+	pb_publication_authorization "tiny-letter/subscription/pkg/grpc/pb/publication_authorization"
 	"tiny-letter/subscription/pkg/models"
 )
 
