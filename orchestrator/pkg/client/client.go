@@ -1,13 +1,13 @@
-package grpc_client
+package client
 
 import (
 	"fmt"
-	"tiny-letter/orchestrator/cmd/grpc/client/auth"
-	"tiny-letter/orchestrator/cmd/grpc/client/subscription"
 	"tiny-letter/orchestrator/pkg/app"
+	"tiny-letter/orchestrator/pkg/client/auth"
+	"tiny-letter/orchestrator/pkg/client/subscription"
 )
 
-func IsGRPC_ClientAvailable(grpcConfig *app.GRPC) error {
+func ConnectGRPC(grpcConfig *app.GRPC) error {
 	authAddr := fmt.Sprintf("%s:%d", grpcConfig.Auth.Domain, grpcConfig.Auth.Port)
 	authConnErr := auth.InitializeAuthClient(authAddr)
 	if authConnErr != nil {

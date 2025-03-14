@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-	pb_auth_manager "tiny-letter/orchestrator/cmd/grpc/pb/auth_manager"
+	pb_auth_manager "tiny-letter/orchestrator/pkg/grpc/pb/auth_manager"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

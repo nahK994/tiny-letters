@@ -4,7 +4,7 @@ import (
 	"log"
 	"tiny-letter/content/pkg/app"
 	"tiny-letter/content/pkg/db"
-	mq_producer "tiny-letter/content/pkg/mq"
+	"tiny-letter/content/pkg/mq"
 	"tiny-letter/content/pkg/server"
 )
 
@@ -16,7 +16,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	producer, err := mq_producer.NewProducer(&config.MQ)
+	producer, err := mq.NewProducer(&config.MQ)
 	if err != nil {
 		log.Fatalf("Failed to connect to MQ: %v", err)
 	}

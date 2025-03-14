@@ -1,16 +1,16 @@
-package rest_server
+package server
 
 import (
 	"fmt"
 	"tiny-letter/orchestrator/pkg/app"
-	handler "tiny-letter/orchestrator/pkg/handlers"
-	mq_producer "tiny-letter/orchestrator/pkg/mq"
+	"tiny-letter/orchestrator/pkg/handlers"
+	"tiny-letter/orchestrator/pkg/mq"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Serve(commConfig *app.CommConfig, producer *mq_producer.Producer) {
-	h := handler.NewHandler(producer)
+func Serve(commConfig *app.CommConfig, producer *mq.Producer) {
+	h := handlers.NewHandler(producer)
 
 	r := gin.Default()
 	r.Group("/publisher")

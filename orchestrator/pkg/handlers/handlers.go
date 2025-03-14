@@ -1,24 +1,27 @@
-package handler
+package handlers
 
 import (
 	"encoding/json"
 	"net/http"
-	"tiny-letter/orchestrator/cmd/grpc/client/auth"
-	"tiny-letter/orchestrator/cmd/grpc/client/subscription"
 	"tiny-letter/orchestrator/pkg/app"
+	"tiny-letter/orchestrator/pkg/client/auth"
+	"tiny-letter/orchestrator/pkg/client/subscription"
 	"tiny-letter/orchestrator/pkg/models"
-	mq_producer "tiny-letter/orchestrator/pkg/mq"
 
 	"github.com/gin-gonic/gin"
 )
 
 var mq = app.GetConfig().MQ
 
-type Handler struct {
-	producer *mq_producer.Producer
+type producer interface {
+	Push(val []byte) error
 }
 
-func NewHandler(producer *mq_producer.Producer) *Handler {
+type Handler struct {
+	producer producer
+}
+
+func NewHandler(producer producer) *Handler {
 	return &Handler{
 		producer: producer,
 	}

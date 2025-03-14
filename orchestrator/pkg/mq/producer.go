@@ -1,4 +1,4 @@
-package mq_producer
+package mq
 
 import (
 	"fmt"
