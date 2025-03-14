@@ -2,21 +2,29 @@ package handlers
 
 import (
 	"encoding/json"
-	"tiny-letter/notification/cmd/grpc/client/subscription"
 	"tiny-letter/notification/pkg/app"
 	"tiny-letter/notification/pkg/models"
-	mq_producer "tiny-letter/notification/pkg/mq/producer"
 )
 
-var mq = app.GetConfig().MQ
+var mqConfig = app.GetConfig().MQ
 
-type Handler struct {
-	producer *mq_producer.Producer
+type producer interface {
+	Push(topic string, message []byte) error
 }
 
-func NewHandler(producer *mq_producer.Producer) *Handler {
+type grpcClient interface {
+	GetContentSubscribers(publicationId int) ([]int32, error)
+}
+
+type Handler struct {
+	producer producer
+	grpc     grpcClient
+}
+
+func NewHandler(producer producer, grpcClient grpcClient) *Handler {
 	return &Handler{
 		producer: producer,
+		grpc:     grpcClient,
 	}
 }
 
@@ -25,22 +33,22 @@ func (h *Handler) HandleConfirmationMsg(msg []byte) error {
 	json.Unmarshal(msg, &data)
 
 	switch data.Action {
-	case mq.MsgAction.JoinPublication:
+	case mqConfig.MsgAction.JoinPublication:
 		return h.handleJoinPublication(msg)
 
-	case mq.MsgAction.LeavePublication:
+	case mqConfig.MsgAction.LeavePublication:
 		return h.handleLeavePublication(msg)
 
-	case mq.MsgAction.SubscriberChangePlan:
+	case mqConfig.MsgAction.SubscriberChangePlan:
 		return h.handleChangeSubscriberSubscription(msg)
 
-	case mq.MsgAction.PublisherSubscribe:
+	case mqConfig.MsgAction.PublisherSubscribe:
 		return h.handleConfirmPublisherSubscription(msg)
 
-	case mq.MsgAction.PublisherUnsubscribe:
+	case mqConfig.MsgAction.PublisherUnsubscribe:
 		return h.handleRevokePublisherSubscription(msg)
 
-	case mq.MsgAction.PublisherChangePlan:
+	case mqConfig.MsgAction.PublisherChangePlan:
 		return h.handleChangePublisherSubscription(msg)
 	}
 	return nil
@@ -53,34 +61,34 @@ func (h *Handler) HandlePublicationMsg(msgBytes []byte) error {
 	var msgData models.ContentData
 	json.Unmarshal(msg.Data, &msgData)
 
-	subscriberIds, _ := subscription.GetContentSubscribers(msgData.ContentId)
+	subscriberIds, _ := h.grpc.GetContentSubscribers(msgData.ContentId)
 	data, _ := json.Marshal(models.PublishedContentMessage{
 		Content:       msgData.Content,
 		SubscriberIds: subscriberIds,
 	})
-	return h.producer.Push(mq.Topic.PublicationEmail, data)
+	return h.producer.Push(mqConfig.Topic.PublicationEmail, data)
 }
 
 func (h *Handler) handleJoinPublication(msg []byte) error {
-	return h.producer.Push(mq.Topic.ConfirmationEmail, msg)
+	return h.producer.Push(mqConfig.Topic.ConfirmationEmail, msg)
 }
 
 func (h *Handler) handleLeavePublication(msg []byte) error {
-	return h.producer.Push(mq.Topic.ConfirmationEmail, msg)
+	return h.producer.Push(mqConfig.Topic.ConfirmationEmail, msg)
 }
 
 func (h *Handler) handleChangeSubscriberSubscription(msg []byte) error {
-	return h.producer.Push(mq.Topic.ConfirmationEmail, msg)
+	return h.producer.Push(mqConfig.Topic.ConfirmationEmail, msg)
 }
 
 func (h *Handler) handleConfirmPublisherSubscription(msg []byte) error {
-	return h.producer.Push(mq.Topic.ConfirmationEmail, msg)
+	return h.producer.Push(mqConfig.Topic.ConfirmationEmail, msg)
 }
 
 func (h *Handler) handleRevokePublisherSubscription(msg []byte) error {
-	return h.producer.Push(mq.Topic.ConfirmationEmail, msg)
+	return h.producer.Push(mqConfig.Topic.ConfirmationEmail, msg)
 }
 
 func (h *Handler) handleChangePublisherSubscription(msg []byte) error {
-	return h.producer.Push(mq.Topic.ConfirmationEmail, msg)
+	return h.producer.Push(mqConfig.Topic.ConfirmationEmail, msg)
 }

@@ -1,11 +1,10 @@
-package mq_consumer
+package mq
 
 import (
 	"fmt"
 	"log"
 	"sync"
 	"tiny-letter/notification/pkg/app"
-	"tiny-letter/notification/pkg/handlers"
 
 	"github.com/IBM/sarama"
 )
@@ -15,13 +14,18 @@ type (
 	PublicationConsumer  sarama.PartitionConsumer
 )
 
+type ConsumptionHandler interface {
+	HandleConfirmationMsg(msg []byte) error
+	HandlePublicationMsg(msgBytes []byte) error
+}
+
 type Consumer struct {
 	confirmationConsumer sarama.PartitionConsumer
 	publicationConsumer  sarama.PartitionConsumer
-	handler              *handlers.Handler
+	handler              ConsumptionHandler
 }
 
-func NewConsumer(handler *handlers.Handler, config *app.MQ_config) (*Consumer, error) {
+func NewConsumer(handler ConsumptionHandler, config *app.MQ_config) (*Consumer, error) {
 	confirmationConsumer, publicationConsumer, err := ConnectConsumer(config)
 	if err != nil {
 		return nil, err
