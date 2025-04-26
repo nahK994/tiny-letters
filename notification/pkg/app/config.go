@@ -14,27 +14,24 @@ type Producer struct {
 	NumberOfRetry           int
 }
 
-type MsgActionConfig struct {
+type MsgTopic struct {
+	SubscriberRegister   string
 	JoinPublication      string
 	LeavePublication     string
 	SubscriberChangePlan string
+
+	PublisherRegister    string
 	PublisherSubscribe   string
 	PublisherUnsubscribe string
 	PublisherChangePlan  string
-	RegisterUser         string
-}
-
-type MQ_topic struct {
-	ConfirmationEmail string
-	PublicationEmail  string
+	PublishLetter        string
 }
 
 type MQ_config struct {
-	Topic MQ_topic
 	CommConfig
-	Consumer  Consumer
-	Producer  Producer
-	MsgAction MsgActionConfig
+	Consumer Consumer
+	Producer Producer
+	Topic    MsgTopic
 }
 
 type Config struct {
@@ -44,10 +41,6 @@ type Config struct {
 
 var appConfig Config = Config{
 	MQ: MQ_config{
-		Topic: MQ_topic{
-			ConfirmationEmail: "confirmation_email",
-			PublicationEmail:  "publication_email",
-		},
 		CommConfig: CommConfig{
 			Port:   9092,
 			Domain: "localhost",
@@ -59,13 +52,16 @@ var appConfig Config = Config{
 			NumberOfRetry:           5,
 			IsProducerReturnSuccess: true,
 		},
-		MsgAction: MsgActionConfig{
+		Topic: MsgTopic{
 			JoinPublication:      "join_publication",
 			LeavePublication:     "leave_publication",
 			SubscriberChangePlan: "subscriber_change_plan",
 			PublisherSubscribe:   "publisher_subscribe",
 			PublisherUnsubscribe: "publisher_unsubscribe",
 			PublisherChangePlan:  "publisher_change_plan",
+			SubscriberRegister:   "subscriber_register",
+			PublisherRegister:    "publisher_register",
+			PublishLetter:        "publish_letter",
 		},
 	},
 	GRPC: CommConfig{
