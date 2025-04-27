@@ -2,59 +2,54 @@ package models
 
 import "encoding/json"
 
-type ConfirmationMessage struct {
-	Action string `json:"action"`
-	Data   json.RawMessage
+type MessageItem struct {
+	Topic string `json:"action"`
+	Msg   json.RawMessage
 }
 
-type JoinPublicationData struct {
+type SubscriberRegistration struct {
+	UserId int `json:"user_id"`
+	Email  int `json:"email"`
+}
+
+type JoinPublication struct {
 	UserId        int  `json:"user_id"`
 	PublicationId int  `json:"publication_id"`
 	PlanType      bool `json:"plan_type"`
 }
 
-type LeavePublicationData struct {
+type LeavePublication struct {
 	UserId        int `json:"user_id"`
 	PublicationId int `json:"publication_id"`
 }
 
-type ChangeSubscriberSubscriptionData struct {
+type ChangeSubscriberSubscription struct {
 	UserId        int `json:"user_id"`
 	PublicationId int `json:"publication_id"`
 }
 
-type ConfirmPublisherSubscriptionData struct {
+type PublisherRegistration struct {
+	UserId int `json:"user_id"`
+	Email  int `json:"email"`
+	PlanId int `json:"plan_id"`
+}
+
+type PublisherSubscription struct {
 	UserId int `json:"user_id"`
 	PlanId int `json:"plan_id"`
 }
 
-type RevokePublisherSubscriptionData struct {
+type PublisherUnsubscription struct {
 	UserId int `json:"user_id"`
 }
 
-type ChangePublisherSubscriptionData struct {
+type ChangePublisherSubscription struct {
 	UserId    int `json:"user_id"`
 	NewPlanId int `json:"new_plan_id"`
 	OldPlanId int `json:"old_plan_id"`
 }
 
-type ContentData struct {
-	ContentId int    `json:"content_id"`
-	Content   string `json:"content"`
-}
-
-type ConsumedContentMessage struct {
-	Action string          `json:"action"`
-	Data   json.RawMessage `json:"data"`
-}
-
-type PublishedContentMessage struct {
+type PublishLetter struct {
 	Content       string  `json:"content"`
 	SubscriberIds []int32 `json:"subscriber_ids"`
-}
-
-type UserRegistrationRequest struct {
-	UserId int    `json:"user_id"`
-	Email  string `json:"email"`
-	Type   string `json:"type"`
 }

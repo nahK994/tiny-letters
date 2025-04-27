@@ -14,26 +14,23 @@ type MQ_consumer struct {
 	IsConsumerReturnError bool
 }
 
-type MQ_topic struct {
-	ConfirmationEmail string
-	PublicationEmail  string
-}
-
-type MsgActionConfig struct {
+type Topic struct {
+	SubscriberRegister   string
 	JoinPublication      string
 	LeavePublication     string
 	SubscriberChangePlan string
+
+	PublisherRegister    string
 	PublisherSubscribe   string
 	PublisherUnsubscribe string
 	PublisherChangePlan  string
-	RegisterUser         string
+	PublishLetter        string
 }
 
 type MQ_config struct {
-	Topic MQ_topic
+	Topic Topic
 	CommConfig
-	Consumer  MQ_consumer
-	MsgAction MsgActionConfig
+	Consumer MQ_consumer
 }
 
 type DB_config struct {
@@ -60,10 +57,6 @@ type Config struct {
 
 var appConfig Config = Config{
 	MQ: MQ_config{
-		Topic: MQ_topic{
-			ConfirmationEmail: "confirmation_email",
-			PublicationEmail:  "publication_email",
-		},
 		CommConfig: CommConfig{
 			Port:   9092,
 			Domain: "localhost",
@@ -71,14 +64,16 @@ var appConfig Config = Config{
 		Consumer: MQ_consumer{
 			IsConsumerReturnError: true,
 		},
-		MsgAction: MsgActionConfig{
+		Topic: Topic{
 			JoinPublication:      "join_publication",
 			LeavePublication:     "leave_publication",
 			SubscriberChangePlan: "subscriber_change_plan",
 			PublisherSubscribe:   "publisher_subscribe",
 			PublisherUnsubscribe: "publisher_unsubscribe",
 			PublisherChangePlan:  "publisher_change_plan",
-			RegisterUser:         "register_user",
+			SubscriberRegister:   "subscriber_register",
+			PublisherRegister:    "publisher_register",
+			PublishLetter:        "publish_letter",
 		},
 	},
 	GRPC: CommConfig{

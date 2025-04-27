@@ -6,7 +6,8 @@ import (
 )
 
 type Repository interface {
-	CreateUser(data models.UserRegistrationRequest) error
+	RegisterSubscriber(data *models.SubscriberRegistration) error
+	RegisterPublisher(data *models.PublisherRegistration) error
 }
 
 type EmailServiceHandlers struct {
