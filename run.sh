@@ -72,8 +72,10 @@ kill_process() {
 start_service() {
     local service=$1
 
-    echo "Starting $service service..."
     cd "$service/cmd" || exit
+    echo "Downloading dependencies for $service service..."
+    go mod download
+    echo "Starting $service service..."
     go run main.go
 }
 
