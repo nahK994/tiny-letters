@@ -27,3 +27,9 @@ func (r *Repository) CreateUser(userInfo *models.UserRegistration) (int, error) 
 
 	return userId, err
 }
+
+func (r *Repository) RollbackCreateUser(userId int) error {
+	_, err := r.DB.Exec("DELETE FROM users where id=$1", userId)
+
+	return err
+}

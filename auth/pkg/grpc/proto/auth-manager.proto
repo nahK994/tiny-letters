@@ -4,6 +4,7 @@ option go_package = "/auth_manager;pb_auth_manager";
 
 service AuthManager {
   rpc CreatePublisher (CreatePublisherRequest) returns (Response);
+  rpc RollbackCreatePublisher (RollbackCreatePublisherRequest) returns (Response);
 }
 
 message Response {
@@ -14,4 +15,8 @@ message CreatePublisherRequest {
   string email = 1;
   int32 plan_id = 2;
   string password = 3;
+}
+
+message RollbackCreatePublisherRequest {
+  int32 user_id = 1;
 }

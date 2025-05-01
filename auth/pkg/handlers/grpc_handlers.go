@@ -36,3 +36,13 @@ func (h *GRPC_Handler) CreatePublisher(c context.Context, req *pb_auth_manager.C
 		UserId: int32(user_id),
 	}, nil
 }
+
+func (h *GRPC_Handler) RollbackCreatePublisher(c context.Context, req *pb_auth_manager.RollbackCreatePublisherRequest) (*pb_auth_manager.Response, error) {
+	err := h.db.RollbackCreateUser(int(req.UserId))
+	if err != nil {
+		return nil, err
+	}
+	return &pb_auth_manager.Response{
+		UserId: req.UserId,
+	}, nil
+}
