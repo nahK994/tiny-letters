@@ -27,7 +27,7 @@ type MQ_producer struct {
 }
 
 type Topic struct {
-	PublishContent string
+	PublishLetter string
 }
 
 type MQ_config struct {
@@ -74,7 +74,7 @@ var appConfig Config = Config{
 			IsProducerReturnSuccess: true,
 		},
 		Topic: Topic{
-			PublishContent: "publish_content",
+			PublishLetter: "publish_letter",
 		},
 		CommConfig: CommConfig{
 			Domain: "localhost",
