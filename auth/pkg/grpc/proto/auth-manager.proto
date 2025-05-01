@@ -3,46 +3,15 @@ syntax = "proto3";
 option go_package = "/auth_manager;pb_auth_manager";
 
 service AuthManager {
-  rpc JoinPublication (JoinPublicationRequest) returns (Response);
-  rpc LeavePublication (LeavePublicationRequest) returns (Response);
-  rpc ChangeSubscriberSubscription (ChangeSubscriberSubscriptionRequest) returns (Response);
-
-  rpc ConfirmPublisherSubscription (ConfirmPublisherSubscriptionRequest) returns (Response);
-  rpc RevokePublisherSubscription (RevokePublisherSubscriptionRequest) returns (Response);
-  rpc ChangePublisherSubscription (ChangePublisherSubscriptionRequest) returns (Response);
+  rpc CreatePublisher (CreatePublisherRequest) returns (Response);
 }
 
 message Response {
-  bool is_success = 1;
+  int32 user_id = 1;
 }
 
-message JoinPublicationRequest {
-  int32 user_id = 1;
-  int32 publication_id = 2;
-  bool is_premium = 3;
-}
-
-message LeavePublicationRequest {
-  int32 user_id = 1;
-  int32 publication_id = 2;
-}
-
-message ChangeSubscriberSubscriptionRequest {
-  int32 user_id = 1;
-  int32 publication_id = 2;
-}
-
-message ConfirmPublisherSubscriptionRequest {
-  int32 user_id = 1;
+message CreatePublisherRequest {
+  string email = 1;
   int32 plan_id = 2;
-}
-
-message RevokePublisherSubscriptionRequest {
-  int32 user_id = 1;
-  int32 plan_id = 2;
-}
-
-message ChangePublisherSubscriptionRequest {
-  int32 user_id = 1;
-  int32 plan_id = 2;
+  string password = 3;
 }

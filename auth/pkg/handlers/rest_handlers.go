@@ -11,15 +11,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Handler struct {
+type REST_Handler struct {
 	repo *db.Repository
 }
 
-func GetREST_Handlers(repo *db.Repository) *Handler {
-	return &Handler{repo: repo}
+func GetREST_Handlers(repo *db.Repository) *REST_Handler {
+	return &REST_Handler{repo: repo}
 }
 
-func (h *Handler) Login(c *gin.Context) {
+func (h *REST_Handler) Login(c *gin.Context) {
 	var payload models.LoginRequest
 	err := c.ShouldBindJSON(&payload)
 	if err != nil {
@@ -57,24 +57,27 @@ func (h *Handler) Login(c *gin.Context) {
 	})
 }
 
-func (h *Handler) HandleUserRegistration(c *gin.Context) {
-	var userRequest models.CreateUserRequest
-	if err := c.ShouldBindJSON(userRequest); err != nil {
+func (h *REST_Handler) HandleSubscriberRegistration(c *gin.Context) {
+	var req struct {
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required,min=6"`
+	}
+
+	if err := c.ShouldBindJSON(req); err != nil {
 		c.JSON(http.StatusBadRequest, "wrong user info format")
 		return
 	}
 
-	hashedPassword, err := hashPassword(userRequest.Password)
+	hashedPassword, err := hashPassword(req.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "Internal server error")
 		return
 	}
 	user_id, err := h.repo.CreateUser(
-		&models.CreateUserRequest{
-			Name:     userRequest.Name,
-			Email:    userRequest.Email,
+		&models.UserRegistration{
+			Email:    req.Email,
 			Password: hashedPassword,
-			Role:     userRequest.Role,
+			Role:     "subscriber",
 		},
 	)
 	if err != nil {

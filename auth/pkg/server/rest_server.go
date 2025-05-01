@@ -16,7 +16,7 @@ func ServeREST(wg *sync.WaitGroup, db *db.Repository, commConfig *app.CommConfig
 
 	r := gin.Default()
 	r.POST("/login", h.Login)
-	r.POST("/register", h.HandleUserRegistration)
+	r.POST("/register/subscriber", h.HandleSubscriberRegistration)
 
 	addr := fmt.Sprintf("%s:%d", commConfig.Domain, commConfig.Port)
 	r.Run(addr)

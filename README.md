@@ -62,23 +62,23 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 
 ### **Tables**
 
-1. **Publishers**
-   - `id`, `email`, `password`, `plan_id`
+1. **Users**
+   - `id`, `email`, `password`, `role`
 
-2. **Subscribers**
-   - `id`, `email`, `password`
-
-3. **Publications**
+2. **Publications**
    - `id`, `publisher_id`, `created_at`, `updated_at`
 
-4. **Posts**
+3. **Posts**
    - `id`, `publication_id`, `title`, `content`, `is_premium`, `created_at`, `updated_at`, `is_published`
 
-5. **Publisher Subscription Plans**
-   - `id`, `name`, `order`
+4. **Publisher Subscriptions**
+   - `id`, `user_id`, `plan_id`
 
-6. **Subscriber Subscriptions**
+5. **Subscriber Subscriptions**
    - `user_id`, `is_premium`, `publication_id`
+
+6. **Publisher Subscription Plans**
+   - `id`, `name`, `order`
 
 7. **Audience Limits**
    - `plan_id`, `size`
@@ -119,13 +119,7 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 
 ## **Contributing**
 
-Contributions are welcome! Please open an issue or submit a pull request on the [GitHub repository](https://github.com/nahK994/TinyLetter).
-
----
-
-## **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Contributions are welcome! Please open an issue or submit a pull request on the [GitHub repository](https://github.com/nahK994/tiny-letters).
 
 ---
 
