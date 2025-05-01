@@ -62,34 +62,28 @@ TinyLetter is a microservices-based scalable newsletter infrastructure designed 
 
 ### **Tables**
 
-1. **Roles**
-   - `id`, `name`
+1. **Publishers**
+   - `id`, `email`, `password`, `plan_id`
 
-2. **Users**
-   - `id`, `name`, `email`, `password`
+2. **Subscribers**
+   - `id`, `email`, `password`
 
-3. **User Roles**
-   - `user_id`, `role_id`
-
-4. **Publications**
+3. **Publications**
    - `id`, `publisher_id`, `created_at`, `updated_at`
 
-5. **Posts**
+4. **Posts**
    - `id`, `publication_id`, `title`, `content`, `is_premium`, `created_at`, `updated_at`, `is_published`
 
-6. **Publisher Subscription Plans**
+5. **Publisher Subscription Plans**
    - `id`, `name`, `order`
 
-7. **Publisher Subscriptions**
-   - `user_id`, `plan_id`
-
-8. **Subscriber Subscriptions**
+6. **Subscriber Subscriptions**
    - `user_id`, `is_premium`, `publication_id`
 
-9. **Audience Limits**
+7. **Audience Limits**
    - `plan_id`, `size`
 
-10. **Permissions**
+8. **Permissions**
     - `name`, `plan_id`
 
 ---
