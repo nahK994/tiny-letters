@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v3.21.12
-// source: auth-manager.proto
+// source: orchestrator/pkg/grpc/proto/auth-manager.proto
 
 package pb_auth_manager
 
@@ -19,24 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthManager_JoinPublication_FullMethodName              = "/AuthManager/JoinPublication"
-	AuthManager_LeavePublication_FullMethodName             = "/AuthManager/LeavePublication"
-	AuthManager_ChangeSubscriberSubscription_FullMethodName = "/AuthManager/ChangeSubscriberSubscription"
-	AuthManager_ConfirmPublisherSubscription_FullMethodName = "/AuthManager/ConfirmPublisherSubscription"
-	AuthManager_RevokePublisherSubscription_FullMethodName  = "/AuthManager/RevokePublisherSubscription"
-	AuthManager_ChangePublisherSubscription_FullMethodName  = "/AuthManager/ChangePublisherSubscription"
+	AuthManager_CreatePublisher_FullMethodName         = "/AuthManager/CreatePublisher"
+	AuthManager_RollbackCreatePublisher_FullMethodName = "/AuthManager/RollbackCreatePublisher"
 )
 
 // AuthManagerClient is the client API for AuthManager service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthManagerClient interface {
-	JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error)
-	LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*LeavePublicationResponse, error)
-	ChangeSubscriberSubscription(ctx context.Context, in *ChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*ChangeSubscriberSubscriptionResponse, error)
-	ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*ConfirmPublisherSubscriptionResponse, error)
-	RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*RevokePublisherSubscriptionResponse, error)
-	ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*ChangePublisherSubscriptionResponse, error)
+	CreatePublisher(ctx context.Context, in *CreatePublisherRequest, opts ...grpc.CallOption) (*Response, error)
+	RollbackCreatePublisher(ctx context.Context, in *RollbackCreatePublisherRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type authManagerClient struct {
@@ -47,60 +39,20 @@ func NewAuthManagerClient(cc grpc.ClientConnInterface) AuthManagerClient {
 	return &authManagerClient{cc}
 }
 
-func (c *authManagerClient) JoinPublication(ctx context.Context, in *JoinPublicationRequest, opts ...grpc.CallOption) (*JoinPublicationResponse, error) {
+func (c *authManagerClient) CreatePublisher(ctx context.Context, in *CreatePublisherRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(JoinPublicationResponse)
-	err := c.cc.Invoke(ctx, AuthManager_JoinPublication_FullMethodName, in, out, cOpts...)
+	out := new(Response)
+	err := c.cc.Invoke(ctx, AuthManager_CreatePublisher_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authManagerClient) LeavePublication(ctx context.Context, in *LeavePublicationRequest, opts ...grpc.CallOption) (*LeavePublicationResponse, error) {
+func (c *authManagerClient) RollbackCreatePublisher(ctx context.Context, in *RollbackCreatePublisherRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(LeavePublicationResponse)
-	err := c.cc.Invoke(ctx, AuthManager_LeavePublication_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authManagerClient) ChangeSubscriberSubscription(ctx context.Context, in *ChangeSubscriberSubscriptionRequest, opts ...grpc.CallOption) (*ChangeSubscriberSubscriptionResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ChangeSubscriberSubscriptionResponse)
-	err := c.cc.Invoke(ctx, AuthManager_ChangeSubscriberSubscription_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authManagerClient) ConfirmPublisherSubscription(ctx context.Context, in *ConfirmPublisherSubscriptionRequest, opts ...grpc.CallOption) (*ConfirmPublisherSubscriptionResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ConfirmPublisherSubscriptionResponse)
-	err := c.cc.Invoke(ctx, AuthManager_ConfirmPublisherSubscription_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authManagerClient) RevokePublisherSubscription(ctx context.Context, in *RevokePublisherSubscriptionRequest, opts ...grpc.CallOption) (*RevokePublisherSubscriptionResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RevokePublisherSubscriptionResponse)
-	err := c.cc.Invoke(ctx, AuthManager_RevokePublisherSubscription_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authManagerClient) ChangePublisherSubscription(ctx context.Context, in *ChangePublisherSubscriptionRequest, opts ...grpc.CallOption) (*ChangePublisherSubscriptionResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ChangePublisherSubscriptionResponse)
-	err := c.cc.Invoke(ctx, AuthManager_ChangePublisherSubscription_FullMethodName, in, out, cOpts...)
+	out := new(Response)
+	err := c.cc.Invoke(ctx, AuthManager_RollbackCreatePublisher_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -111,12 +63,8 @@ func (c *authManagerClient) ChangePublisherSubscription(ctx context.Context, in 
 // All implementations must embed UnimplementedAuthManagerServer
 // for forward compatibility.
 type AuthManagerServer interface {
-	JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error)
-	LeavePublication(context.Context, *LeavePublicationRequest) (*LeavePublicationResponse, error)
-	ChangeSubscriberSubscription(context.Context, *ChangeSubscriberSubscriptionRequest) (*ChangeSubscriberSubscriptionResponse, error)
-	ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error)
-	RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*RevokePublisherSubscriptionResponse, error)
-	ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*ChangePublisherSubscriptionResponse, error)
+	CreatePublisher(context.Context, *CreatePublisherRequest) (*Response, error)
+	RollbackCreatePublisher(context.Context, *RollbackCreatePublisherRequest) (*Response, error)
 	mustEmbedUnimplementedAuthManagerServer()
 }
 
@@ -127,23 +75,11 @@ type AuthManagerServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAuthManagerServer struct{}
 
-func (UnimplementedAuthManagerServer) JoinPublication(context.Context, *JoinPublicationRequest) (*JoinPublicationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method JoinPublication not implemented")
+func (UnimplementedAuthManagerServer) CreatePublisher(context.Context, *CreatePublisherRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePublisher not implemented")
 }
-func (UnimplementedAuthManagerServer) LeavePublication(context.Context, *LeavePublicationRequest) (*LeavePublicationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method LeavePublication not implemented")
-}
-func (UnimplementedAuthManagerServer) ChangeSubscriberSubscription(context.Context, *ChangeSubscriberSubscriptionRequest) (*ChangeSubscriberSubscriptionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ChangeSubscriberSubscription not implemented")
-}
-func (UnimplementedAuthManagerServer) ConfirmPublisherSubscription(context.Context, *ConfirmPublisherSubscriptionRequest) (*ConfirmPublisherSubscriptionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ConfirmPublisherSubscription not implemented")
-}
-func (UnimplementedAuthManagerServer) RevokePublisherSubscription(context.Context, *RevokePublisherSubscriptionRequest) (*RevokePublisherSubscriptionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RevokePublisherSubscription not implemented")
-}
-func (UnimplementedAuthManagerServer) ChangePublisherSubscription(context.Context, *ChangePublisherSubscriptionRequest) (*ChangePublisherSubscriptionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ChangePublisherSubscription not implemented")
+func (UnimplementedAuthManagerServer) RollbackCreatePublisher(context.Context, *RollbackCreatePublisherRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackCreatePublisher not implemented")
 }
 func (UnimplementedAuthManagerServer) mustEmbedUnimplementedAuthManagerServer() {}
 func (UnimplementedAuthManagerServer) testEmbeddedByValue()                     {}
@@ -166,110 +102,38 @@ func RegisterAuthManagerServer(s grpc.ServiceRegistrar, srv AuthManagerServer) {
 	s.RegisterService(&AuthManager_ServiceDesc, srv)
 }
 
-func _AuthManager_JoinPublication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(JoinPublicationRequest)
+func _AuthManager_CreatePublisher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePublisherRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthManagerServer).JoinPublication(ctx, in)
+		return srv.(AuthManagerServer).CreatePublisher(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthManager_JoinPublication_FullMethodName,
+		FullMethod: AuthManager_CreatePublisher_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthManagerServer).JoinPublication(ctx, req.(*JoinPublicationRequest))
+		return srv.(AuthManagerServer).CreatePublisher(ctx, req.(*CreatePublisherRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthManager_LeavePublication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LeavePublicationRequest)
+func _AuthManager_RollbackCreatePublisher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackCreatePublisherRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthManagerServer).LeavePublication(ctx, in)
+		return srv.(AuthManagerServer).RollbackCreatePublisher(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthManager_LeavePublication_FullMethodName,
+		FullMethod: AuthManager_RollbackCreatePublisher_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthManagerServer).LeavePublication(ctx, req.(*LeavePublicationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AuthManager_ChangeSubscriberSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChangeSubscriberSubscriptionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthManagerServer).ChangeSubscriberSubscription(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthManager_ChangeSubscriberSubscription_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthManagerServer).ChangeSubscriberSubscription(ctx, req.(*ChangeSubscriberSubscriptionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AuthManager_ConfirmPublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ConfirmPublisherSubscriptionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthManagerServer).ConfirmPublisherSubscription(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthManager_ConfirmPublisherSubscription_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthManagerServer).ConfirmPublisherSubscription(ctx, req.(*ConfirmPublisherSubscriptionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AuthManager_RevokePublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RevokePublisherSubscriptionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthManagerServer).RevokePublisherSubscription(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthManager_RevokePublisherSubscription_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthManagerServer).RevokePublisherSubscription(ctx, req.(*RevokePublisherSubscriptionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AuthManager_ChangePublisherSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChangePublisherSubscriptionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthManagerServer).ChangePublisherSubscription(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthManager_ChangePublisherSubscription_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthManagerServer).ChangePublisherSubscription(ctx, req.(*ChangePublisherSubscriptionRequest))
+		return srv.(AuthManagerServer).RollbackCreatePublisher(ctx, req.(*RollbackCreatePublisherRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -282,30 +146,14 @@ var AuthManager_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AuthManagerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "JoinPublication",
-			Handler:    _AuthManager_JoinPublication_Handler,
+			MethodName: "CreatePublisher",
+			Handler:    _AuthManager_CreatePublisher_Handler,
 		},
 		{
-			MethodName: "LeavePublication",
-			Handler:    _AuthManager_LeavePublication_Handler,
-		},
-		{
-			MethodName: "ChangeSubscriberSubscription",
-			Handler:    _AuthManager_ChangeSubscriberSubscription_Handler,
-		},
-		{
-			MethodName: "ConfirmPublisherSubscription",
-			Handler:    _AuthManager_ConfirmPublisherSubscription_Handler,
-		},
-		{
-			MethodName: "RevokePublisherSubscription",
-			Handler:    _AuthManager_RevokePublisherSubscription_Handler,
-		},
-		{
-			MethodName: "ChangePublisherSubscription",
-			Handler:    _AuthManager_ChangePublisherSubscription_Handler,
+			MethodName: "RollbackCreatePublisher",
+			Handler:    _AuthManager_RollbackCreatePublisher_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "auth-manager.proto",
+	Metadata: "orchestrator/pkg/grpc/proto/auth-manager.proto",
 }

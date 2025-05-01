@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"tiny-letter/orchestrator/pkg/app"
-	"tiny-letter/orchestrator/pkg/client"
+	"tiny-letter/orchestrator/pkg/grpc/client"
 	"tiny-letter/orchestrator/pkg/mq"
 	"tiny-letter/orchestrator/pkg/server"
 )

@@ -15,22 +15,7 @@ func Serve(commConfig *app.CommConfig, producer *mq.Producer) {
 	r := gin.Default()
 	r.Group("/registration")
 	{
-		r.POST("/subscriber", h.HandlerSubscriberRegistration)
 		r.POST("/publisher", h.HandlerPublisherRegistration)
-	}
-
-	r.Group("/publisher")
-	{
-		r.POST("/subscribe", h.HandleConfirmPublisherSubscription)
-		r.POST("/unsubscribe", h.HandleRevokePublisherSubscription)
-		r.POST("/change-plan", h.HandleChangePublisherSubscription)
-	}
-
-	r.Group("/subscriber")
-	{
-		r.POST("/join-publication", h.HandleJoinPublication)
-		r.POST("/leave-publication", h.HandleLeavePublication)
-		r.POST("/change-plan", h.HandleChangeSubscriberSubscription)
 	}
 
 	addr := fmt.Sprintf("%s:%d", commConfig.Domain, commConfig.Port)

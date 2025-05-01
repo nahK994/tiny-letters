@@ -3,8 +3,8 @@ package client
 import (
 	"fmt"
 	"tiny-letter/orchestrator/pkg/app"
-	"tiny-letter/orchestrator/pkg/client/auth"
-	"tiny-letter/orchestrator/pkg/client/subscription"
+	"tiny-letter/orchestrator/pkg/grpc/client/auth"
+	"tiny-letter/orchestrator/pkg/grpc/client/subscription"
 )
 
 func ConnectGRPC(grpcConfig *app.GRPC) error {
