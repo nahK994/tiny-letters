@@ -26,19 +26,14 @@ type MQ_producer struct {
 	IsProducerReturnSuccess bool
 }
 
-type MsgActionConfig struct {
+type Topic struct {
 	PublishContent string
-}
-
-type MQ_topic struct {
-	PublicationNotification string
 }
 
 type MQ_config struct {
 	CommConfig
-	Topic     MQ_topic
-	Producer  MQ_producer
-	MsgAction MsgActionConfig
+	Topic    Topic
+	Producer MQ_producer
 }
 
 type Config struct {
@@ -78,15 +73,12 @@ var appConfig Config = Config{
 			NumberOfRetry:           5,
 			IsProducerReturnSuccess: true,
 		},
-		Topic: MQ_topic{
-			PublicationNotification: "publication_notification",
+		Topic: Topic{
+			PublishContent: "publish_content",
 		},
 		CommConfig: CommConfig{
 			Domain: "localhost",
 			Port:   9092,
-		},
-		MsgAction: MsgActionConfig{
-			PublishContent: "publish_content",
 		},
 	},
 }

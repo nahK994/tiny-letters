@@ -33,14 +33,13 @@ func connectProducer(config *app.MQ_config) (sarama.SyncProducer, error) {
 	return sarama.NewSyncProducer([]string{broker}, mqConfig)
 }
 
-func (p *MQ) PushToQueue(action string, data json.RawMessage) {
-	msg := models.PublishContentMessage{
-		Action: action,
-		Data:   data,
+func (p *MQ) PushToQueue(topic string, data json.RawMessage) {
+	msg := models.MessageItem{
+		Topic: topic,
+		Data:  data,
 	}
 	msgBytes, _ := json.Marshal(msg)
 
-	topic := app.GetConfig().MQ.Topic.PublicationNotification
 	p.push(topic, msgBytes)
 }
 

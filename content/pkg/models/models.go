@@ -22,9 +22,9 @@ type ContentData struct {
 	Content   string `json:"content"`
 }
 
-type PublishContentMessage struct {
-	Action string          `json:"action"`
-	Data   json.RawMessage `json:"data"`
+type MessageItem struct {
+	Topic string          `json:"topic"`
+	Data  json.RawMessage `json:"data"`
 }
 
 func (req *CreatePublicationRequest) Validate() error {

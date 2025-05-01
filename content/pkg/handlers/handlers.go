@@ -66,8 +66,7 @@ func (h *Handler) HandleCreatePost(c *gin.Context) {
 		Content:   req.Content,
 	})
 
-	mq_action := app.GetConfig().MQ.MsgAction.PublishContent
-	h.mq.PushToQueue(mq_action, msgData)
+	h.mq.PushToQueue(app.GetConfig().MQ.Topic.PublishContent, msgData)
 
 	c.JSON(200, id)
 }
