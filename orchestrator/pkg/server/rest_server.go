@@ -13,6 +13,12 @@ func Serve(commConfig *app.CommConfig, producer *mq.Producer) {
 	h := handlers.NewHandler(producer)
 
 	r := gin.Default()
+	r.Group("/registration")
+	{
+		r.POST("/subscriber", h.HandlerSubscriberRegistration)
+		r.POST("/publisher", h.HandlerPublisherRegistration)
+	}
+
 	r.Group("/publisher")
 	{
 		r.POST("/subscribe", h.HandleConfirmPublisherSubscription)

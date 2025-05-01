@@ -36,6 +36,76 @@ func (h *Handler) pushToQueue(topic string, data json.RawMessage) {
 	h.producer.Push(topic, msgBytes)
 }
 
+func (h *Handler) HandlerPublisherRegistration(c *gin.Context) {
+	// var req struct {
+	// 	UserId   int    `json:"user_id" binding:"required"`
+	// 	Email    int    `json:"email" binding:"required"`
+	// 	PlanId   int    `json:"plan_id" binding:"required"`
+	// 	Password string `json:"password" binding:"required"`
+	// }
+
+	// if err := c.ShouldBindJSON(&req); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// 	return
+	// }
+
+	// subscriptionId, err := subscription.RegisterPublisher(req.UserId, req.Email, req.PlanId)
+	// if err != nil {
+	// 	c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
+	// 	return
+	// }
+
+	// err = auth.RegisterPublisher(req.UserId, req.Email, req.PlanId)
+	// if err != nil {
+	// 	subscription.RollbackPublisherRegistration(int(subscriptionId))
+	// 	c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
+	// 	return
+	// }
+
+	// msgData, _ := json.Marshal(
+	// 	req,
+	// )
+	// h.pushToQueue(mq.Topic.PublisherRegister, msgData)
+
+	// c.JSON(http.StatusOK, "Publisher registration confirmed")
+}
+
+func (h *Handler) HandlerSubscriberRegistration(c *gin.Context) {
+	// var req struct {
+	// 	UserID   int    `json:"user_id" binding:"required"`
+	// 	Email    int    `json:"email" binding:"required"`
+	// 	Password string `json:"password" binding:"required"`
+	// }
+
+	// if err := c.ShouldBindJSON(&req); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// 	return
+	// }
+
+	// subscriptionId, err := subscription.RegisterSubscriber(req.UserID, req.Email)
+	// if err != nil {
+	// 	c.JSON(http.StatusInternalServerError, "Subscription service prepare failed")
+	// 	return
+	// }
+
+	// err = auth.RegisterSubscriber(req.UserID, req.Email)
+	// if err != nil {
+	// 	subscription.RollbackSubscriberRegistration(int(subscriptionId))
+	// 	c.JSON(http.StatusInternalServerError, "Auth service prepare failed")
+	// 	return
+	// }
+
+	// msgData, _ := json.Marshal(
+	// 	models.SubscriberRegistration{
+	// 		UserId: req.UserID,
+	// 		Email:  req.Email,
+	// 	},
+	// )
+	// h.pushToQueue(mq.MsgAction.SubscriberRegister, msgData)
+
+	// c.JSON(http.StatusOK, "Subscriber registration confirmed")
+}
+
 func (h *Handler) HandleConfirmPublisherSubscription(c *gin.Context) {
 	var req struct {
 		UserID int `json:"user_id" binding:"required"`
