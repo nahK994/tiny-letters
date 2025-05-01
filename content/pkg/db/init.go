@@ -28,6 +28,7 @@ func createTables(db *sql.DB) error {
 		content TEXT NOT NULL,
 		publication_id INT NOT NULL,
 		is_premium BOOLEAN NOT NULL,
+		is_published BOOLEAN NOT NULL,
 		CONSTRAINT fk_post_publication FOREIGN KEY (publication_id) REFERENCES publications(id) ON DELETE CASCADE	
 	);
 	`
