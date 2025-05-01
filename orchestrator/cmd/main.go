@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"tiny-letter/orchestrator/pkg/app"
 	"tiny-letter/orchestrator/pkg/grpc/client"
+	"tiny-letter/orchestrator/pkg/handlers"
 	"tiny-letter/orchestrator/pkg/mq"
-	"tiny-letter/orchestrator/pkg/server"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -19,6 +22,14 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to connect to MQ: %v", err)
 	}
+	h := handlers.NewHandler(producer)
 
-	server.Serve(&config.REST, producer)
+	r := gin.Default()
+	r.Group("/registration")
+	{
+		r.POST("/publisher", h.HandlerPublisherRegistration)
+	}
+
+	addr := fmt.Sprintf("%s:%d", config.REST.Domain, config.REST.Port)
+	r.Run(addr)
 }
