@@ -98,7 +98,7 @@ elif [[ $cmd == 7 ]]; then
 elif [[ $cmd == 8 ]]; then
     start_service "content"
 elif [[ $cmd == 9 ]]; then
-    kill_process 8001 50001
+    kill_process 8001 -1
 elif [[ $cmd == 10 ]]; then
     start_service "email"
 elif [[ $cmd == 11 ]]; then

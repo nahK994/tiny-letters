@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"tiny-letter/content/pkg/app"
 	"tiny-letter/content/pkg/db"
+	"tiny-letter/content/pkg/handlers"
 	"tiny-letter/content/pkg/mq"
-	"tiny-letter/content/pkg/server"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -21,5 +24,12 @@ func main() {
 		log.Fatalf("Failed to connect to MQ: %v", err)
 	}
 
-	server.Serve(db, &config.REST, producer)
+	h := handlers.GetHandler(db, producer)
+
+	r := gin.Default()
+	r.POST("/publications", h.HandleCreatePublication)
+	r.POST("/posts", h.HandleCreatePost)
+
+	addr := fmt.Sprintf("%s:%d", config.Domain, config.Port)
+	r.Run(addr)
 }

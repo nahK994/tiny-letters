@@ -37,11 +37,10 @@ type MQ_config struct {
 }
 
 type Config struct {
-	App  AppConfig
-	DB   DB_config
-	REST CommConfig
-	GRPC GRPC_config
-	MQ   MQ_config
+	App AppConfig
+	DB  DB_config
+	CommConfig
+	MQ MQ_config
 }
 
 var appConfig Config = Config{
@@ -49,15 +48,9 @@ var appConfig Config = Config{
 		JWT_secret:      "secret",
 		JWT_exp_minutes: 60,
 	},
-	REST: CommConfig{
+	CommConfig: CommConfig{
 		Domain: "localhost",
 		Port:   8001,
-	},
-	GRPC: GRPC_config{
-		Subscription: CommConfig{
-			Domain: "localhost",
-			Port:   50001,
-		},
 	},
 	DB: DB_config{
 		User:     "user",
