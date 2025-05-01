@@ -90,7 +90,6 @@ elif [[ $cmd == 4 ]]; then
     generate_proto "orchestrator" "auth-manager.proto"
     generate_proto "orchestrator" "subscription-manager.proto"
 elif [[ $cmd == 5 ]]; then
-    generate_proto "subscription" "publication-authorization.proto"
     generate_proto "subscription" "subscription-manager.proto"
 elif [[ $cmd == 6 ]]; then
     start_service "auth"
@@ -115,7 +114,7 @@ elif [[ $cmd == 15 ]]; then
 elif [[ $cmd == 16 ]]; then
     start_service "subscription"
 elif [[ $cmd == 17 ]]; then
-    kill_process -1 50002
+    kill_process 8002 50002
 elif [[ $cmd == 18 ]]; then
     docker compose -f docker-compose.yml up -d
 elif [[ $cmd == 19 ]]; then

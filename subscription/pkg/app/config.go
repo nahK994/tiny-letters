@@ -21,6 +21,7 @@ type Config struct {
 	App  AppConfig
 	DB   DB_config
 	GRPC CommConfig
+	REST CommConfig
 }
 
 var appConfig Config = Config{
@@ -31,6 +32,10 @@ var appConfig Config = Config{
 	GRPC: CommConfig{
 		Domain: "localhost",
 		Port:   50002,
+	},
+	REST: CommConfig{
+		Domain: "localhost",
+		Port:   8002,
 	},
 	DB: DB_config{
 		User:     "user",

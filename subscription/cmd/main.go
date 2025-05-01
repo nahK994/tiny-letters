@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"sync"
 	"tiny-letter/subscription/pkg/app"
 	"tiny-letter/subscription/pkg/db"
 	"tiny-letter/subscription/pkg/server"
@@ -15,5 +16,9 @@ func main() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	server.Serve(db, &config.GRPC)
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go server.ServeGRPC(&wg, db, &config.GRPC)
+	go server.ServeREST(&wg, db, &config.REST)
+	wg.Wait()
 }

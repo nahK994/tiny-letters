@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"sync"
 	"tiny-letter/subscription/pkg/app"
 	"tiny-letter/subscription/pkg/db"
-	pb_publication_authorization "tiny-letter/subscription/pkg/grpc/pb/publication_authorization"
 	pb_subscription_manager "tiny-letter/subscription/pkg/grpc/pb/subscription_manager"
 	"tiny-letter/subscription/pkg/handlers"
 
 	"google.golang.org/grpc"
 )
 
-func Serve(db *db.Repository, config *app.CommConfig) {
+func ServeGRPC(wg *sync.WaitGroup, db *db.Repository, config *app.CommConfig) {
 	addr := fmt.Sprintf("%s:%d", config.Domain, config.Port)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -21,8 +21,7 @@ func Serve(db *db.Repository, config *app.CommConfig) {
 	}
 
 	s := grpc.NewServer()
-	pb_publication_authorization.RegisterPublicationAuthorizationServer(s, handlers.GetPublicationAuthorizationHandler(db))
-	pb_subscription_manager.RegisterSubscriptionManagerServer(s, handlers.GetSubscriptionManagerHandler(db))
+	pb_subscription_manager.RegisterSubscriptionManagerServer(s, handlers.GetGRPC_Handler(db))
 
 	fmt.Println("Starting server...")
 	fmt.Printf("Hosting server on: %s\n", lis.Addr().String())
