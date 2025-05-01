@@ -31,9 +31,9 @@ func connectProducer(config *app.MQ_config) (sarama.SyncProducer, error) {
 	return sarama.NewSyncProducer([]string{broker}, mqConfig)
 }
 
-func (p *Producer) Push(val []byte) error {
+func (p *Producer) Push(topic string, val []byte) error {
 	msg := &sarama.ProducerMessage{
-		Topic: app.GetConfig().MQ.Topic.ConfirmationNotification,
+		Topic: topic,
 		Value: sarama.StringEncoder(val),
 	}
 	_, _, err := p.producer.SendMessage(msg)

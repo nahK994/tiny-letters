@@ -2,9 +2,9 @@ package models
 
 import "encoding/json"
 
-type ConfirmationMessage struct {
-	Action string `json:"action"`
-	Data   json.RawMessage
+type MessageItem struct {
+	Topic string `json:"topic"`
+	Data  json.RawMessage
 }
 
 type JoinPublicationData struct {

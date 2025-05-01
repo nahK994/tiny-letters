@@ -15,11 +15,7 @@ type Producer struct {
 	NumberOfRetry           int
 }
 
-type MQ_topic struct {
-	ConfirmationNotification string
-}
-
-type MsgActionConfig struct {
+type Topic struct {
 	JoinPublication      string
 	LeavePublication     string
 	SubscriberChangePlan string
@@ -31,9 +27,8 @@ type MsgActionConfig struct {
 
 type MQ_config struct {
 	CommConfig
-	Topic     MQ_topic
-	Producer  Producer
-	MsgAction MsgActionConfig
+	Topic    Topic
+	Producer Producer
 }
 
 type Config struct {
@@ -62,14 +57,11 @@ var appConfig Config = Config{
 			NumberOfRetry:           5,
 			IsProducerReturnSuccess: true,
 		},
-		Topic: MQ_topic{
-			ConfirmationNotification: "confirmation_notification",
-		},
 		CommConfig: CommConfig{
 			Domain: "localhost",
 			Port:   9092,
 		},
-		MsgAction: MsgActionConfig{
+		Topic: Topic{
 			JoinPublication:      "join_publication",
 			LeavePublication:     "leave_publication",
 			SubscriberChangePlan: "subscriber_change_plan",

@@ -14,7 +14,7 @@ import (
 var mq = app.GetConfig().MQ
 
 type producer interface {
-	Push(val []byte) error
+	Push(topic string, val []byte) error
 }
 
 type Handler struct {
@@ -27,13 +27,13 @@ func NewHandler(producer producer) *Handler {
 	}
 }
 
-func (h *Handler) pushToQueue(action string, data json.RawMessage) {
-	msg := models.ConfirmationMessage{
-		Action: action,
-		Data:   data,
+func (h *Handler) pushToQueue(topic string, data json.RawMessage) {
+	msg := models.MessageItem{
+		Topic: topic,
+		Data:  data,
 	}
 	msgBytes, _ := json.Marshal(msg)
-	h.producer.Push(msgBytes)
+	h.producer.Push(topic, msgBytes)
 }
 
 func (h *Handler) HandleConfirmPublisherSubscription(c *gin.Context) {
@@ -66,7 +66,7 @@ func (h *Handler) HandleConfirmPublisherSubscription(c *gin.Context) {
 			PlanId: req.PlanID,
 		},
 	)
-	h.pushToQueue(mq.MsgAction.PublisherSubscribe, msgData)
+	h.pushToQueue(mq.Topic.PublisherSubscribe, msgData)
 
 	c.JSON(http.StatusOK, "Publisher subscription confirmed")
 }
@@ -99,7 +99,7 @@ func (h *Handler) HandleRevokePublisherSubscription(c *gin.Context) {
 			UserId: req.UserID,
 		},
 	)
-	h.pushToQueue(mq.MsgAction.PublisherUnsubscribe, msgData)
+	h.pushToQueue(mq.Topic.PublisherUnsubscribe, msgData)
 
 	c.JSON(http.StatusOK, "Publisher unsubscription confirmed")
 }
@@ -135,7 +135,7 @@ func (h *Handler) HandleChangePublisherSubscription(c *gin.Context) {
 			OldPlanId: int(oldPlanId),
 		},
 	)
-	h.pushToQueue(mq.MsgAction.PublisherChangePlan, msgData)
+	h.pushToQueue(mq.Topic.PublisherChangePlan, msgData)
 
 	c.JSON(http.StatusOK, "Publisher plan change confirmed")
 }
@@ -172,7 +172,7 @@ func (h *Handler) HandleJoinPublication(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(mq.MsgAction.JoinPublication, msgData)
+	h.pushToQueue(mq.Topic.JoinPublication, msgData)
 
 	c.JSON(http.StatusOK, "Join publication confirmed")
 }
@@ -207,7 +207,7 @@ func (h *Handler) HandleLeavePublication(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(mq.MsgAction.LeavePublication, msgData)
+	h.pushToQueue(mq.Topic.LeavePublication, msgData)
 
 	c.JSON(http.StatusOK, "Leave publication confirmed")
 }
@@ -242,7 +242,7 @@ func (h *Handler) HandleChangeSubscriberSubscription(c *gin.Context) {
 			PublicationId: req.PublicationID,
 		},
 	)
-	h.pushToQueue(mq.MsgAction.SubscriberChangePlan, msgData)
+	h.pushToQueue(mq.Topic.SubscriberChangePlan, msgData)
 
 	c.JSON(http.StatusOK, "Subscriber plan change confirmed")
 }
