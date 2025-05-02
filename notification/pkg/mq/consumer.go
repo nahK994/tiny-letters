@@ -43,11 +43,9 @@ func ConnectConsumers(config *app.MQ_config) ([]sarama.PartitionConsumer, error)
 	consumers := []sarama.PartitionConsumer{}
 
 	topics := []string{
-		config.Topic.SubscriberRegister,
 		config.Topic.JoinPublication,
 		config.Topic.LeavePublication,
 		config.Topic.SubscriberChangePlan,
-		config.Topic.PublisherRegister,
 		config.Topic.PublisherSubscribe,
 		config.Topic.PublisherUnsubscribe,
 		config.Topic.PublisherChangePlan,

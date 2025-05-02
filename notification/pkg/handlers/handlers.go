@@ -28,9 +28,6 @@ func (h *Handler) HandleMsg(msg []byte) error {
 	json.Unmarshal(msg, &data)
 
 	switch data.Topic {
-	case topic.SubscriberRegister:
-		return h.handleSubscriberRegistration(msg)
-
 	case topic.JoinPublication:
 		return h.handleJoinPublication(msg)
 
@@ -77,14 +74,6 @@ func (h *Handler) handleRevokePublisherSubscription(msg []byte) error {
 
 func (h *Handler) handleChangePublisherSubscription(msg []byte) error {
 	return h.producer.Push(mqConfig.Topic.PublisherChangePlan, msg)
-}
-
-func (h *Handler) handlePublisherRegistration(msg []byte) error {
-	return h.producer.Push(mqConfig.Topic.PublisherRegister, msg)
-}
-
-func (h *Handler) handleSubscriberRegistration(msg []byte) error {
-	return h.producer.Push(mqConfig.Topic.SubscriberRegister, msg)
 }
 
 func (h *Handler) handlePublishLetter(msg []byte) error {

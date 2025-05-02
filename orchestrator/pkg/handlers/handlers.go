@@ -62,10 +62,5 @@ func (h *Handler) HandlerPublisherRegistration(c *gin.Context) {
 		return
 	}
 
-	msgData, _ := json.Marshal(
-		req,
-	)
-	h.pushToQueue(mq.Topic.PublisherRegister, msgData)
-
 	c.JSON(http.StatusOK, "Publisher registration confirmed")
 }

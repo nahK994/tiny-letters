@@ -14,13 +14,11 @@ type Producer struct {
 	NumberOfRetry           int
 }
 
-type MsgTopic struct {
-	SubscriberRegister   string
+type Topic struct {
 	JoinPublication      string
 	LeavePublication     string
 	SubscriberChangePlan string
 
-	PublisherRegister    string
 	PublisherSubscribe   string
 	PublisherUnsubscribe string
 	PublisherChangePlan  string
@@ -31,7 +29,7 @@ type MQ_config struct {
 	CommConfig
 	Consumer Consumer
 	Producer Producer
-	Topic    MsgTopic
+	Topic    Topic
 }
 
 type Config struct {
@@ -52,15 +50,13 @@ var appConfig Config = Config{
 			NumberOfRetry:           5,
 			IsProducerReturnSuccess: true,
 		},
-		Topic: MsgTopic{
+		Topic: Topic{
 			JoinPublication:      "join_publication",
 			LeavePublication:     "leave_publication",
 			SubscriberChangePlan: "subscriber_change_plan",
 			PublisherSubscribe:   "publisher_subscribe",
 			PublisherUnsubscribe: "publisher_unsubscribe",
 			PublisherChangePlan:  "publisher_change_plan",
-			SubscriberRegister:   "subscriber_register",
-			PublisherRegister:    "publisher_register",
 			PublishLetter:        "publish_letter",
 		},
 	},
