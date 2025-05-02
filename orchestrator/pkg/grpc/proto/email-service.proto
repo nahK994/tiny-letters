@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "/email_service;pb_email_service";
+
+service EmailService {
+    rpc OnboardUser (OnboardUserRequest) returns (Response);
+}
+
+message OnboardUserRequest {
+    int32 user_id = 1;
+    string email = 2;
+    string role = 3;
+}
+
+message Response {
+    bool is_success = 1;
+}

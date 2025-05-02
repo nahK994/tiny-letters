@@ -24,16 +24,9 @@ type Topic struct {
 	PublisherChangePlan  string
 }
 
-type MQ_config struct {
-	CommConfig
-	Topic    Topic
-	Producer Producer
-}
-
 type Config struct {
 	GRPC
 	REST CommConfig
-	MQ   MQ_config
 }
 
 var appConfig Config = Config{
@@ -50,24 +43,6 @@ var appConfig Config = Config{
 	REST: CommConfig{
 		Port:   8080,
 		Domain: "localhost",
-	},
-	MQ: MQ_config{
-		Producer: Producer{
-			NumberOfRetry:           5,
-			IsProducerReturnSuccess: true,
-		},
-		CommConfig: CommConfig{
-			Domain: "localhost",
-			Port:   9092,
-		},
-		Topic: Topic{
-			JoinPublication:      "join_publication",
-			LeavePublication:     "leave_publication",
-			SubscriberChangePlan: "subscriber_change_plan",
-			PublisherSubscribe:   "publisher_subscribe",
-			PublisherUnsubscribe: "publisher_unsubscribe",
-			PublisherChangePlan:  "publisher_change_plan",
-		},
 	},
 }
 

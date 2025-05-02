@@ -1,40 +1,33 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
-	"tiny-letter/orchestrator/pkg/app"
 	"tiny-letter/orchestrator/pkg/grpc/client/auth"
 	"tiny-letter/orchestrator/pkg/grpc/client/subscription"
-	"tiny-letter/orchestrator/pkg/models"
 
 	"github.com/gin-gonic/gin"
 )
 
-var mq = app.GetConfig().MQ
+// var mq = app.GetConfig().MQ
 
-type producer interface {
-	Push(topic string, val []byte) error
+// type producer interface {
+// 	Push(topic string, val []byte) error
+// }
+
+type Handler struct{}
+
+func NewHandler() *Handler {
+	return &Handler{}
 }
 
-type Handler struct {
-	producer producer
-}
-
-func NewHandler(producer producer) *Handler {
-	return &Handler{
-		producer: producer,
-	}
-}
-
-func (h *Handler) pushToQueue(topic string, data json.RawMessage) {
-	msg := models.MessageItem{
-		Topic: topic,
-		Data:  data,
-	}
-	msgBytes, _ := json.Marshal(msg)
-	h.producer.Push(topic, msgBytes)
-}
+// func (h *Handler) pushToQueue(topic string, data json.RawMessage) {
+// 	msg := models.MessageItem{
+// 		Topic: topic,
+// 		Data:  data,
+// 	}
+// 	msgBytes, _ := json.Marshal(msg)
+// 	h.producer.Push(topic, msgBytes)
+// }
 
 func (h *Handler) HandlerPublisherRegistration(c *gin.Context) {
 	var req struct {
