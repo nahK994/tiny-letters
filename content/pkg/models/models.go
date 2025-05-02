@@ -5,21 +5,23 @@ import (
 	"fmt"
 )
 
-type CreatePublicationRequest struct {
+type Publication struct {
 	Name        string
 	PublisherID int
 }
 
-type CreatePostRequest struct {
+type Post struct {
 	Title         string
 	Content       string
 	PublicationID int
 	IsPremium     bool
 }
 
-type ContentData struct {
-	ContentId int    `json:"content_id"`
-	Content   string `json:"content"`
+type PublishContentData struct {
+	ContentId     int     `json:"content_id"`
+	Content       string  `json:"content"`
+	Title         string  `json:"title"`
+	SubscriberIds []int32 `json:"subscriber_ids"`
 }
 
 type MessageItem struct {
@@ -27,7 +29,7 @@ type MessageItem struct {
 	Data  json.RawMessage `json:"data"`
 }
 
-func (req *CreatePublicationRequest) Validate() error {
+func (req *Publication) Validate() error {
 	if req.Name == "" {
 		return fmt.Errorf("name cannot be empty")
 	}
@@ -38,7 +40,7 @@ func (req *CreatePublicationRequest) Validate() error {
 	return nil
 }
 
-func (req *CreatePostRequest) Validate() error {
+func (req *Post) Validate() error {
 	if req.Title == "" {
 		return fmt.Errorf("title cannot be empty")
 	}

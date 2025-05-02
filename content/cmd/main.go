@@ -34,6 +34,7 @@ func main() {
 	r := gin.Default()
 	r.POST("/publications", h.HandleCreatePublication)
 	r.POST("/posts", h.HandleCreatePost)
+	r.POST("/publish-content", h.HandlePublishContent)
 
 	addr := fmt.Sprintf("%s:%d", config.REST.Domain, config.REST.Port)
 	r.Run(addr)

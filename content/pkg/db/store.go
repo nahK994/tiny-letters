@@ -1,6 +1,9 @@
 package db
 
-import "fmt"
+import (
+	"fmt"
+	"tiny-letter/content/pkg/models"
+)
 
 type (
 	PublicationID int
@@ -27,4 +30,21 @@ func (r Repository) CreatePost(title, content string, publicationID int, isPremi
 	}
 
 	return id, nil
+}
+
+func (r *Repository) GetContentInfo(postID int) (*models.Post, error) {
+	var post models.Post
+	err := r.DB.QueryRow("SELECT title, content, is_premium, publication_id FROM posts WHERE id = $1", postID).Scan(&post.Title, &post.Content, &post.IsPremium, &post.PublicationID)
+	if err != nil {
+		return nil, fmt.Errorf("could not get content info: %w", err)
+	}
+	return &post, nil
+}
+
+func (r *Repository) MarkPostAsPublished(postID int) error {
+	_, err := r.DB.Exec("UPDATE posts SET is_published = TRUE WHERE id = $1", postID)
+	if err != nil {
+		return fmt.Errorf("could not mark post as published: %w", err)
+	}
+	return nil
 }

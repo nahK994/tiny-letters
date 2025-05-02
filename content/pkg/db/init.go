@@ -23,14 +23,15 @@ func createTables(db *sql.DB) error {
 
 	createPostsTable := `
 	CREATE TABLE IF NOT EXISTS posts (
-		id SERIAL PRIMARY KEY,
-		title VARCHAR(100) NOT NULL,
-		content TEXT NOT NULL,
-		publication_id INT NOT NULL,
-		is_premium BOOLEAN NOT NULL,
-		is_published BOOLEAN NOT NULL,
-		CONSTRAINT fk_post_publication FOREIGN KEY (publication_id) REFERENCES publications(id) ON DELETE CASCADE	
-	);
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(100) NOT NULL,
+	content TEXT NOT NULL,
+	publication_id INT NOT NULL,
+	is_premium BOOLEAN NOT NULL,
+	is_published BOOLEAN NOT NULL DEFAULT FALSE,
+	CONSTRAINT fk_post_publication FOREIGN KEY (publication_id)
+		REFERENCES publications(id) ON DELETE CASCADE
+);
 	`
 
 	if _, err := db.Exec(createPublicationsTable); err != nil {
