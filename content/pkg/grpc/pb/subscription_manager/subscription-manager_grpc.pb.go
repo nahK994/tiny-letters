@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v3.21.12
-// source: subscription-manager.proto
+// source: content/pkg/grpc/proto/subscription-manager.proto
 
 package pb_subscription_manager
 
@@ -117,5 +117,5 @@ var SubscriptionManager_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "subscription-manager.proto",
+	Metadata: "content/pkg/grpc/proto/subscription-manager.proto",
 }

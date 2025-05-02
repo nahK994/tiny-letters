@@ -11,7 +11,7 @@ import (
 )
 
 type grpcClient interface {
-	GetContentSubscribers(publicationId int) ([]int32, error)
+	GetContentSubscribers(publicationId int, isContentPremium bool) ([]int32, error)
 }
 
 type Handler struct {

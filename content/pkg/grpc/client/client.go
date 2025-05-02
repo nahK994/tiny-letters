@@ -45,9 +45,10 @@ func ShutdownSubscriptionClient() {
 		subscriptionConn.Close()
 	}
 }
-func (s *SubscriptionClient) GetContentSubscribers(publicationId int) ([]int32, error) {
+func (s *SubscriptionClient) GetContentSubscribers(publicationId int, isContentPremium bool) ([]int32, error) {
 	resp, err := subscriptionClient.GetContentSubscribers(context.Background(), &pb_subscription_manager.GetContentSubscribersRequest{
-		PublicationId: int32(publicationId),
+		PublicationId:    int32(publicationId),
+		ContentIsPremium: isContentPremium,
 	})
 	if err != nil {
 		return []int32{}, err
