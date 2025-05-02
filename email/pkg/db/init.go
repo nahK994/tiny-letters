@@ -17,14 +17,14 @@ func NewRepository(db *sql.DB) *Repository {
 }
 
 func createTables(db *sql.DB) error {
-	createUserTable := `
-	CREATE TABLE IF NOT EXISTS users (
+	createUserContactEmailsTable := `
+	CREATE TABLE IF NOT EXISTS user_contact_emails (
 		user_id SERIAL PRIMARY KEY,
 		email VARCHAR(50) NOT NULL UNIQUE,
 	);
 	`
 
-	if _, err := db.Exec(createUserTable); err != nil {
+	if _, err := db.Exec(createUserContactEmailsTable); err != nil {
 		return fmt.Errorf("failed to create 'users' table: %w", err)
 	}
 

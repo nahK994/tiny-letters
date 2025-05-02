@@ -21,12 +21,6 @@ func (h *ConsumerHandlers) HandleMsg(msg []byte) error {
 	json.Unmarshal(msg, &data)
 
 	switch data.Topic {
-	case topic.PublisherRegister:
-		return h.handlePublisherRegistration(msg)
-
-	case topic.SubscriberRegister:
-		return h.handleSubscriberRegistration(msg)
-
 	case topic.JoinPublication:
 		return h.handleSubscriberSubscription(msg)
 
@@ -48,16 +42,6 @@ func (h *ConsumerHandlers) HandleMsg(msg []byte) error {
 	case topic.PublishLetter:
 		return h.handlePublishLetter(msg)
 	}
-	return nil
-}
-
-func (h *ConsumerHandlers) handleSubscriberRegistration(msg []byte) error {
-	var data models.SubscriberRegistration
-	err := json.Unmarshal(msg, &data)
-	if err != nil {
-		return err
-	}
-	// Handle subscriber registration logic here
 	return nil
 }
 
@@ -88,16 +72,6 @@ func (h *ConsumerHandlers) handleChangeSubscriberSubscription(msg []byte) error 
 		return err
 	}
 	// Handle change subscriber subscription logic here
-	return nil
-}
-
-func (h *ConsumerHandlers) handlePublisherRegistration(msg []byte) error {
-	var data models.PublisherRegistration
-	err := json.Unmarshal(msg, &data)
-	if err != nil {
-		return err
-	}
-	// Handle publisher registration logic here
 	return nil
 }
 

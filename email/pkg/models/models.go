@@ -7,9 +7,10 @@ type MessageItem struct {
 	Msg   json.RawMessage
 }
 
-type SubscriberRegistration struct {
-	UserId int `json:"user_id"`
-	Email  int `json:"email"`
+type UserContactEmail struct {
+	UserId int    `json:"user_id"`
+	Email  string `json:"email"`
+	Role   string `json:"role"`
 }
 
 type JoinPublication struct {

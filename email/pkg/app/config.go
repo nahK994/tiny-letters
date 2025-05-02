@@ -15,12 +15,10 @@ type MQ_consumer struct {
 }
 
 type Topic struct {
-	SubscriberRegister   string
 	JoinPublication      string
 	LeavePublication     string
 	SubscriberChangePlan string
 
-	PublisherRegister    string
 	PublisherSubscribe   string
 	PublisherUnsubscribe string
 	PublisherChangePlan  string
@@ -71,8 +69,6 @@ var appConfig Config = Config{
 			PublisherSubscribe:   "publisher_subscribe",
 			PublisherUnsubscribe: "publisher_unsubscribe",
 			PublisherChangePlan:  "publisher_change_plan",
-			SubscriberRegister:   "subscriber_register",
-			PublisherRegister:    "publisher_register",
 			PublishLetter:        "publish_letter",
 		},
 	},

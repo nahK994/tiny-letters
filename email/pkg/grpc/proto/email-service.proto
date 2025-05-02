@@ -3,21 +3,15 @@ syntax = "proto3";
 option go_package = "/email_service;pb_email_service";
 
 service EmailService {
-    rpc NotifyNewSubscriber (SubscriberRegistration) returns (Response);
-    rpc NotifyNewPublisher (PublisherRegistration) returns (Response);
+    rpc OnboardUser (OnboardUserRequest) returns (Response);
 }
 
-message SubscriberRegistration {
+message OnboardUserRequest {
     int32 user_id = 1;
     string email = 2;
-}
-
-message PublisherRegistration {
-    int32 user_id = 1;
-    string email = 2;
-    int32 plan_id = 3;
+    string role = 3;
 }
 
 message Response {
-    bool success = 1;
+    bool is_success = 1;
 }

@@ -19,16 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	EmailService_NotifyNewSubscriber_FullMethodName = "/EmailService/NotifyNewSubscriber"
-	EmailService_NotifyNewPublisher_FullMethodName  = "/EmailService/NotifyNewPublisher"
+	EmailService_OnboardUser_FullMethodName = "/EmailService/OnboardUser"
 )
 
 // EmailServiceClient is the client API for EmailService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EmailServiceClient interface {
-	NotifyNewSubscriber(ctx context.Context, in *SubscriberRegistration, opts ...grpc.CallOption) (*Response, error)
-	NotifyNewPublisher(ctx context.Context, in *PublisherRegistration, opts ...grpc.CallOption) (*Response, error)
+	OnboardUser(ctx context.Context, in *OnboardUserRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type emailServiceClient struct {
@@ -39,20 +37,10 @@ func NewEmailServiceClient(cc grpc.ClientConnInterface) EmailServiceClient {
 	return &emailServiceClient{cc}
 }
 
-func (c *emailServiceClient) NotifyNewSubscriber(ctx context.Context, in *SubscriberRegistration, opts ...grpc.CallOption) (*Response, error) {
+func (c *emailServiceClient) OnboardUser(ctx context.Context, in *OnboardUserRequest, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, EmailService_NotifyNewSubscriber_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *emailServiceClient) NotifyNewPublisher(ctx context.Context, in *PublisherRegistration, opts ...grpc.CallOption) (*Response, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
-	err := c.cc.Invoke(ctx, EmailService_NotifyNewPublisher_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, EmailService_OnboardUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,8 +51,7 @@ func (c *emailServiceClient) NotifyNewPublisher(ctx context.Context, in *Publish
 // All implementations must embed UnimplementedEmailServiceServer
 // for forward compatibility.
 type EmailServiceServer interface {
-	NotifyNewSubscriber(context.Context, *SubscriberRegistration) (*Response, error)
-	NotifyNewPublisher(context.Context, *PublisherRegistration) (*Response, error)
+	OnboardUser(context.Context, *OnboardUserRequest) (*Response, error)
 	mustEmbedUnimplementedEmailServiceServer()
 }
 
@@ -75,11 +62,8 @@ type EmailServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedEmailServiceServer struct{}
 
-func (UnimplementedEmailServiceServer) NotifyNewSubscriber(context.Context, *SubscriberRegistration) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NotifyNewSubscriber not implemented")
-}
-func (UnimplementedEmailServiceServer) NotifyNewPublisher(context.Context, *PublisherRegistration) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NotifyNewPublisher not implemented")
+func (UnimplementedEmailServiceServer) OnboardUser(context.Context, *OnboardUserRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OnboardUser not implemented")
 }
 func (UnimplementedEmailServiceServer) mustEmbedUnimplementedEmailServiceServer() {}
 func (UnimplementedEmailServiceServer) testEmbeddedByValue()                      {}
@@ -102,38 +86,20 @@ func RegisterEmailServiceServer(s grpc.ServiceRegistrar, srv EmailServiceServer)
 	s.RegisterService(&EmailService_ServiceDesc, srv)
 }
 
-func _EmailService_NotifyNewSubscriber_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SubscriberRegistration)
+func _EmailService_OnboardUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OnboardUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EmailServiceServer).NotifyNewSubscriber(ctx, in)
+		return srv.(EmailServiceServer).OnboardUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: EmailService_NotifyNewSubscriber_FullMethodName,
+		FullMethod: EmailService_OnboardUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EmailServiceServer).NotifyNewSubscriber(ctx, req.(*SubscriberRegistration))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _EmailService_NotifyNewPublisher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PublisherRegistration)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(EmailServiceServer).NotifyNewPublisher(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: EmailService_NotifyNewPublisher_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EmailServiceServer).NotifyNewPublisher(ctx, req.(*PublisherRegistration))
+		return srv.(EmailServiceServer).OnboardUser(ctx, req.(*OnboardUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -146,12 +112,8 @@ var EmailService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*EmailServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "NotifyNewSubscriber",
-			Handler:    _EmailService_NotifyNewSubscriber_Handler,
-		},
-		{
-			MethodName: "NotifyNewPublisher",
-			Handler:    _EmailService_NotifyNewPublisher_Handler,
+			MethodName: "OnboardUser",
+			Handler:    _EmailService_OnboardUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
