@@ -89,6 +89,7 @@ elif [[ $cmd == 3 ]]; then
 elif [[ $cmd == 4 ]]; then
     generate_proto "orchestrator" "auth-manager.proto"
     generate_proto "orchestrator" "subscription-manager.proto"
+    generate_proto "orchestrator" "email-service.proto"
 elif [[ $cmd == 5 ]]; then
     generate_proto "subscription" "subscription-manager.proto"
 elif [[ $cmd == 6 ]]; then
