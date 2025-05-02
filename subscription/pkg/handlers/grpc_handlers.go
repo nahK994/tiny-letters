@@ -37,7 +37,8 @@ func (l *GRPC_Handler) CreateSubscriptionForPublisher(c context.Context, req *pb
 
 func (n *GRPC_Handler) GetContentSubscribers(c context.Context, req *pb_subscription_manager.GetContentSubscribersRequest) (*pb_subscription_manager.GetContentSubscribersResponse, error) {
 	data := &models.GetContentSubscribersRequest{
-		PublicationId: int(req.PublicationId),
+		PublicationId:    int(req.PublicationId),
+		ContentIsPremium: req.ContentIsPremium,
 	}
 	if err := data.Validate(); err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "invalid argument: %v", err)

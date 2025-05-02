@@ -1,6 +1,7 @@
 package db
 
 import (
+	"database/sql"
 	"fmt"
 	"tiny-letter/subscription/pkg/models"
 )
@@ -86,12 +87,23 @@ func (r *Repository) ChangeSubscriberSubscription(data *models.ChangeSubscriberS
 }
 
 func (r *Repository) GetContentSubscribers(data *models.GetContentSubscribersRequest) ([]int32, error) {
-	query := "SELECT user_id FROM subscriber_subscriptions WHERE publication_id = $1"
 	var subscriberIds []int32
-	rows, err := r.DB.Query(query, data.PublicationId)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get subscribers: %w", err)
+	var rows *sql.Rows
+	var err error
+	if !data.ContentIsPremium {
+		query := "SELECT user_id FROM subscriber_subscriptions WHERE publication_id = $1"
+		rows, err = r.DB.Query(query, data.PublicationId)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get subscribers: %w", err)
+		}
+	} else {
+		query := "SELECT user_id FROM subscriber_subscriptions WHERE publication_id = $1 AND is_premium = true"
+		rows, err = r.DB.Query(query, data.PublicationId)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get premium subscribers: %w", err)
+		}
 	}
+
 	defer rows.Close()
 	for rows.Next() {
 		var id int32

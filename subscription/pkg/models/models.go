@@ -66,7 +66,8 @@ type IsAuthorizedPublisherRequest struct {
 }
 
 type GetContentSubscribersRequest struct {
-	PublicationId int `json:"publicationId"`
+	PublicationId    int  `json:"publicationId"`
+	ContentIsPremium bool `json:"contentIsPremium"`
 }
 
 func (r *ConfirmPublisherSubscriptionRequest) Validate() error {

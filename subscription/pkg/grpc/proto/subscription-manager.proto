@@ -17,6 +17,7 @@ message CreateSubscriptionForPublisherRequest {
 
 message GetContentSubscribersRequest {
   int32 publication_id = 1;
+  bool contentIsPremium = 2;
 }
 
 message GetContentSubscribersResponse {
