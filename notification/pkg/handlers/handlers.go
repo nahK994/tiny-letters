@@ -12,19 +12,13 @@ type producer interface {
 	Push(topic string, message []byte) error
 }
 
-type grpcClient interface {
-	GetContentSubscribers(publicationId int) ([]int32, error)
-}
-
 type Handler struct {
 	producer producer
-	grpc     grpcClient
 }
 
-func NewHandler(producer producer, grpcClient grpcClient) *Handler {
+func NewHandler(producer producer) *Handler {
 	return &Handler{
 		producer: producer,
-		grpc:     grpcClient,
 	}
 }
 
