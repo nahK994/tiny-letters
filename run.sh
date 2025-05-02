@@ -3,7 +3,7 @@
 echo "       -- Protobuf Generated Code --"
 echo "1) For auth service"
 echo "2) For email service"
-echo "3) For notification service"
+echo "3) For content service"
 echo "4) For orchestrator service"
 echo "5) For subscription service"
 echo "       ----------------"
@@ -85,7 +85,7 @@ if [[ $cmd == 1 ]]; then
 elif [[ $cmd == 2 ]]; then
     generate_proto "email" "email-service.proto"
 elif [[ $cmd == 3 ]]; then
-    generate_proto "notification" "subscription-manager.proto"
+    generate_proto "content" "subscription-manager.proto"
 elif [[ $cmd == 4 ]]; then
     generate_proto "orchestrator" "auth-manager.proto"
     generate_proto "orchestrator" "subscription-manager.proto"

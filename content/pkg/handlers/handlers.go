@@ -10,15 +10,21 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Handler struct {
-	db *db.Repository
-	mq *mq.MQ
+type grpcClient interface {
+	GetContentSubscribers(publicationId int) ([]int32, error)
 }
 
-func GetHandler(db *db.Repository, mq *mq.MQ) *Handler {
+type Handler struct {
+	db   *db.Repository
+	mq   *mq.MQ
+	grpc grpcClient
+}
+
+func GetHandler(db *db.Repository, mq *mq.MQ, grpcClient grpcClient) *Handler {
 	return &Handler{
-		db: db,
-		mq: mq,
+		db:   db,
+		mq:   mq,
+		grpc: grpcClient,
 	}
 }
 

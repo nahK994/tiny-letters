@@ -17,10 +17,6 @@ type CommConfig struct {
 	Port   int
 }
 
-type GRPC_config struct {
-	Subscription CommConfig
-}
-
 type MQ_producer struct {
 	NumberOfRetry           int
 	IsProducerReturnSuccess bool
@@ -37,10 +33,11 @@ type MQ_config struct {
 }
 
 type Config struct {
-	App AppConfig
-	DB  DB_config
-	CommConfig
-	MQ MQ_config
+	App  AppConfig
+	DB   DB_config
+	REST CommConfig
+	GRPC CommConfig
+	MQ   MQ_config
 }
 
 var appConfig Config = Config{
@@ -48,9 +45,13 @@ var appConfig Config = Config{
 		JWT_secret:      "secret",
 		JWT_exp_minutes: 60,
 	},
-	CommConfig: CommConfig{
+	REST: CommConfig{
 		Domain: "localhost",
 		Port:   8001,
+	},
+	GRPC: CommConfig{
+		Domain: "localhost",
+		Port:   50001,
 	},
 	DB: DB_config{
 		User:     "user",

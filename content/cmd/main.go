@@ -5,6 +5,7 @@ import (
 	"log"
 	"tiny-letter/content/pkg/app"
 	"tiny-letter/content/pkg/db"
+	"tiny-letter/content/pkg/grpc/client"
 	"tiny-letter/content/pkg/handlers"
 	"tiny-letter/content/pkg/mq"
 
@@ -13,6 +14,10 @@ import (
 
 func main() {
 	config := app.GetConfig()
+	client, err := client.ConnectSubscriptionClient(&config.GRPC)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
 	db, err := db.Init(&config.DB)
 	if err != nil {
@@ -24,12 +29,12 @@ func main() {
 		log.Fatalf("Failed to connect to MQ: %v", err)
 	}
 
-	h := handlers.GetHandler(db, producer)
+	h := handlers.GetHandler(db, producer, client)
 
 	r := gin.Default()
 	r.POST("/publications", h.HandleCreatePublication)
 	r.POST("/posts", h.HandleCreatePost)
 
-	addr := fmt.Sprintf("%s:%d", config.Domain, config.Port)
+	addr := fmt.Sprintf("%s:%d", config.REST.Domain, config.REST.Port)
 	r.Run(addr)
 }
