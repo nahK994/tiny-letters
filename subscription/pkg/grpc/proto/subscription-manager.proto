@@ -2,12 +2,13 @@ syntax = "proto3";
 option go_package = "./subscription_manager;pb_subscription_manager";
 
 service SubscriptionManager {
-  rpc CreateSubscriptionForPublisher (CreateSubscriptionForPublisherRequest) returns (Response);
+  rpc CreateSubscriptionForPublisher (CreateSubscriptionForPublisherRequest) returns (CreateSubscriptionForPublisherResponse);
   rpc GetContentSubscribers (GetContentSubscribersRequest) returns (GetContentSubscribersResponse);
+  rpc RollbackCreateSubscriptionForPublisher (RollbackCreateSubscriptionForPublisherRequest) returns (Response);
 }
 
-message Response {
-  bool is_success = 1;
+message CreateSubscriptionForPublisherResponse {
+  int32 subscription_id = 1;
 }
 
 message CreateSubscriptionForPublisherRequest {
@@ -22,4 +23,12 @@ message GetContentSubscribersRequest {
 
 message GetContentSubscribersResponse {
   repeated int32 subscriber_ids = 1;
+}
+
+message RollbackCreateSubscriptionForPublisherRequest {
+  int32 subscription_id = 1;
+}
+
+message Response {
+  bool is_success = 1;
 }

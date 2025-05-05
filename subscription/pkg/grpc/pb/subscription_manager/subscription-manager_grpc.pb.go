@@ -19,16 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SubscriptionManager_CreateSubscriptionForPublisher_FullMethodName = "/SubscriptionManager/CreateSubscriptionForPublisher"
-	SubscriptionManager_GetContentSubscribers_FullMethodName          = "/SubscriptionManager/GetContentSubscribers"
+	SubscriptionManager_CreateSubscriptionForPublisher_FullMethodName         = "/SubscriptionManager/CreateSubscriptionForPublisher"
+	SubscriptionManager_GetContentSubscribers_FullMethodName                  = "/SubscriptionManager/GetContentSubscribers"
+	SubscriptionManager_RollbackCreateSubscriptionForPublisher_FullMethodName = "/SubscriptionManager/RollbackCreateSubscriptionForPublisher"
 )
 
 // SubscriptionManagerClient is the client API for SubscriptionManager service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SubscriptionManagerClient interface {
-	CreateSubscriptionForPublisher(ctx context.Context, in *CreateSubscriptionForPublisherRequest, opts ...grpc.CallOption) (*Response, error)
+	CreateSubscriptionForPublisher(ctx context.Context, in *CreateSubscriptionForPublisherRequest, opts ...grpc.CallOption) (*CreateSubscriptionForPublisherResponse, error)
 	GetContentSubscribers(ctx context.Context, in *GetContentSubscribersRequest, opts ...grpc.CallOption) (*GetContentSubscribersResponse, error)
+	RollbackCreateSubscriptionForPublisher(ctx context.Context, in *RollbackCreateSubscriptionForPublisherRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type subscriptionManagerClient struct {
@@ -39,9 +41,9 @@ func NewSubscriptionManagerClient(cc grpc.ClientConnInterface) SubscriptionManag
 	return &subscriptionManagerClient{cc}
 }
 
-func (c *subscriptionManagerClient) CreateSubscriptionForPublisher(ctx context.Context, in *CreateSubscriptionForPublisherRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *subscriptionManagerClient) CreateSubscriptionForPublisher(ctx context.Context, in *CreateSubscriptionForPublisherRequest, opts ...grpc.CallOption) (*CreateSubscriptionForPublisherResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
+	out := new(CreateSubscriptionForPublisherResponse)
 	err := c.cc.Invoke(ctx, SubscriptionManager_CreateSubscriptionForPublisher_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -59,12 +61,23 @@ func (c *subscriptionManagerClient) GetContentSubscribers(ctx context.Context, i
 	return out, nil
 }
 
+func (c *subscriptionManagerClient) RollbackCreateSubscriptionForPublisher(ctx context.Context, in *RollbackCreateSubscriptionForPublisherRequest, opts ...grpc.CallOption) (*Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Response)
+	err := c.cc.Invoke(ctx, SubscriptionManager_RollbackCreateSubscriptionForPublisher_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SubscriptionManagerServer is the server API for SubscriptionManager service.
 // All implementations must embed UnimplementedSubscriptionManagerServer
 // for forward compatibility.
 type SubscriptionManagerServer interface {
-	CreateSubscriptionForPublisher(context.Context, *CreateSubscriptionForPublisherRequest) (*Response, error)
+	CreateSubscriptionForPublisher(context.Context, *CreateSubscriptionForPublisherRequest) (*CreateSubscriptionForPublisherResponse, error)
 	GetContentSubscribers(context.Context, *GetContentSubscribersRequest) (*GetContentSubscribersResponse, error)
+	RollbackCreateSubscriptionForPublisher(context.Context, *RollbackCreateSubscriptionForPublisherRequest) (*Response, error)
 	mustEmbedUnimplementedSubscriptionManagerServer()
 }
 
@@ -75,11 +88,14 @@ type SubscriptionManagerServer interface {
 // pointer dereference when methods are called.
 type UnimplementedSubscriptionManagerServer struct{}
 
-func (UnimplementedSubscriptionManagerServer) CreateSubscriptionForPublisher(context.Context, *CreateSubscriptionForPublisherRequest) (*Response, error) {
+func (UnimplementedSubscriptionManagerServer) CreateSubscriptionForPublisher(context.Context, *CreateSubscriptionForPublisherRequest) (*CreateSubscriptionForPublisherResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSubscriptionForPublisher not implemented")
 }
 func (UnimplementedSubscriptionManagerServer) GetContentSubscribers(context.Context, *GetContentSubscribersRequest) (*GetContentSubscribersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContentSubscribers not implemented")
+}
+func (UnimplementedSubscriptionManagerServer) RollbackCreateSubscriptionForPublisher(context.Context, *RollbackCreateSubscriptionForPublisherRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackCreateSubscriptionForPublisher not implemented")
 }
 func (UnimplementedSubscriptionManagerServer) mustEmbedUnimplementedSubscriptionManagerServer() {}
 func (UnimplementedSubscriptionManagerServer) testEmbeddedByValue()                             {}
@@ -138,6 +154,24 @@ func _SubscriptionManager_GetContentSubscribers_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SubscriptionManager_RollbackCreateSubscriptionForPublisher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackCreateSubscriptionForPublisherRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubscriptionManagerServer).RollbackCreateSubscriptionForPublisher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubscriptionManager_RollbackCreateSubscriptionForPublisher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubscriptionManagerServer).RollbackCreateSubscriptionForPublisher(ctx, req.(*RollbackCreateSubscriptionForPublisherRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SubscriptionManager_ServiceDesc is the grpc.ServiceDesc for SubscriptionManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var SubscriptionManager_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetContentSubscribers",
 			Handler:    _SubscriptionManager_GetContentSubscribers_Handler,
+		},
+		{
+			MethodName: "RollbackCreateSubscriptionForPublisher",
+			Handler:    _SubscriptionManager_RollbackCreateSubscriptionForPublisher_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

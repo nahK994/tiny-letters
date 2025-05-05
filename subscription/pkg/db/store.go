@@ -6,11 +6,7 @@ import (
 	"tiny-letter/subscription/pkg/models"
 )
 
-type (
-	subscriptionId int
-)
-
-func (r *Repository) CreateSubscriptionForPublisher(data *models.ConfirmPublisherSubscriptionRequest) (subscriptionId, error) {
+func (r *Repository) CreateSubscriptionForPublisher(data *models.ConfirmPublisherSubscriptionRequest) (int, error) {
 	var id int
 	query := `
 	INSERT INTO publisher_subscriptions (user_id, plan_id)
@@ -20,7 +16,17 @@ func (r *Repository) CreateSubscriptionForPublisher(data *models.ConfirmPublishe
 	if err != nil {
 		return -1, fmt.Errorf("failed to subscribe publisher to plan: %w", err)
 	}
-	return subscriptionId(id), nil
+	return id, nil
+}
+
+func (r *Repository) RollbackCreateSubscriptionForPublisher(subscriptionId int) error {
+	query := `
+	DELETE FROM publisher_subscriptions WHERE id = $1
+	`
+	if _, err := r.DB.Exec(query, subscriptionId); err != nil {
+		return fmt.Errorf("failed to rollback subscription creation: %w", err)
+	}
+	return nil
 }
 
 func (r *Repository) ChangePublisherSubscription(data *models.ChangePublisherSubscriptionRequest) error {
