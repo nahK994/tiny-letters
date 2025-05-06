@@ -46,7 +46,7 @@ func ShutdownSubscriptionClient() {
 		emailConn.Close()
 	}
 }
-func (s *EmailClient) OnboardUser(data *models.OnboardUserData) error {
+func OnboardUser(data *models.OnboardUserData) error {
 	_, err := emailClient.OnboardUser(context.Background(), &pb_email_service.OnboardUserRequest{
 		UserId: int32(data.UserId),
 		Email:  data.Email,

@@ -19,16 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthManager_CreatePublisher_FullMethodName         = "/AuthManager/CreatePublisher"
-	AuthManager_RollbackCreatePublisher_FullMethodName = "/AuthManager/RollbackCreatePublisher"
+	AuthManager_CreatePublisher_FullMethodName          = "/AuthManager/CreatePublisher"
+	AuthManager_RollbackCreatePublisher_FullMethodName  = "/AuthManager/RollbackCreatePublisher"
+	AuthManager_CreateSubscriber_FullMethodName         = "/AuthManager/CreateSubscriber"
+	AuthManager_RollbackCreateSubscriber_FullMethodName = "/AuthManager/RollbackCreateSubscriber"
 )
 
 // AuthManagerClient is the client API for AuthManager service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthManagerClient interface {
-	CreatePublisher(ctx context.Context, in *CreatePublisherRequest, opts ...grpc.CallOption) (*Response, error)
-	RollbackCreatePublisher(ctx context.Context, in *RollbackCreatePublisherRequest, opts ...grpc.CallOption) (*Response, error)
+	CreatePublisher(ctx context.Context, in *CreatePublisherRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	RollbackCreatePublisher(ctx context.Context, in *RollbackRequest, opts ...grpc.CallOption) (*RollbackResponse, error)
+	CreateSubscriber(ctx context.Context, in *CreateSubscriberRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	RollbackCreateSubscriber(ctx context.Context, in *RollbackRequest, opts ...grpc.CallOption) (*RollbackResponse, error)
 }
 
 type authManagerClient struct {
@@ -39,9 +43,9 @@ func NewAuthManagerClient(cc grpc.ClientConnInterface) AuthManagerClient {
 	return &authManagerClient{cc}
 }
 
-func (c *authManagerClient) CreatePublisher(ctx context.Context, in *CreatePublisherRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *authManagerClient) CreatePublisher(ctx context.Context, in *CreatePublisherRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
+	out := new(CreateResponse)
 	err := c.cc.Invoke(ctx, AuthManager_CreatePublisher_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -49,10 +53,30 @@ func (c *authManagerClient) CreatePublisher(ctx context.Context, in *CreatePubli
 	return out, nil
 }
 
-func (c *authManagerClient) RollbackCreatePublisher(ctx context.Context, in *RollbackCreatePublisherRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *authManagerClient) RollbackCreatePublisher(ctx context.Context, in *RollbackRequest, opts ...grpc.CallOption) (*RollbackResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
+	out := new(RollbackResponse)
 	err := c.cc.Invoke(ctx, AuthManager_RollbackCreatePublisher_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authManagerClient) CreateSubscriber(ctx context.Context, in *CreateSubscriberRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateResponse)
+	err := c.cc.Invoke(ctx, AuthManager_CreateSubscriber_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authManagerClient) RollbackCreateSubscriber(ctx context.Context, in *RollbackRequest, opts ...grpc.CallOption) (*RollbackResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RollbackResponse)
+	err := c.cc.Invoke(ctx, AuthManager_RollbackCreateSubscriber_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,8 +87,10 @@ func (c *authManagerClient) RollbackCreatePublisher(ctx context.Context, in *Rol
 // All implementations must embed UnimplementedAuthManagerServer
 // for forward compatibility.
 type AuthManagerServer interface {
-	CreatePublisher(context.Context, *CreatePublisherRequest) (*Response, error)
-	RollbackCreatePublisher(context.Context, *RollbackCreatePublisherRequest) (*Response, error)
+	CreatePublisher(context.Context, *CreatePublisherRequest) (*CreateResponse, error)
+	RollbackCreatePublisher(context.Context, *RollbackRequest) (*RollbackResponse, error)
+	CreateSubscriber(context.Context, *CreateSubscriberRequest) (*CreateResponse, error)
+	RollbackCreateSubscriber(context.Context, *RollbackRequest) (*RollbackResponse, error)
 	mustEmbedUnimplementedAuthManagerServer()
 }
 
@@ -75,11 +101,17 @@ type AuthManagerServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAuthManagerServer struct{}
 
-func (UnimplementedAuthManagerServer) CreatePublisher(context.Context, *CreatePublisherRequest) (*Response, error) {
+func (UnimplementedAuthManagerServer) CreatePublisher(context.Context, *CreatePublisherRequest) (*CreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePublisher not implemented")
 }
-func (UnimplementedAuthManagerServer) RollbackCreatePublisher(context.Context, *RollbackCreatePublisherRequest) (*Response, error) {
+func (UnimplementedAuthManagerServer) RollbackCreatePublisher(context.Context, *RollbackRequest) (*RollbackResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RollbackCreatePublisher not implemented")
+}
+func (UnimplementedAuthManagerServer) CreateSubscriber(context.Context, *CreateSubscriberRequest) (*CreateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSubscriber not implemented")
+}
+func (UnimplementedAuthManagerServer) RollbackCreateSubscriber(context.Context, *RollbackRequest) (*RollbackResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackCreateSubscriber not implemented")
 }
 func (UnimplementedAuthManagerServer) mustEmbedUnimplementedAuthManagerServer() {}
 func (UnimplementedAuthManagerServer) testEmbeddedByValue()                     {}
@@ -121,7 +153,7 @@ func _AuthManager_CreatePublisher_Handler(srv interface{}, ctx context.Context, 
 }
 
 func _AuthManager_RollbackCreatePublisher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RollbackCreatePublisherRequest)
+	in := new(RollbackRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -133,7 +165,43 @@ func _AuthManager_RollbackCreatePublisher_Handler(srv interface{}, ctx context.C
 		FullMethod: AuthManager_RollbackCreatePublisher_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthManagerServer).RollbackCreatePublisher(ctx, req.(*RollbackCreatePublisherRequest))
+		return srv.(AuthManagerServer).RollbackCreatePublisher(ctx, req.(*RollbackRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthManager_CreateSubscriber_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateSubscriberRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthManagerServer).CreateSubscriber(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthManager_CreateSubscriber_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthManagerServer).CreateSubscriber(ctx, req.(*CreateSubscriberRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthManager_RollbackCreateSubscriber_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthManagerServer).RollbackCreateSubscriber(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthManager_RollbackCreateSubscriber_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthManagerServer).RollbackCreateSubscriber(ctx, req.(*RollbackRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -152,6 +220,14 @@ var AuthManager_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RollbackCreatePublisher",
 			Handler:    _AuthManager_RollbackCreatePublisher_Handler,
+		},
+		{
+			MethodName: "CreateSubscriber",
+			Handler:    _AuthManager_CreateSubscriber_Handler,
+		},
+		{
+			MethodName: "RollbackCreateSubscriber",
+			Handler:    _AuthManager_RollbackCreateSubscriber_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

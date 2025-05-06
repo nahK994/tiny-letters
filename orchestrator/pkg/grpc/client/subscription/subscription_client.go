@@ -34,10 +34,21 @@ func ShutdownSubscriptionClient() {
 	}
 }
 
-func CreateSubscriptionForPublisher(userID, planID int) error {
-	_, err := subscriptionClient.CreateSubscriptionForPublisher(context.Background(), &pb_subscription_manager.CreateSubscriptionForPublisherRequest{
+func CreateSubscriptionForPublisher(userID, planID int) (int, error) {
+	resp, err := subscriptionClient.CreateSubscriptionForPublisher(context.Background(), &pb_subscription_manager.CreateSubscriptionForPublisherRequest{
 		UserId: int32(userID),
 		PlanId: int32(planID),
+	})
+	if err != nil {
+		return -1, err
+	}
+
+	return int(resp.SubscriptionId), nil
+}
+
+func RollbackCreateSubscriptionForPublisher(subscriptionID int) error {
+	_, err := subscriptionClient.RollbackCreateSubscriptionForPublisher(context.Background(), &pb_subscription_manager.RollbackCreateSubscriptionForPublisherRequest{
+		SubscriptionId: int32(subscriptionID),
 	})
 	if err != nil {
 		return err

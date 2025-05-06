@@ -48,7 +48,30 @@ func CreatePublisher(email, password string, planID int) (int, error) {
 }
 
 func RollbackCreatePublisher(userId int) error {
-	_, err := authClient.RollbackCreatePublisher(context.Background(), &pb_auth_manager.RollbackCreatePublisherRequest{
+	_, err := authClient.RollbackCreatePublisher(context.Background(), &pb_auth_manager.RollbackRequest{
+		UserId: int32(userId),
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func CreateSubscriber(email, password string) (int, error) {
+	res, err := authClient.CreateSubscriber(context.Background(), &pb_auth_manager.CreateSubscriberRequest{
+		Email:    email,
+		Password: password,
+	})
+	if err != nil {
+		return -1, err
+	}
+
+	return int(res.UserId), nil
+}
+
+func RollbackCreateSubscriber(userId int) error {
+	_, err := authClient.RollbackCreateSubscriber(context.Background(), &pb_auth_manager.RollbackRequest{
 		UserId: int32(userId),
 	})
 	if err != nil {

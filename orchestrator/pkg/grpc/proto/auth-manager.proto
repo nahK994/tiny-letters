@@ -3,11 +3,18 @@ syntax = "proto3";
 option go_package = "/auth_manager;pb_auth_manager";
 
 service AuthManager {
-  rpc CreatePublisher (CreatePublisherRequest) returns (Response);
-  rpc RollbackCreatePublisher (RollbackCreatePublisherRequest) returns (Response);
+  rpc CreatePublisher (CreatePublisherRequest) returns (CreateResponse);
+  rpc RollbackCreatePublisher (RollbackRequest) returns (RollbackResponse);
+
+  rpc CreateSubscriber (CreateSubscriberRequest) returns (CreateResponse);
+  rpc RollbackCreateSubscriber (RollbackRequest) returns (RollbackResponse);
 }
 
-message Response {
+message RollbackResponse {
+  bool is_success = 1;
+}
+
+message CreateResponse {
   int32 user_id = 1;
 }
 
@@ -17,6 +24,11 @@ message CreatePublisherRequest {
   string password = 3;
 }
 
-message RollbackCreatePublisherRequest {
+message CreateSubscriberRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message RollbackRequest {
   int32 user_id = 1;
 }
