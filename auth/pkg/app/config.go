@@ -20,7 +20,6 @@ type AppConfig struct {
 type Config struct {
 	App  AppConfig
 	DB   DB_config
-	REST CommConfig
 	GRPC CommConfig
 }
 
@@ -28,10 +27,6 @@ var appConfig Config = Config{
 	App: AppConfig{
 		JWT_secret:      "secret",
 		JWT_exp_minutes: 60,
-	},
-	REST: CommConfig{
-		Port:   8000,
-		Domain: "localhost",
 	},
 	GRPC: CommConfig{
 		Domain: "localhost",

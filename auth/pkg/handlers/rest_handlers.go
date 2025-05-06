@@ -56,34 +56,3 @@ func (h *REST_Handler) Login(c *gin.Context) {
 		"access_token": accessToken,
 	})
 }
-
-func (h *REST_Handler) HandleSubscriberRegistration(c *gin.Context) {
-	var req struct {
-		Email    string `json:"email" binding:"required,email"`
-		Password string `json:"password" binding:"required,min=6"`
-	}
-
-	if err := c.ShouldBindJSON(req); err != nil {
-		c.JSON(http.StatusBadRequest, "wrong user info format")
-		return
-	}
-
-	hashedPassword, err := hashPassword(req.Password)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, "Internal server error")
-		return
-	}
-	user_id, err := h.repo.CreateUser(
-		&models.UserRegistration{
-			Email:    req.Email,
-			Password: hashedPassword,
-			Role:     "subscriber",
-		},
-	)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, "Internal server error")
-		return
-	}
-
-	c.JSON(http.StatusOK, user_id)
-}

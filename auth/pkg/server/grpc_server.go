@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"sync"
 	"tiny-letter/auth/pkg/app"
 	"tiny-letter/auth/pkg/db"
 	pb_auth_manager "tiny-letter/auth/pkg/grpc/pb/auth_manager"
@@ -13,8 +12,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func ServeGRPC(wg *sync.WaitGroup, db *db.Repository, commConfig *app.CommConfig) {
-	defer wg.Done()
+func ServeGRPC(db *db.Repository, commConfig *app.CommConfig) {
 	s := grpc.NewServer()
 	pb_auth_manager.RegisterAuthManagerServer(s, handlers.GetCoordinatorHandlers(db))
 
