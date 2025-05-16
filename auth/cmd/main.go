@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"sync"
 	"tiny-letter/auth/pkg/app"
 	"tiny-letter/auth/pkg/db"
 	"tiny-letter/auth/pkg/server"
@@ -14,5 +15,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	server.ServeGRPC(db, &config.GRPC)
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go server.ServeGRPC(&wg, db, &config.GRPC)
+	go server.ServeREST(&wg, db, &config.REST)
+	wg.Wait()
 }

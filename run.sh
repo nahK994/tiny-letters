@@ -95,7 +95,7 @@ elif [[ $cmd == 5 ]]; then
 elif [[ $cmd == 6 ]]; then
     start_service "auth"
 elif [[ $cmd == 7 ]]; then
-    kill_process -1 50000
+    kill_process 8000 50000
 elif [[ $cmd == 8 ]]; then
     start_service "content"
 elif [[ $cmd == 9 ]]; then
